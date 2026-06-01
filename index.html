@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Cotejos | Edición Elite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Matte Black Palette */
+            --bg-deep: #050505;
+            --bg-matte: #0f0f0f;
+            --surface: #181818;
+            --surface-hover: #222222;
+            
+            --border: #2a2a2a;
+            --border-focus: #525252;
+            
+            --text: #e5e5e5;
+            --text-secondary: #a3a3a3;
+            --text-muted: #737373;
+            
+            --primary: #8b5cf6; /* Violet */
+            --primary-dark: #7c3aed;
+            --primary-glow: rgba(139, 92, 246, 0.15);
+            
+            --accent: #10b981; /* Emerald */
+            --accent-dark: #059669;
+            
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --danger-border: rgba(239, 68, 68, 0.2);
+
+            --radius: 12px;
+            --radius-lg: 16px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+            
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 50% 0%, #1a1a1a 0%, var(--bg-deep) 70%);
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 85%, rgba(139, 92, 246, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 32px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e5e5e5, #737373);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: var(--border-focus);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .card-title .icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .form-group input {
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            transition: var(--transition);
+            background: var(--bg-matte);
+        }
+
+        .form-group input[type="number"]:focus,
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #121212;
+            box-shadow: 0 0 0 2px var(--primary-glow);
+        }
+
+        .form-group .help-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .toggle-config {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .toggle-config h3 {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .toggle-arrow {
+            transition: transform 0.3s ease;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .toggle-arrow.active {
+            transform: rotate(180deg);
+        }
+
+        .config-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .config-panel.show {
+            max-height: 600px;
+            opacity: 1;
+        }
+
+        .btn-reset {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border-color: var(--border-focus);
+        }
+
+        .iva-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+        }
+        
+        .iva-toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .iva-toggle-sublabel {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #333333;
+            border-radius: 24px;
+            transition: var(--transition);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #a3a3a3;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--primary-dark);
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(20px);
+            background: white;
+        }
+
+        .book-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .book-item {
+            background: var(--bg-matte);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            transition: var(--transition);
+            animation: slideIn 0.3s ease;
+        }
+
+        .book-item:hover {
+            border-color: var(--border-focus);
+            background: #151515;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .book-item .form-group {
+            flex: 1;
+        }
+
+        .book-number {
+            width: 28px;
+            height: 28px;
+            background: #2a2a2a;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            align-self: flex-start;
+            margin-top: 3px;
+        }
+
+        .btn-remove {
+            width: 36px;
+            height: 36px;
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            color: var(--danger);
+            font-size: 18px;
+            margin-bottom: 1px;
+        }
+
+        .btn-remove:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.05);
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #262626;
+            border: 1px dashed var(--border-focus);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-add:hover {
+            background: #2a2a2a;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .rapidez-section {
+            background: linear-gradient(180deg, var(--bg-matte) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rapidez-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0.5;
+        }
+
+        .rapidez-section.active {
+            border-color: var(--primary-glow);
+        }
+        
+        .rapidez-section.active::before {
+            opacity: 1;
+        }
+
+        .rapidez-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .rapidez-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .rapidez-content {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .rapidez-content.show {
+            max-height: 100px;
+            opacity: 1;
+        }
+
+        .rapidez-content .form-group {
+            flex: 1;
+        }
+
+        .rapidez-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            align-self: flex-start;
+            margin-top: 24px;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-calculate {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--accent);
+            border: none;
+            border-radius: var(--radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #051c13;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-calculate:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            background: #111111;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-value {
+            font-size: 16px;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-secondary);
+        }
+
+        .result-row.total {
+            margin-top: 16px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-focus);
+            border-bottom: none;
+        }
+
+        .result-row.total .result-label {
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .result-row.total .result-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .result-rapidez {
+            background: var(--primary-glow);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-top: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .detail-books {
+            background: var(--bg-matte);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .detail-books-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .detail-book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+        }
+
+        .detail-book-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-book-item .calc-breakdown {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 32px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .price-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .book-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .book-item > .btn-remove {
+                align-self: flex-end;
+                margin-top: -16px;
+                margin-right: -8px;
+            }
+
+            .rapidez-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .rapidez-badge {
+                margin-top: 0;
+                align-self: flex-start;
+            }
+
+            .result-row.total .result-value {
+                font-size: 28px;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>Calculadora de Cotejos</h1>
+            <p>Gestión precisa de honorarios e impuestos</p>
+        </header>
+
+        <div class="card">
+            <div class="toggle-config" onclick="toggleConfig()">
+                <h3>⚙️ Configurar Precios</h3>
+                <span class="toggle-arrow" id="toggleArrow">▼</span>
+            </div>
+            
+            <div class="config-panel" id="configPanel">
+                <div class="price-grid">
+                    <div class="form-group">
+                        <label for="precioBase">Primeras 2 hojas</label>
+                        <input type="number" id="precioBase" value="600" step="0.01" min="0">
+                        <span class="help-text">Precio fijo base</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="precioIntermedio">Hojas 3 a 99</label>
+                        <input type="number" id="precioIntermedio" value="50" step="0.01" min="0">
+                        <span class="help-text">Costo por hoja adicional</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="precioExtra">Hojas 100 en adelante</label>
+                        <input type="number" id="precioExtra" value="30" step="0.01" min="0">
+                        <span class="help-text">Costo por hoja excedente</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="iva">Tasa de IVA (%)</label>
+                        <input type="number" id="iva" value="16" step="0.01" min="0" max="100">
+                        <span class="help-text">Impuesto aplicable</span>
+                    </div>
+                </div>
+                
+                <div class="iva-toggle-row">
+                    <div>
+                        <div class="iva-toggle-label">¿Requiere Factura (IVA)?</div>
+                        <div class="iva-toggle-sublabel">Actívalo para agregar el impuesto al total.</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="ivaToggle" checked onchange="toggleIvaState()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <button class="btn-reset" onclick="resetDefaults()">
+                    🔄 Restaurar valores
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <div class="icon">📚</div>
+                Inventario de Libros
+            </div>
+            
+            <div class="book-list" id="bookList">
+                <!-- Books will be added here -->
+            </div>
+            
+            <button class="btn-add" onclick="addBook()">
+                <span style="font-size: 16px; line-height: 1;">+</span> Agregar Libro
+            </button>
+        </div>
+
+        <div class="rapidez-section" id="rapidezSection">
+            <div class="rapidez-header">
+                <div class="rapidez-title">
+                    <span style="font-size: 18px;">⚡</span>
+                    Servicio Express
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="rapidezToggle" onchange="toggleRapidez()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="rapidez-content" id="rapidezContent">
+                <div class="form-group">
+                    <label for="rapidezPorcentaje">Recargo (%)</label>
+                    <input type="number" id="rapidezPorcentaje" value="20" step="1" min="0" max="100" oninput="updateRapidezBadge()">
+                </div>
+                <span class="rapidez-badge" id="rapidezBadge">+20%</span>
+            </div>
+        </div>
+
+        <button class="btn-calculate" onclick="calculate()">
+            🧮 Generar Presupuesto
+        </button>
+
+        <div class="results hidden" id="results">
+            <div class="result-title">
+                📊 Resumen Financiero
+            </div>
+            
+            <div class="result-row">
+                <span class="result-label">
+                    <span>📝</span> Honorarios Base
+                </span>
+                <span class="result-value" id="resultSubtotal">$0.00</span>
+            </div>
+            
+            <div class="result-row hidden" id="ivaResultRow">
+                <span class="result-label">
+                    <span>🏛️</span> IVA (<span id="ivaLabel">16</span>%)
+                </span>
+                <span class="result-value" id="resultIva">$0.00</span>
+            </div>
+
+            <div class="result-rapidez hidden" id="resultRapidezRow">
+                <div class="result-row" style="border-bottom: none;">
+                    <span class="result-label">
+                        <span>⚡</span> Recargo Rapidez (<span id="rapidezLabel">20</span>%)
+                    </span>
+                    <span class="result-value" id="resultRapidez">+$0.00</span>
+                </div>
+            </div>
+            
+            <div class="result-row total">
+                <span class="result-label">TOTAL</span>
+                <span class="result-value" id="resultTotal">$0.00</span>
+            </div>
+
+            <div class="detail-books" id="detailBooks">
+                <div class="detail-books-title">Detalle de Cálculo</div>
+                <div id="detailBooksList"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            Calculadora de Cotejos &copy; <span id="year"></span>
+        </footer>
+    </div>
+
+    <script>
+        let bookCount = 0;
+        const defaultPrices = {
+            base: 600,
+            intermedio: 50,
+            extra: 30,
+            iva: 16
+        };
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function toggleConfig() {
+            const panel = document.getElementById('configPanel');
+            const arrow = document.getElementById('toggleArrow');
+            panel.classList.toggle('show');
+            arrow.classList.toggle('active');
+        }
+        
+        function toggleIvaState() {
+            // Just a visual helper if needed, currently logic handles it directly in calculate
+        }
+
+        function resetDefaults() {
+            document.getElementById('precioBase').value = defaultPrices.base;
+            document.getElementById('precioIntermedio').value = defaultPrices.intermedio;
+            document.getElementById('precioExtra').value = defaultPrices.extra;
+            document.getElementById('iva').value = defaultPrices.iva;
+            document.getElementById('ivaToggle').checked = true;
+        }
+
+        function addBook() {
+            bookCount++;
+            const list = document.getElementById('bookList');
+            const bookItem = document.createElement('div');
+            bookItem.className = 'book-item fade-in';
+            bookItem.id = `book-${bookCount}`;
+            bookItem.innerHTML = `
+                <div class="book-number">${bookCount}</div>
+                <div class="form-group">
+                    <label>Identificador</label>
+                    <input type="text" placeholder="Ej: Libro 1" class="book-name">
+                </div>
+                <div class="form-group">
+                    <label>Hojas</label>
+                    <input type="number" min="1" value="1" class="book-hojas">
+                </div>
+                <button class="btn-remove" onclick="removeBook('book-${bookCount}')">✕</button>
+            `;
+            list.appendChild(bookItem);
+            updateBookNumbers();
+        }
+
+        function removeBook(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(-10px)';
+                el.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    el.remove();
+                    updateBookNumbers();
+                }, 300);
+            }
+        }
+
+        function updateBookNumbers() {
+            const books = document.querySelectorAll('.book-item');
+            books.forEach((book, index) => {
+                book.querySelector('.book-number').textContent = index + 1;
+            });
+        }
+
+        function toggleRapidez() {
+            const toggle = document.getElementById('rapidezToggle');
+            const content = document.getElementById('rapidezContent');
+            const section = document.getElementById('rapidezSection');
+            
+            if (toggle.checked) {
+                content.classList.add('show');
+                section.classList.add('active');
+            } else {
+                content.classList.remove('show');
+                section.classList.remove('active');
+            }
+        }
+
+        function updateRapidezBadge() {
+            const value = document.getElementById('rapidezPorcentaje').value || 0;
+            document.getElementById('rapidezBadge').textContent = `+${value}%`;
+        }
+
+        function formatCurrency(amount) {
+            return '$' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function calculateCostForBook(hojas, precioBase, precioIntermedio, precioExtra) {
+            if (hojas <= 2) {
+                return precioBase;
+            } else if (hojas <= 99) {
+                return precioBase + ((hojas - 2) * precioIntermedio);
+            } else {
+                return precioBase + (97 * precioIntermedio) + ((hojas - 99) * precioExtra);
+            }
+        }
+
+        function calculate() {
+            const precioBase = parseFloat(document.getElementById('precioBase').value) || 0;
+            const precioIntermedio = parseFloat(document.getElementById('precioIntermedio').value) || 0;
+            const precioExtra = parseFloat(document.getElementById('precioExtra').value) || 0;
+            const iva = parseFloat(document.getElementById('iva').value) || 0;
+            
+            // New Logic: Check if IVA should be included
+            const applyIva = document.getElementById('ivaToggle').checked;
+            
+            const rapidezToggle = document.getElementById('rapidezToggle').checked;
+            const rapidezPorcentaje = parseFloat(document.getElementById('rapidezPorcentaje').value) || 0;
+
+            const books = document.querySelectorAll('.book-item');
+            let subtotal = 0;
+            const details = [];
+
+            books.forEach((book, index) => {
+                const hojas = parseInt(book.querySelector('.book-hojas').value) || 0;
+                const name = book.querySelector('.book-name').value || `Libro ${index + 1}`;
+                
+                if (hojas > 0) {
+                    const cost = calculateCostForBook(hojas, precioBase, precioIntermedio, precioExtra);
+                    subtotal += cost;
+                    details.push({ name, hojas, cost });
+                }
+            });
+
+            if (details.length === 0) {
+                alert('Por favor, ingresa datos de al menos un libro.');
+                return;
+            }
+
+            const ivaAmount = applyIva ? (subtotal * (iva / 100)) : 0;
+            
+            let rapidezAmount = 0;
+            if (rapidezToggle) {
+                rapidezAmount = subtotal * (rapidezPorcentaje / 100);
+            }
+
+            const total = subtotal + ivaAmount + rapidezAmount;
+
+            document.getElementById('resultSubtotal').textContent = formatCurrency(subtotal);
+            
+            // Handle IVA Display
+            const ivaRow = document.getElementById('ivaResultRow');
+            if (applyIva) {
+                ivaRow.classList.remove('hidden');
+                document.getElementById('ivaLabel').textContent = iva;
+                document.getElementById('resultIva').textContent = formatCurrency(ivaAmount);
+            } else {
+                ivaRow.classList.add('hidden');
+            }
+
+            const rapidezRow = document.getElementById('resultRapidezRow');
+            if (rapidezToggle && rapidezPorcentaje > 0) {
+                rapidezRow.classList.remove('hidden');
+                document.getElementById('rapidezLabel').textContent = rapidezPorcentaje;
+                document.getElementById('resultRapidez').textContent = '+' + formatCurrency(rapidezAmount);
+            } else {
+                rapidezRow.classList.add('hidden');
+            }
+
+            document.getElementById('resultTotal').textContent = formatCurrency(total);
+
+            const detailsList = document.getElementById('detailBooksList');
+            detailsList.innerHTML = '';
+            details.forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'detail-book-item';
+                div.innerHTML = `
+                    <span>${d.name} <span style="color: var(--text-muted)">(${d.hojas} hojas)</span></span>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 500; color: var(--text);">${formatCurrency(d.cost)}</div>
+                        <div class="calc-breakdown">Tarifas: ${formatCurrency(precioBase)} | ${formatCurrency(precioIntermedio)} | ${formatCurrency(precioExtra)}</div>
+                    </div>
+                `;
+                detailsList.appendChild(div);
+            });
+
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Initialize with one book
+        addBook();
+    </script>
+</body>
+</html>
+
