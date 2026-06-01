@@ -732,8 +732,8 @@
                 
                 <div class="iva-toggle-row">
                     <div>
-                        <div class="iva-toggle-label">¿Requiere Factura (IVA)?</div>
-                        <div class="iva-toggle-sublabel">Actívalo para agregar el impuesto al total.</div>
+                        <div class="iva-toggle-label">¿Agregar IVA?</div>
+                        <div class="iva-toggle-sublabel">Actívalo para agregar el impuesto al costo total.</div>
                     </div>
                     <label class="toggle-switch">
                         <input type="checkbox" id="ivaToggle" checked onchange="toggleIvaState()">
@@ -766,7 +766,7 @@
             <div class="rapidez-header">
                 <div class="rapidez-title">
                     <span style="font-size: 18px;">⚡</span>
-                    Servicio Express
+                    Impuesto Gerry
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="rapidezToggle" onchange="toggleRapidez()">
@@ -775,10 +775,10 @@
             </div>
             <div class="rapidez-content" id="rapidezContent">
                 <div class="form-group">
-                    <label for="rapidezPorcentaje">Recargo (%)</label>
-                    <input type="number" id="rapidezPorcentaje" value="20" step="1" min="0" max="100" oninput="updateRapidezBadge()">
+                    <label for="rapidezPorcentaje">Recargo Rapidez (25%)</label>
+                    <input type="number" id="rapidezPorcentaje" value="25" step="1" min="0" max="100" oninput="updateRapidezBadge()">
                 </div>
-                <span class="rapidez-badge" id="rapidezBadge">+20%</span>
+                <span class="rapidez-badge" id="rapidezBadge">+25%</span>
             </div>
         </div>
 
@@ -808,7 +808,7 @@
             <div class="result-rapidez hidden" id="resultRapidezRow">
                 <div class="result-row" style="border-bottom: none;">
                     <span class="result-label">
-                        <span>⚡</span> Recargo Rapidez (<span id="rapidezLabel">20</span>%)
+                        <span>⚡</span> Impuesto Gerry (<span id="rapidezLabel">25</span>%)
                     </span>
                     <span class="result-value" id="resultRapidez">+$0.00</span>
                 </div>
@@ -826,7 +826,7 @@
         </div>
 
         <footer class="footer">
-            Calculadora de Cotejos &copy; <span id="year"></span>
+            Alexis Pimentel &copy; <span id="year"></span>
         </footer>
     </div>
 
