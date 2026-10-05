@@ -1,869 +1,633 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Cotejos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <style>
-        :root {
-            --bg: #fafafa;
-            --surface: #ffffff;
-            --text: #111111;
-            --text-secondary: #666666;
-            --text-muted: #999999;
-            --border: rgba(0, 0, 0, 0.06);
-            --black: #000000;
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 60px 24px 80px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 56px;
-        }
-
-        header h1 {
-            font-size: 42px;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-
-        header p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
-        }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            user-select: none;
-            letter-spacing: -0.01em;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .input-control {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 16px;
-            font-family: var(--font);
-            color: var(--text);
-            background: var(--bg);
-            border: 1px solid transparent;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-        }
-
-        .input-control:focus {
-            outline: none;
-            background: var(--surface);
-            border-color: var(--black);
-            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .book-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 12px;
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            transition: var(--transition);
-            animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-            opacity: 0;
-            transform: translateY(16px);
-        }
-
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .book-item:hover {
-            border-color: rgba(0,0,0,0.15);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .book-index {
-            width: 32px;
-            height: 32px;
-            background: var(--black);
-            color: var(--surface);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .book-inputs {
-            flex: 1;
-            display: flex;
-            gap: 16px;
-        }
-        
-        .book-inputs .form-group {
-            flex: 1;
-        }
-
-        .btn-icon {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: var(--transition);
-        }
-        .footer {
-            text-align: center;
-            padding: 24px 0 12px;
-            color: var(--text-light);
-            font-size: 13px;
-        }
-
-        .btn-icon:hover {
-            background: rgba(0,0,0,0.05);
-            color: var(--text);
-        }
-
-        .btn-add {
-            width: 100%;
-            padding: 16px;
-            background: transparent;
-            border: 1px dashed rgba(0,0,0,0.2);
-            border-radius: var(--radius-md);
-            color: var(--text-secondary);
-            font-size: 15px;
-            font-weight: 500;
-            font-family: var(--font);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-add:hover {
-            border-color: var(--black);
-            color: var(--black);
-            background: rgba(0,0,0,0.02);
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .option-box {
-            background: var(--bg);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid var(--border);
-        }
-
-        .option-box h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .option-box p {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 28px;
-            flex-shrink: 0;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e0e0e0;
-            transition: 0.3s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        input:checked + .slider {
-            background-color: var(--black);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-
-        .rapidez-control {
-            margin-top: 12px;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .rapidez-control.active { display: block; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-
-        .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 24px;
-        }
-
-        .btn-calc, .btn-pdf {
-            width: 100%;
-            padding: 18px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            letter-spacing: -0.01em;
-        }
-
-        .btn-calc {
-            background: var(--black);
-            color: var(--surface);
-        }
-
-        .btn-calc:hover {
-            opacity: 0.85;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-pdf {
-            background: var(--surface);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-pdf:hover {
-            border-color: var(--black);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .results {
-            margin-top: 40px;
-            padding: 40px;
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            animation: fadeIn 0.5s ease;
-        }
-
-        .result-header {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-
-        .result-row.total {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.02em;
-        }
-        
-        .result-value {
-            font-weight: 500;
-            font-variant-numeric: tabular-nums;
-            color: var(--text);
-        }
-        
-        .result-row.total .result-value {
-            font-weight: 700;
-        }
-
-        .detail-grid {
-            margin-top: 32px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-        }
-
-        .detail-item {
-            background: var(--bg);
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .detail-item strong {
-            color: var(--text);
-            font-weight: 600;
-        }
-
-        .hidden { display: none; }
-        
-        .sub-input {
-            padding: 10px 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            width: 100%;
-            font-family: var(--font);
-            font-size: 15px;
-            background: var(--surface);
-        }
-        
-        .sub-input:focus {
-            outline: none;
-            border-color: var(--black);
-        }
-
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        
-        .collapsible-content.open {
-            max-height: 1000px;
-        }
-        
-        .chevron {
-            transition: transform 0.3s ease;
-            color: var(--text-muted);
-        }
-        
-        .rotate {
-            transform: rotate(180deg);
-        }
-
-        @media (max-width: 640px) {
-            header h1 { font-size: 32px; }
-            .book-inputs { flex-direction: column; gap: 12px; }
-            .options-grid { grid-template-columns: 1fr; }
-            .btn-group { grid-template-columns: 1fr; }
-            .container { padding: 32px 20px 60px; }
-            .card { padding: 24px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Cotejos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/700.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+    color: #e4e4e7;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 30px; padding: 20px; }
+  header h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  header p { color: #94a3b8; font-size: 0.95rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: rgba(30, 30, 50, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .card h2 {
+    font-size: 1.1rem;
+    color: #a78bfa;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(99,102,241,0.2);
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(15, 15, 30, 0.8);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 8px;
+    color: #e4e4e7;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+  }
+  
+  /* Estilos para inputs numéricos con botones personalizados */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .number-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .number-input-wrapper input {
+    flex: 1;
+    text-align: center;
+  }
+  .spin-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(99, 102, 241, 0.15);
+    color: #a78bfa;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spin-btn:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: #60a5fa;
+    transform: scale(1.05);
+  }
+  .spin-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  details {
+    background: rgba(15, 15, 30, 0.5);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+  }
+  details summary {
+    cursor: pointer;
+    color: #a78bfa;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 4px 0;
+  }
+  details[open] summary { margin-bottom: 12px; }
+  .btn {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    width: 100%;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+  .btn-secondary {
+    background: rgba(99,102,241,0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(99,102,241,0.3);
+  }
+  .btn-secondary:hover { background: rgba(99,102,241,0.25); }
+  .btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.3);
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  .btn-add {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34,197,94,0.3);
+    width: 100%;
+    margin-top: 10px;
+  }
+  .acta-item {
+    background: rgba(15, 15, 30, 0.6);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .acta-item .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(15, 15, 30, 0.5);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .checkbox-field input { width: auto; accent-color: #8b5cf6; }
+  .checkbox-field label { margin: 0; cursor: pointer; }
+  .desglose-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .desglose-row label { margin: 0; }
+  .desglose-row input { text-align: right; font-weight: 600; }
+  .total-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+    border-radius: 10px;
+    margin-top: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .total-row span:last-child {
+    text-align: right;
+    color: #60a5fa;
+  }
+  footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #64748b;
+    font-size: 0.85rem;
+  }
+  .editable-hint {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .percent-hint {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 4px;
+  }
+</style>
 </head>
 <body>
+<div class="container">
+  <header>
+    <h1>Calculadora de Cotejos</h1>
+    <p>Para no regarla al calcular cotejos</p>
+  </header>
 
-    <div class="container">
-        <header>
-            <h1>Cotejos</h1>
-            <p>Para no regarla al calcular cotejos</p>
-        </header>
+  <div class="grid">
+    <!-- COLUMNA IZQUIERDA -->
+    <div>
+      <div class="card" style="margin-bottom:20px;">
+        <h2>Información del Cliente</h2>
+        <div class="field">
+          <label>Nombre del Cliente</label>
+          <input type="text" id="clientName" placeholder="Ej. Juan Pérez">
+        </div>
+        <div class="field">
+          <label>Fecha de entrega de actas</label>
+          <input type="date" id="deliveryDate">
+        </div>
+      </div>
 
-        <!-- Client Info -->
-        <div class="card">
-            <div class="card-title">Información del Cliente</div>
-            <div class="grid">
-                <div class="form-group" style="grid-column: 1 / -1;">
-                    <label>Nombre del Cliente</label>
-                    <input type="text" id="clientName" placeholder="Ej: Editorial ABC" class="input-control">
-                </div>
-                <div class="form-group" style="grid-column: 1 / -1;">
-                    <label>Fecha de entrega de libros</label>
-                    <input type="date" id="dateBooks" class="input-control">
-                </div>
+      <div class="card" style="margin-bottom:20px;">
+        <h2>Configuración de Precios</h2>
+        <details open>
+          <summary>▼ Precios base</summary>
+          <div class="row-3">
+            <div class="field">
+              <label>Base (2 hojas)</label>
+              <div class="number-input-wrapper">
+                <button class="spin-btn" onclick="spinValue('priceBase', -1)">−</button>
+                <input type="number" id="priceBase" value="600" min="0" step="1">
+                <button class="spin-btn" onclick="spinValue('priceBase', 1)">+</button>
+              </div>
             </div>
-        </div>
-
-        <!-- Settings -->
-        <div class="card">
-            <div class="card-title" onclick="toggleSettings()">
-                <span>Configuración de Precios</span>
-                <span class="chevron rotate" id="settingsChevron">▼</span>
+            <div class="field">
+              <label>Adicional (3-99)</label>
+              <div class="number-input-wrapper">
+                <button class="spin-btn" onclick="spinValue('priceAdd', -1)">−</button>
+                <input type="number" id="priceAdd" value="50" min="0" step="1">
+                <button class="spin-btn" onclick="spinValue('priceAdd', 1)">+</button>
+              </div>
             </div>
-            <div class="collapsible-content open" id="settingsContent">
-                <div class="grid" style="margin-bottom: 24px;">
-                    <div class="form-group">
-                        <label>Base (2 hojas)</label>
-                        <input type="number" id="basePrice" value="600" class="input-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Adicional (3-99)</label>
-                        <input type="number" id="midPrice" value="50" class="input-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Excedente (100+)</label>
-                        <input type="number" id="highPrice" value="30" class="input-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Tasa IVA (%)</label>
-                        <input type="number" id="ivaRate" value="16" class="input-control">
-                    </div>
-                </div>
-                <button class="btn-add" style="width: auto; padding: 10px 20px; font-size: 13px;" onclick="resetDefaults()">Restaurar valores</button>
+            <div class="field">
+              <label>Excedente (100+)</label>
+              <div class="number-input-wrapper">
+                <button class="spin-btn" onclick="spinValue('priceEx', -1)">−</button>
+                <input type="number" id="priceEx" value="30" min="0" step="1">
+                <button class="spin-btn" onclick="spinValue('priceEx', 1)">+</button>
+              </div>
             </div>
-        </div>
-
-        <!-- Books -->
-        <div class="card-title" style="margin-bottom: 16px;">
-            <span>Libros a Cotejar</span>
-        </div>
-        <div id="bookList"></div>
-        <button class="btn-add" onclick="addBook()">+ Agregar Libro</button>
-
-        <!-- Options -->
-        <div class="card" style="margin-top: 24px; padding: 24px;">
-            <div class="options-grid">
-                <div class="option-box" style="flex-direction: column; align-items: flex-start; gap: 12px;">
-                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <h4>Facturar</h4>
-                            <p>Incluir IVA en total</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="ivaToggle" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="option-box" style="flex-direction: column; align-items: flex-start; gap: 12px;">
-                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <h4>Impuesto Gerry</h4>
-                            <p>Recargo por rapidez</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="rapidezToggle" checked onchange="toggleRapidez()">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="rapidez-control active" id="rapidezControl">
-                        <input type="number" id="rapidezPercent" value="25" class="sub-input" oninput="updateBadge()">
-                    </div>
-                </div>
+          </div>
+          <div class="field">
+            <label>Tasa IVA (%)</label>
+            <div class="number-input-wrapper">
+              <button class="spin-btn" onclick="spinValue('ivaRate', -1)">−</button>
+              <input type="number" id="ivaRate" value="16" min="0" step="1">
+              <button class="spin-btn" onclick="spinValue('ivaRate', 1)">+</button>
             </div>
-        </div>
+          </div>
+          <button class="btn btn-secondary" onclick="restoreDefaults()">Restaurar valores</button>
+        </details>
+      </div>
 
-        <div class="btn-group">
-            <button class="btn-calc" onclick="calculate()">Calcular Total</button>
-            <button class="btn-pdf" onclick="generatePDF()">🖨️ Generar Ticket PDF</button>
-        </div>
-
-        <!-- Results -->
-        <div id="resultsArea" class="hidden">
-            <div class="results">
-                <div class="result-header">Desglose</div>
-                
-                <div class="result-row">
-                    <span>Honorarios</span>
-                    <span class="result-value" id="resSubtotal">$0.00</span>
-                </div>
-                
-                <div class="result-row" id="ivaRow">
-                    <span>IVA</span>
-                    <span class="result-value" id="resIva">$0.00</span>
-                </div>
-
-                <div class="result-row" id="rapRow">
-                    <span>Impuesto Gerry</span>
-                    <span class="result-value" id="resRap">$0.00</span>
-                </div>
-
-                <div class="result-row total">
-                    <span>Total</span>
-                    <span class="result-value" id="resTotal">$0.00</span>
-                </div>
-
-                <div class="detail-grid" id="detailList"></div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            Alexis Pimentel &copy; <span id="year"></span>
-        </footer>
-    
+      <div class="card">
+        <h2>Actas a Cotejar</h2>
+        <div id="actasList"></div>
+        <button class="btn btn-add" onclick="addActa()">+ Agregar Acta</button>
+      </div>
     </div>
 
-    <script>
-        let bookCount = 0;
-        let currentCalculation = null;
-        const defaults = { base: 600, mid: 50, high: 30, iva: 16, rapidez: 25 };
+    <!-- COLUMNA DERECHA -->
+    <div>
+      <div class="card" style="margin-bottom:20px;">
+        <h2>Opciones</h2>
+        <div class="checkbox-field">
+          <input type="checkbox" id="includeIva" checked>
+          <label for="includeIva">Facturar</label>
+        </div>
+        <div class="checkbox-field">
+          <input type="checkbox" id="includeIvaTotal" checked>
+          <label for="includeIvaTotal">Incluir IVA en total</label>
+        </div>
+        <div class="checkbox-field">
+          <input type="checkbox" id="gerryTax">
+          <label for="gerryTax">Impuesto Gerry (Recargo por rapidez)</label>
+        </div>
+        <div class="field" id="gerryField" style="display:none; margin-top:8px;">
+          <label>Porcentaje sobre Honorarios (%)</label>
+          <div class="number-input-wrapper">
+            <button class="spin-btn" onclick="spinValue('gerryPercent', -1)">−</button>
+            <input type="number" id="gerryPercent" value="25" min="0" step="1">
+            <button class="spin-btn" onclick="spinValue('gerryPercent', 1)">+</button>
+          </div>
+          <p class="percent-hint">Se aplica como % sobre el total de honorarios</p>
+        </div>
+        <button class="btn btn-primary" onclick="calculate()" style="margin-top:14px;">Calcular Total</button>
+      </div>
 
-        // Set default date to today
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('dateBooks').value = today;
+      <div class="card" style="margin-bottom:20px;">
+        <h2>Desglose</h2>
+        <p class="editable-hint">✏️ Puedes editar cualquier valor del desglose</p>
+        <div class="desglose-row">
+          <label>Honorarios</label>
+          <input type="number" id="dHonorarios" value="0.00" step="0.01">
+        </div>
+        <div class="desglose-row" id="dGerryRow" style="display:none;">
+          <label>Impuesto Gerry (<span id="gerryPercentLabel">25</span>%)</label>
+          <input type="number" id="dGerry" value="0.00" step="0.01">
+        </div>
+        <div class="desglose-row">
+          <label>Subtotal (base IVA)</label>
+          <input type="number" id="dSubtotal" value="0.00" step="0.01" readonly style="opacity:0.7;">
+        </div>
+        <div class="desglose-row">
+          <label>IVA (<span id="ivaLabel">16</span>%)</label>
+          <input type="number" id="dIva" value="0.00" step="0.01">
+        </div>
+        <div class="total-row">
+          <span>Total</span>
+          <span id="dTotal">$0.00</span>
+        </div>
+      </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            addBook();
-            toggleRapidez();
-        });
+      <div class="card">
+        <button class="btn btn-primary" onclick="generatePDF()">🖨️ Generar Ticket PDF</button>
+        <button class="btn btn-secondary" onclick="resetAll()" style="margin-top:10px;">Limpiar Todo</button>
+      </div>
+    </div>
+  </div>
 
-        function toggleSettings() {
-            const content = document.getElementById('settingsContent');
-            const chevron = document.getElementById('settingsChevron');
-            content.classList.toggle('open');
-            chevron.classList.toggle('rotate');
-        }
+  <footer>Alexis Pimentel ©</footer>
+</div>
 
-        function resetDefaults() {
-            document.getElementById('basePrice').value = defaults.base;
-            document.getElementById('midPrice').value = defaults.mid;
-            document.getElementById('highPrice').value = defaults.high;
-            document.getElementById('ivaRate').value = defaults.iva;
-            document.getElementById('rapidezPercent').value = defaults.rapidez;
-        }
+<script>
+  const defaults = { base: 600, add: 50, ex: 30, iva: 16, gerry: 25 };
+  let actas = [];
 
-        function addBook() {
-            bookCount++;
-            const list = document.getElementById('bookList');
-            const item = document.createElement('div');
-            item.className = 'book-item';
-            item.innerHTML = `
-                <div class="book-index">${bookCount}</div>
-                <div class="book-inputs">
-                    <div class="form-group" style="flex: 2;">
-                        <label>Libro</label>
-                        <input type="text" placeholder="Nombre..." class="book-name input-control" style="padding: 10px 14px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Hojas</label>
-                        <input type="number" value="1" min="1" class="book-pages input-control" style="padding: 10px 14px; text-align: center;">
-                    </div>
-                    <div class="form-group">
-                        <label>Copias</label>
-                        <input type="number" value="1" min="1" class="book-copies input-control" style="padding: 10px 14px; text-align: center;">
-                    </div>
-                </div>
-                <button class="btn-icon" onclick="removeBook(this)">✕</button>
-            `;
-            list.appendChild(item);
-            updateIndices();
-        }
+  function spinValue(inputId, delta) {
+    const input = document.getElementById(inputId);
+    const current = parseFloat(input.value) || 0;
+    const min = parseFloat(input.min) || 0;
+    const newVal = Math.max(min, current + delta);
+    input.value = newVal;
+  }
 
-        function removeBook(btn) {
-            const item = btn.closest('.book-item');
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(-10px)';
-            setTimeout(() => {
-                item.remove();
-                updateIndices();
-            }, 300);
-        }
+  function addActa() {
+    const id = Date.now() + Math.random();
+    actas.push({ id, nombre: '', hojas: 1, copias: 1 });
+    renderActas();
+  }
 
-        function updateIndices() {
-            const items = document.querySelectorAll('.book-item');
-            items.forEach((item, i) => {
-                item.querySelector('.book-index').textContent = i + 1;
-            });
-        }
+  function removeActa(id) {
+    actas = actas.filter(a => a.id !== id);
+    renderActas();
+  }
 
-        function toggleRapidez() {
-            const control = document.getElementById('rapidezControl');
-            const toggle = document.getElementById('rapidezToggle');
-            if (toggle.checked) {
-                control.classList.add('active');
-            } else {
-                control.classList.remove('active');
-            }
-        }
+  function updateActa(id, field, value) {
+    const a = actas.find(x => x.id === id);
+    if (a) {
+      if (field === 'nombre') a.nombre = value;
+      else if (field === 'hojas') a.hojas = Math.max(1, parseInt(value) || 1);
+      else if (field === 'copias') a.copias = Math.max(1, parseInt(value) || 1);
+    }
+  }
 
-        function formatMoney(val) {
-            return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(val);
-        }
+  function renderActas() {
+    const list = document.getElementById('actasList');
+    if (actas.length === 0) {
+      list.innerHTML = '<p style="color:#64748b; text-align:center; padding:20px; font-size:0.9rem;">No hay actas agregadas</p>';
+      return;
+    }
+    list.innerHTML = actas.map(a => `
+      <div class="acta-item">
+        <button class="btn btn-danger remove-btn" onclick="removeActa(${a.id})">✕</button>
+        <div class="field">
+          <label>Nombre del Acta</label>
+          <input type="text" value="${a.nombre}" placeholder="Ej. Acta de Nacimiento" onchange="updateActa(${a.id}, 'nombre', this.value)">
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Número de Hojas</label>
+            <div class="number-input-wrapper">
+              <button class="spin-btn" onclick="spinActaField(${a.id}, 'hojas', -1)">−</button>
+              <input type="number" min="1" value="${a.hojas}" onchange="updateActa(${a.id}, 'hojas', this.value)">
+              <button class="spin-btn" onclick="spinActaField(${a.id}, 'hojas', 1)">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Número de Copias</label>
+            <div class="number-input-wrapper">
+              <button class="spin-btn" onclick="spinActaField(${a.id}, 'copias', -1)">−</button>
+              <input type="number" min="1" value="${a.copias}" onchange="updateActa(${a.id}, 'copias', this.value)">
+              <button class="spin-btn" onclick="spinActaField(${a.id}, 'copias', 1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
 
-        function calculateCostForBook(pages, base, mid, high) {
-            if (pages <= 2) return base;
-            if (pages <= 99) return base + ((pages - 2) * mid);
-            return base + (97 * mid) + ((pages - 99) * high);
-        }
+  function spinActaField(id, field, delta) {
+    const a = actas.find(x => x.id === id);
+    if (a) {
+      const current = a[field];
+      const newVal = Math.max(1, current + delta);
+      a[field] = newVal;
+      renderActas();
+    }
+  }
 
-        function calculate() {
-            const base = parseFloat(document.getElementById('basePrice').value) || 0;
-            const mid = parseFloat(document.getElementById('midPrice').value) || 0;
-            const high = parseFloat(document.getElementById('highPrice').value) || 0;
-            const ivaRate = parseFloat(document.getElementById('ivaRate').value) || 0;
-            
-            const applyIva = document.getElementById('ivaToggle').checked;
-            const applyRapidez = document.getElementById('rapidezToggle').checked;
-            const rapidezPct = parseFloat(document.getElementById('rapidezPercent').value) || 0;
+  function restoreDefaults() {
+    document.getElementById('priceBase').value = defaults.base;
+    document.getElementById('priceAdd').value = defaults.add;
+    document.getElementById('priceEx').value = defaults.ex;
+    document.getElementById('ivaRate').value = defaults.iva;
+    document.getElementById('gerryPercent').value = defaults.gerry;
+  }
 
-            let subtotal = 0;
-            let details = [];
-            const items = document.querySelectorAll('.book-item');
+  function calculateActaCost(hojas) {
+    const pBase = parseFloat(document.getElementById('priceBase').value) || 0;
+    const pAdd = parseFloat(document.getElementById('priceAdd').value) || 0;
+    const pEx = parseFloat(document.getElementById('priceEx').value) || 0;
+    
+    if (hojas <= 2) return pBase;
+    else if (hojas < 100) return pBase + (hojas - 2) * pAdd;
+    else return pBase + (97 * pAdd) + (hojas - 99) * pEx;
+  }
 
-            items.forEach((item, i) => {
-                const pages = parseInt(item.querySelector('.book-pages').value) || 0;
-                const copies = parseInt(item.querySelector('.book-copies').value) || 1;
-                const name = item.querySelector('.book-name').value || `Libro ${i + 1}`;
-                
-                const unitCost = calculateCostForBook(pages, base, mid, high);
-                const totalCost = unitCost * copies;
-                
-                subtotal += totalCost;
-                details.push({ name, pages, copies, unitCost, totalCost });
-            });
+  function calculate() {
+    let honorarios = 0;
+    actas.forEach(a => {
+      const costoPorActa = calculateActaCost(a.hojas);
+      honorarios += costoPorActa * a.copias;
+    });
 
-            if (details.length === 0) {
-                alert("Por favor, agrega al menos un libro.");
-                return;
-            }
+    const gerryOn = document.getElementById('gerryTax').checked;
+    const gerryPercent = parseInt(document.getElementById('gerryPercent').value) || 0;
+    const ivaRate = parseFloat(document.getElementById('ivaRate').value) || 0;
 
-            const ivaAmount = applyIva ? (subtotal * (ivaRate / 100)) : 0;
-            const rapidezAmount = applyRapidez ? (subtotal * (rapidezPct / 100)) : 0;
-            const total = subtotal + ivaAmount + rapidezAmount;
+    // Impuesto Gerry = porcentaje sobre honorarios
+    const gerryAmt = gerryOn ? honorarios * (gerryPercent / 100) : 0;
 
-            currentCalculation = {
-                clientName: document.getElementById('clientName').value || 'Cliente General',
-                dateBooks: document.getElementById('dateBooks').value,
-                ivaRate, applyIva, rapidezPct, applyRapidez,
-                subtotal, ivaAmount, rapidezAmount, total, details
-            };
+    // IVA se calcula sobre (Honorarios + Impuesto Gerry)
+    const baseIva = honorarios + gerryAmt;
+    const iva = baseIva * (ivaRate / 100);
+    const subtotal = honorarios + gerryAmt;
+    const total = document.getElementById('includeIvaTotal').checked ? subtotal + iva : subtotal;
 
-            // Update UI
-            document.getElementById('resSubtotal').textContent = formatMoney(subtotal);
-            
-            const ivaRow = document.getElementById('ivaRow');
-            if (applyIva) {
-                ivaRow.style.display = 'flex';
-                document.getElementById('resIva').textContent = formatMoney(ivaAmount) + ` (${ivaRate}%)`;
-            } else {
-                ivaRow.style.display = 'none';
-            }
+    document.getElementById('dHonorarios').value = honorarios.toFixed(2);
+    document.getElementById('dGerry').value = gerryAmt.toFixed(2);
+    document.getElementById('dSubtotal').value = subtotal.toFixed(2);
+    document.getElementById('dIva').value = iva.toFixed(2);
+    document.getElementById('dTotal').textContent = '$' + total.toFixed(2);
+    document.getElementById('ivaLabel').textContent = ivaRate;
+    document.getElementById('gerryPercentLabel').textContent = gerryPercent;
+  }
 
-            const rapRow = document.getElementById('rapRow');
-            if (applyRapidez && rapidezPct > 0) {
-                rapRow.style.display = 'flex';
-                document.getElementById('resRap').textContent = '+' + formatMoney(rapidezAmount) + ` (${rapidezPct}%)`;
-            } else {
-                rapRow.style.display = 'none';
-            }
+  // Mostrar/ocultar campos condicionales
+  document.getElementById('gerryTax').addEventListener('change', e => {
+    document.getElementById('gerryField').style.display = e.target.checked ? 'block' : 'none';
+    document.getElementById('dGerryRow').style.display = e.target.checked ? 'grid' : 'none';
+  });
 
-            document.getElementById('resTotal').textContent = formatMoney(total);
+  // Recalcular total cuando se edita el desglose manualmente
+  ['dHonorarios','dGerry','dIva'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      const h = parseFloat(document.getElementById('dHonorarios').value) || 0;
+      const g = parseFloat(document.getElementById('dGerry').value) || 0;
+      const i = parseFloat(document.getElementById('dIva').value) || 0;
+      const subtotal = h + g;
+      document.getElementById('dSubtotal').value = subtotal.toFixed(2);
+      const includeIva = document.getElementById('includeIvaTotal').checked;
+      const total = includeIva ? subtotal + i : subtotal;
+      document.getElementById('dTotal').textContent = '$' + total.toFixed(2);
+    });
+  });
 
-            const list = document.getElementById('detailList');
-            list.innerHTML = '';
-            details.forEach(d => {
-                const copiesText = d.copies > 1 ? `(${d.copies} copias, ${d.pages}p c/u)` : `(${d.pages}p)`;
-                list.innerHTML += `
-                    <div class="detail-item">
-                        <span>${d.name} <span style="color:var(--text-muted)">${copiesText}</span></span>
-                        <strong>${formatMoney(d.totalCost)}</strong>
-                    </div>
-                `;
-            });
+  document.getElementById('includeIvaTotal').addEventListener('change', () => {
+    const h = parseFloat(document.getElementById('dHonorarios').value) || 0;
+    const g = parseFloat(document.getElementById('dGerry').value) || 0;
+    const i = parseFloat(document.getElementById('dIva').value) || 0;
+    const subtotal = h + g;
+    const total = document.getElementById('includeIvaTotal').checked ? subtotal + i : subtotal;
+    document.getElementById('dTotal').textContent = '$' + total.toFixed(2);
+  });
 
-            const results = document.getElementById('resultsArea');
-            results.classList.remove('hidden');
-            results.scrollIntoView({ behavior: 'smooth' });
-        }
+  function resetAll() {
+    document.getElementById('clientName').value = '';
+    document.getElementById('deliveryDate').value = '';
+    actas = [];
+    renderActas();
+    ['dHonorarios','dGerry','dIva'].forEach(id => document.getElementById(id).value = '0.00');
+    document.getElementById('dSubtotal').value = '0.00';
+    document.getElementById('dTotal').textContent = '$0.00';
+  }
 
-        function generatePDF() {
-            if (!currentCalculation) {
-                calculate();
-                if (!currentCalculation) return;
-            }
+  function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const c = currentCalculation;
+    const clientName = document.getElementById('clientName').value || 'Sin nombre';
+    const deliveryDate = document.getElementById('deliveryDate').value || '---';
+    const honorarios = parseFloat(document.getElementById('dHonorarios').value) || 0;
+    const gerry = parseFloat(document.getElementById('dGerry').value) || 0;
+    const gerryPercent = parseInt(document.getElementById('gerryPercent').value) || 0;
+    const subtotal = parseFloat(document.getElementById('dSubtotal').value) || 0;
+    const iva = parseFloat(document.getElementById('dIva').value) || 0;
+    const totalText = document.getElementById('dTotal').textContent;
+    const ivaRate = document.getElementById('ivaRate').value;
 
-            // Current date for ticket
-            const todayStr = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+    // Encabezado
+    doc.setFillColor(30, 30, 60);
+    doc.rect(0, 0, 210, 35, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Ticket de Cotejo', 105, 18, { align: 'center' });
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Alexis Pimentel ©', 105, 28, { align: 'center' });
 
-            // Top date (small, no label)
-            doc.setFontSize(9);
-            doc.setTextColor(150, 150, 150);
-            doc.setFont(undefined, 'normal');
-            doc.text(todayStr, 105, 15, { align: "center" });
+    doc.setTextColor(40, 40, 40);
+    let y = 50;
 
-            // Header
-            doc.setFontSize(22);
-            doc.setFont(undefined, 'bold');
-            doc.setTextColor(0, 0, 0);
-            doc.text("TICKET DE COTEJOS", 105, 28, { align: "center" });
-            
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'normal');
-            doc.setTextColor(0, 0, 0);
-            doc.text(`Cliente: ${c.clientName}`, 14, 45);
-            doc.text(`Fecha de entrega de libros: ${c.dateBooks}`, 14, 52);
+    // Info cliente
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Información del Cliente', 14, y);
+    y += 8;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Cliente: ${clientName}`, 14, y); y += 6;
+    doc.text(`Fecha de entrega: ${deliveryDate}`, 14, y); y += 12;
 
-            // Table
-            const tableData = c.details.map(d => [
-                d.name,
-                d.copies,
-                d.pages,
-                formatMoney(d.unitCost),
-                formatMoney(d.totalCost)
-            ]);
+    // Detalle de actas
+    if (actas.length > 0) {
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Detalle de Actas', 14, y);
+      y += 8;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      
+      actas.forEach(a => {
+        doc.text(`• ${a.nombre || 'Sin nombre'} - ${a.hojas} hojas x ${a.copias} copias`, 14, y);
+        y += 5;
+      });
+      y += 7;
+    }
 
-            doc.autoTable({
-                startY: 60,
-                head: [['Libro', 'Copias', 'Hojas', 'Costo Unit.', 'Costo Total']],
-                body: tableData,
-                theme: 'grid',
-                headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 10 },
-                styles: { font: "helvetica", fontSize: 10, cellPadding: 5, lineColor: [230, 230, 230], lineWidth: 0.5 },
-                columnStyles: {
-                    0: { cellWidth: 65 },
-                    1: { cellWidth: 20, halign: 'center' },
-                    2: { cellWidth: 20, halign: 'center' },
-                    3: { halign: 'right' },
-                    4: { halign: 'right', fontStyle: 'bold' }
-                }
-            });
+    // Desglose
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Desglose', 14, y);
+    y += 8;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
 
-            let finalY = doc.lastAutoTable.finalY + 12;
+    const fmt = v => '$' + v.toFixed(2);
+    doc.text('Honorarios', 14, y); doc.text(fmt(honorarios), 196, y, { align: 'right' }); y += 6;
+    if (gerry > 0) {
+      doc.text(`Impuesto Gerry (${gerryPercent}% sobre honorarios)`, 14, y);
+      doc.text(fmt(gerry), 196, y, { align: 'right' });
+      y += 6;
+    }
+    doc.text(`Subtotal`, 14, y); doc.text(fmt(subtotal), 196, y, { align: 'right' }); y += 6;
+    doc.text(`IVA (${ivaRate}%)`, 14, y); doc.text(fmt(iva), 196, y, { align: 'right' }); y += 10;
 
-            doc.setFontSize(11);
-            doc.setFont(undefined, 'normal');
-            doc.text(`Subtotal: ${formatMoney(c.subtotal)}`, 145, finalY, { align: "right" });
-            
-            if (c.applyIva) {
-                finalY += 7;
-                doc.text(`IVA (${c.ivaRate}%): ${formatMoney(c.ivaAmount)}`, 145, finalY, { align: "right" });
-            }
-            
-            if (c.applyRapidez && c.rapidezPct > 0) {
-                finalY += 7;
-                doc.text(`Rapidez (${c.rapidezPct}%): ${formatMoney(c.rapidezAmount)}`, 145, finalY, { align: "right" });
-            }
+    // Total
+    doc.setDrawColor(99, 102, 241);
+    doc.setLineWidth(0.5);
+    doc.line(14, y - 3, 196, y - 3);
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'bold');
+    doc.text('TOTAL', 14, y + 3);
+    doc.text(totalText, 196, y + 3, { align: 'right' });
 
-            finalY += 10;
-            doc.setFontSize(14);
-            doc.setFont(undefined, 'bold');
-            doc.text(`TOTAL: ${formatMoney(c.total)}`, 145, finalY, { align: "right" });
+    // Footer
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(120, 120, 120);
+    doc.text('Gracias por su preferencia', 105, 280, { align: 'center' });
 
-            // Footer
-            doc.setFontSize(9);
-            doc.setFont(undefined, 'normal');
-            doc.setTextColor(150, 150, 150);
-            doc.text("Alexis Pimentel © ", 105, 280, { align: "center" });
+    doc.save(`Ticket_${clientName.replace(/\s+/g,'_') || 'cliente'}.pdf`);
+  }
 
-            const safeName = c.clientName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            doc.save(`Ticket_Cotejos_${safeName || 'general'}.pdf`);
-        }
-    </script>
+  // Inicializar
+  renderActas();
+  addActa();
+</script>
 </body>
 </html>
-
