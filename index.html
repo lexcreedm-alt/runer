@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,95 +7,374 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/400.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/600.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-poppins@4.5.0/800.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-900-normal.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
+  :root[data-theme="dark"] {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a26;
+    --bg-card: rgba(22, 22, 34, 0.8);
+    --bg-card-hover: rgba(30, 30, 46, 0.9);
+    --bg-input: rgba(10, 10, 18, 0.9);
+    --bg-elevated: rgba(30, 30, 46, 0.6);
+    --border-subtle: rgba(99, 102, 241, 0.12);
+    --border-default: rgba(99, 102, 241, 0.22);
+    --border-strong: rgba(99, 102, 241, 0.4);
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --accent-primary: #6366f1;
+    --accent-secondary: #8b5cf6;
+    --accent-tertiary: #06b6d4;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+    --accent-gradient-soft: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+    --success: #10b981;
+    --success-soft: rgba(16, 185, 129, 0.15);
+    --danger: #ef4444;
+    --danger-soft: rgba(239, 68, 68, 0.15);
+    --warning: #f59e0b;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+    --bg-gradient: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0f 50%, #000000 100%);
+    --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  :root[data-theme="light"] {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card-hover: rgba(255, 255, 255, 1);
+    --bg-input: rgba(241, 245, 249, 0.9);
+    --bg-elevated: rgba(241, 245, 249, 0.8);
+    --border-subtle: rgba(99, 102, 241, 0.1);
+    --border-default: rgba(99, 102, 241, 0.2);
+    --border-strong: rgba(99, 102, 241, 0.4);
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --accent-primary: #4f46e5;
+    --accent-secondary: #7c3aed;
+    --accent-tertiary: #0891b2;
+    --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0891b2 100%);
+    --accent-gradient-soft: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(124, 58, 237, 0.08) 100%);
+    --success: #059669;
+    --success-soft: rgba(5, 150, 105, 0.1);
+    --danger: #dc2626;
+    --danger-soft: rgba(220, 38, 38, 0.1);
+    --warning: #d97706;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.12);
+    --shadow-glow: 0 0 40px rgba(79, 70, 229, 0.1);
+    --bg-gradient: radial-gradient(ellipse at top, #e0e7ff 0%, #f8fafc 50%, #ffffff 100%);
+    --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
-    color: #e4e4e7;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
     min-height: 100vh;
     padding: 20px;
+    transition: background 0.5s ease, color 0.3s ease;
+    position: relative;
   }
-  .container { max-width: 1100px; margin: 0 auto; }
-  header { text-align: center; margin-bottom: 30px; padding: 20px; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: var(--bg-noise);
+    background-repeat: repeat;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 50%);
+    animation: bgShift 20s ease-in-out infinite alternate;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @keyframes bgShift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-3%, -3%) rotate(5deg); }
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+
+  /* ===== HEADER ===== */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 24px 32px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-content { flex: 1; min-width: 200px; }
+
   header h1 {
-    font-size: 2.2rem;
-    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: var(--accent-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    line-height: 1.1;
   }
-  header p { color: #94a3b8; font-size: 0.95rem; }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  /* ===== THEME TOGGLE ===== */
+  .theme-toggle {
+    position: relative;
+    width: 64px;
+    height: 34px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .theme-toggle-slider {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    background: var(--accent-gradient);
+    border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+  }
+
+  :root[data-theme="light"] .theme-toggle-slider {
+    transform: translateX(30px);
+  }
+
+  .theme-toggle-slider svg {
+    width: 16px;
+    height: 16px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-dim);
+    fill: none;
+    stroke-width: 2;
+    transition: opacity 0.3s ease;
+  }
+
+  .theme-toggle .icon-moon { left: 10px; }
+  .theme-toggle .icon-sun { right: 10px; }
+
+  :root[data-theme="dark"] .theme-toggle .icon-moon { opacity: 1; }
+  :root[data-theme="dark"] .theme-toggle .icon-sun { opacity: 0.3; }
+  :root[data-theme="light"] .theme-toggle .icon-moon { opacity: 0.3; }
+  :root[data-theme="light"] .theme-toggle .icon-sun { opacity: 1; }
+
+  /* ===== MAIN TABS ===== */
+  .main-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 6px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .main-tab {
+    flex: 1;
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+  }
+
+  .main-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+  }
+
+  .main-tab.active {
+    background: var(--accent-gradient-soft);
+    color: var(--text-primary);
+    box-shadow: inset 0 0 0 1px var(--border-default);
+  }
+
+  .main-tab.active::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 2px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+  }
+
+  .main-tab svg { width: 18px; height: 18px; }
+
+  .main-content { display: none; animation: fadeIn 0.4s ease; }
+  .main-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+
   .card {
-    background: rgba(30, 30, 50, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    border-radius: 16px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
     padding: 24px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
   }
+
+  .card:hover {
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-lg);
+  }
+
   .card h2 {
-    font-size: 1.1rem;
-    color: #a78bfa;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
     margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(99,102,241,0.2);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
+
+  .card h2::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
+  }
+
   .field { margin-bottom: 14px; }
   .field label {
     display: block;
-    font-size: 0.85rem;
-    color: #cbd5e1;
+    font-size: 0.8rem;
+    color: var(--text-muted);
     margin-bottom: 6px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
+
   input, select {
     width: 100%;
-    padding: 10px 12px;
-    background: rgba(15, 15, 30, 0.8);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    border-radius: 8px;
-    color: #e4e4e7;
+    padding: 11px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    color: var(--text-primary);
     font-family: inherit;
     font-size: 0.9rem;
     transition: all 0.2s;
   }
+
   input:focus, select:focus {
     outline: none;
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    background: var(--bg-card-hover);
   }
-  
-  /* Estilos para inputs numéricos con botones personalizados */
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
+
+  input[type="number"] { -moz-appearance: textfield; }
   input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  .number-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .number-input-wrapper input {
-    flex: 1;
-    text-align: center;
-  }
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .number-input-wrapper { position: relative; display: flex; align-items: center; gap: 8px; }
+  .number-input-wrapper input { flex: 1; text-align: center; }
+
   .spin-btn {
-    width: 36px;
-    height: 36px;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    background: rgba(99, 102, 241, 0.15);
-    color: #a78bfa;
-    border-radius: 8px;
+    width: 38px; height: 38px;
+    border: 1px solid var(--border-default);
+    background: var(--bg-elevated);
+    color: var(--accent-primary);
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1.2rem;
     font-weight: 700;
@@ -104,275 +383,1618 @@
     align-items: center;
     justify-content: center;
   }
+
   .spin-btn:hover {
-    background: rgba(99, 102, 241, 0.3);
-    border-color: #60a5fa;
+    background: var(--accent-gradient-soft);
+    border-color: var(--accent-primary);
     transform: scale(1.05);
   }
-  .spin-btn:active {
-    transform: scale(0.95);
-  }
-  
+
+  .spin-btn:active { transform: scale(0.95); }
+
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
   details {
-    background: rgba(15, 15, 30, 0.5);
-    border: 1px solid rgba(99,102,241,0.2);
-    border-radius: 10px;
-    padding: 10px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 12px 16px;
     margin-bottom: 14px;
   }
+
   details summary {
     cursor: pointer;
-    color: #a78bfa;
+    color: var(--accent-primary);
     font-weight: 600;
     font-size: 0.9rem;
     padding: 4px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+
+  details summary::before {
+    content: '▾';
+    transition: transform 0.3s ease;
+  }
+
+  details[open] summary::before { transform: rotate(180deg); }
   details[open] summary { margin-bottom: 12px; }
+
   .btn {
-    padding: 11px 18px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-family: inherit;
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
   }
+
   .btn-primary {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: var(--accent-gradient);
     color: white;
     width: 100%;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  }
+
   .btn-secondary {
-    background: rgba(99,102,241,0.15);
-    color: #a78bfa;
-    border: 1px solid rgba(99,102,241,0.3);
+    background: var(--bg-elevated);
+    color: var(--accent-primary);
+    border: 1px solid var(--border-default);
   }
-  .btn-secondary:hover { background: rgba(99,102,241,0.25); }
+
+  .btn-secondary:hover {
+    background: var(--accent-gradient-soft);
+    border-color: var(--accent-primary);
+  }
+
   .btn-danger {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border: 1px solid rgba(239,68,68,0.3);
-    padding: 6px 10px;
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 8px 12px;
     font-size: 0.8rem;
   }
+
+  .btn-danger:hover {
+    background: rgba(239, 68, 68, 0.25);
+  }
+
   .btn-add {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-    border: 1px solid rgba(34,197,94,0.3);
+    background: var(--success-soft);
+    color: var(--success);
+    border: 1px dashed var(--success);
     width: 100%;
     margin-top: 10px;
   }
+
+  .btn-add:hover {
+    background: rgba(16, 185, 129, 0.2);
+  }
+
   .acta-item {
-    background: rgba(15, 15, 30, 0.6);
-    border: 1px solid rgba(99,102,241,0.2);
-    border-radius: 10px;
-    padding: 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 14px;
     margin-bottom: 10px;
     position: relative;
+    transition: all 0.2s;
   }
-  .acta-item .remove-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+
+  .acta-item:hover {
+    border-color: var(--border-default);
   }
+
+  .acta-item .remove-btn { position: absolute; top: 10px; right: 10px; }
+
   .checkbox-field {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: rgba(15, 15, 30, 0.5);
-    border-radius: 8px;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
     margin-bottom: 8px;
     cursor: pointer;
+    transition: all 0.2s;
   }
-  .checkbox-field input { width: auto; accent-color: #8b5cf6; }
-  .checkbox-field label { margin: 0; cursor: pointer; }
+
+  .checkbox-field:hover {
+    border-color: var(--border-default);
+    background: var(--bg-card-hover);
+  }
+
+  .checkbox-field input { width: auto; accent-color: var(--accent-primary); }
+  .checkbox-field label { margin: 0; cursor: pointer; color: var(--text-secondary); font-weight: 500; }
+
   .desglose-row {
     display: grid;
-    grid-template-columns: 1fr 120px;
+    grid-template-columns: 1fr 140px;
     gap: 10px;
     align-items: center;
     margin-bottom: 10px;
   }
-  .desglose-row label { margin: 0; }
+
+  .desglose-row label { margin: 0; color: var(--text-secondary); }
   .desglose-row input { text-align: right; font-weight: 600; }
+
   .total-row {
     display: grid;
-    grid-template-columns: 1fr 120px;
+    grid-template-columns: 1fr 140px;
     gap: 10px;
-    padding: 12px;
-    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
-    border-radius: 10px;
-    margin-top: 12px;
+    padding: 16px;
+    background: var(--accent-gradient-soft);
+    border: 1px solid var(--border-default);
+    border-radius: 14px;
+    margin-top: 14px;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
+
   .total-row span:last-child {
     text-align: right;
-    color: #60a5fa;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+
   footer {
     text-align: center;
     margin-top: 30px;
-    color: #64748b;
-    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    padding: 16px;
   }
+
   .editable-hint {
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--text-dim);
     font-style: italic;
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
+
   .percent-hint {
     font-size: 0.75rem;
-    color: #64748b;
-    margin-top: 4px;
+    color: var(--text-dim);
+    margin-top: 6px;
   }
+
+  /* ===== HERRAMIENTAS ===== */
+  .herram-shell { max-width: 960px; margin: 0 auto; }
+  .herram-header { margin-bottom: 24px; text-align: center; }
+
+  .herram-title h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .herram-title p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+  .herram-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 6px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .herram-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 10px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .herram-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+  }
+
+  .herram-tab.active {
+    background: var(--accent-gradient-soft);
+    color: var(--text-primary);
+    box-shadow: inset 0 0 0 1px var(--border-default);
+  }
+
+  .herram-tab svg { width: 18px; height: 18px; }
+
+  .herram-content { display: none; animation: fadeIn 0.4s ease; }
+  .herram-content.active { display: block; }
+
+  .herram-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 16px;
+  }
+
+  .herram-card-header { text-align: center; margin-bottom: 28px; }
+
+  .icon-wrapper {
+    width: 60px; height: 60px;
+    background: var(--accent-gradient);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+  }
+
+  .icon-wrapper svg { width: 28px; height: 28px; fill: white; }
+
+  .herram-card-header h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .herram-card-header p { color: var(--text-muted); font-size: 0.85rem; }
+
+  .herram-input-group { margin-bottom: 16px; }
+  .herram-input-group label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .herram-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s;
+    outline: none;
+  }
+
+  .herram-input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  .herram-input::placeholder { color: var(--text-dim); }
+
+  .herram-btn-row { display: flex; gap: 10px; margin-bottom: 20px; }
+
+  .herram-btn {
+    flex: 1;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .herram-btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  }
+
+  .herram-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  }
+
+  .herram-btn-secondary {
+    background: var(--bg-elevated);
+    color: var(--accent-primary);
+    border: 1px solid var(--border-default);
+  }
+
+  .herram-btn-secondary:hover {
+    background: var(--accent-gradient-soft);
+  }
+
+  .herram-btn svg { width: 17px; height: 17px; }
+
+  .copy-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: 2px solid rgba(16, 185, 129, 0.4);
+    color: white;
+    padding: 11px 22px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .copy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+  }
+
+  .copy-btn.copied { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .copy-btn svg { width: 16px; height: 16px; stroke-width: 2.5; }
+
+  .herram-result-section { display: none; animation: slideUp 0.4s ease; }
+  .herram-result-section.visible { display: block; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .herram-result-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .herram-result-label span { color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; }
+
+  .herram-result-box {
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 18px 20px;
+    min-height: 50px;
+    word-break: break-all;
+    line-height: 1.8;
+  }
+
+  .herram-result-text { font-size: 0.92rem; color: var(--text-primary); }
+  .char-letter { color: #a5b4fc; font-weight: 600; }
+  .char-number { color: #fbbf24; font-weight: 500; }
+  .char-symbol { color: #34d399; font-weight: 500; }
+  .char-separator { color: var(--text-dim); }
+  .char-paren { color: var(--accent-primary); font-weight: 700; }
+
+  :root[data-theme="light"] .char-letter { color: #4f46e5; }
+  :root[data-theme="light"] .char-number { color: #d97706; }
+  :root[data-theme="light"] .char-symbol { color: #059669; }
+
+  .herram-legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--accent-gradient-soft);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+  }
+
+  .herram-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
+  .herram-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .herram-legend-dot.letter { background: #a5b4fc; }
+  .herram-legend-dot.number { background: #fbbf24; }
+  .herram-legend-dot.symbol { background: #34d399; }
+  .herram-legend-text { color: var(--text-muted); font-weight: 500; }
+
+  .herram-examples {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .herram-examples-title {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .herram-example-item {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .herram-example-item:hover {
+    background: var(--accent-gradient-soft);
+    border-color: var(--accent-primary);
+    transform: translateX(4px);
+  }
+
+  .herram-example-code {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .herram-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(16, 185, 129, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 2px solid rgba(16, 185, 129, 0.4);
+    color: var(--success);
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .herram-toast.show { transform: translateX(-50%) translateY(0); }
+  .herram-toast svg { width: 18px; height: 18px; stroke-width: 3; }
+
+  @media (max-width: 640px) {
+    .herram-card { padding: 22px 18px; }
+    .herram-tabs { gap: 3px; padding: 4px; }
+    .herram-tab { font-size: 0.65rem; padding: 10px 6px; min-width: 0; }
+    .herram-tab svg { width: 16px; height: 16px; }
+    .herram-btn-row { flex-direction: column; }
+    .main-tabs { flex-direction: column; }
+    header { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ===== SELLO STYLES ===== */
+  .sello-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .sello-header { margin-bottom: 25px; text-align: center; }
+
+  .sello-header h1 {
+    font-size: 26px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .sello-header p { color: var(--text-muted); font-size: 14px; }
+
+  .sello-input-group { display: flex; gap: 10px; margin-bottom: 25px; }
+
+  .sello-input-group input[type="number"] {
+    flex: 1;
+    padding: 16px 20px;
+    background: var(--bg-input);
+    border: 2px solid var(--border-default);
+    border-radius: 12px;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    outline: none;
+    color: var(--text-primary);
+    transition: all 0.3s;
+  }
+
+  .sello-input-group input[type="number"]:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  }
+
+  .sello-input-group input::placeholder { color: var(--text-dim); }
+
+  .sello-input-group button {
+    padding: 16px 28px;
+    background: var(--accent-gradient);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .sello-input-group button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+  }
+
+  .sello-result-area {
+    position: relative;
+    height: 320px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .sello-document {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 260px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .sello-doc-line {
+    width: 100%;
+    height: 5px;
+    background: var(--accent-gradient-soft);
+    border-radius: 3px;
+    margin: 5px 0;
+  }
+
+  :root[data-theme="light"] .sello-doc-line {
+    background: rgba(79, 70, 229, 0.15);
+  }
+
+  .sello-doc-line.short { width: 60%; }
+  .sello-doc-line.medium { width: 80%; }
+
+  .sello-stamp {
+    position: absolute;
+    right: calc(50% - 100px + 15px);
+    width: 85px;
+    height: 85px;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sello-stamp.show { opacity: 1; }
+  .sello-stamp.top { top: calc(50% - 130px + 15px); }
+  .sello-stamp.bottom { bottom: calc(50% - 130px + 15px); }
+
+  .sello-stamp-circle {
+    width: 100%;
+    height: 100%;
+    border: 3px solid #ec4899;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ec4899;
+    font-weight: 900;
+    font-size: 10px;
+    transform: rotate(-12deg);
+    background: rgba(236, 72, 153, 0.08);
+    text-align: center;
+    line-height: 1.2;
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+  }
+
+  .sello-result-text {
+    font-size: 28px;
+    font-weight: 900;
+    text-align: center;
+    min-height: 36px;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .sello-result-text.up {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sello-result-text.down {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sello-result-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .sello-this-year-box {
+    margin-top: 25px;
+    background: var(--accent-gradient-soft);
+    border: 1px solid var(--border-default);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sello-this-year-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(99, 102, 241, 0.1), transparent 30%);
+    animation: selloRotate 8s linear infinite;
+  }
+
+  @keyframes selloRotate { to { transform: rotate(360deg); } }
+
+  .sello-this-year-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .sello-mini-doc {
+    width: 70px;
+    height: 90px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 6px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .sello-mini-doc .sello-mini-line {
+    width: 70%;
+    height: 2px;
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 1px;
+    margin: 8px auto 0;
+  }
+
+  .sello-mini-stamp {
+    position: absolute;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #ec4899;
+    border-radius: 50%;
+    background: rgba(236, 72, 153, 0.15);
+    box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+    transition: all 0.5s ease;
+  }
+
+  .sello-mini-stamp.top { top: 4px; }
+  .sello-mini-stamp.bottom { bottom: 4px; }
+
+  .sello-this-year-info { flex: 1; }
+
+  .sello-this-year-info .label {
+    font-size: 11px;
+    color: var(--accent-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .sello-this-year-info .year {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .sello-this-year-info .position { font-size: 15px; font-weight: 700; }
+  .sello-this-year-info .position.up { color: #34d399; }
+  .sello-this-year-info .position.down { color: #fbbf24; }
+
+  .sello-info-box {
+    margin-top: 20px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .sello-info-box strong { color: var(--accent-primary); }
+  .sello-info-box .highlight-up { color: #34d399; font-weight: 700; }
+  .sello-info-box .highlight-down { color: #fbbf24; font-weight: 700; }
+
+  @keyframes selloPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.6); }
+  }
+
+  .sello-stamp.animate .sello-stamp-circle {
+    animation: selloPulse 1.5s ease-in-out 2;
+  }
+
+  .sello-corner-indicator {
+    position: absolute;
+    font-size: 28px;
+    transition: all 0.5s;
+    opacity: 0;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .sello-corner-indicator.show { opacity: 1; }
+  .sello-corner-indicator.top-right { top: 15px; right: 15px; color: #34d399; }
+  .sello-corner-indicator.bottom-right { bottom: 15px; right: 15px; color: #fbbf24; }
+
+  /* ===== GENERADOR DE CÓDIGOS STYLES ===== */
+  .gen-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+  }
+
+  .gen-overlay.hidden { display: none; }
+
+  .gen-pin-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+
+  .gen-pin-lock-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--accent-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  }
+
+  .gen-pin-title {
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .gen-pin-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+  }
+
+  .gen-pin-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    text-align: center;
+    letter-spacing: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+  }
+
+  .gen-pin-input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  .gen-pin-input::placeholder {
+    color: var(--text-dim);
+    letter-spacing: 4px;
+    font-size: 1rem;
+  }
+
+  .gen-pin-input.error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    animation: genShake 0.4s ease;
+  }
+
+  @keyframes genShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+
+  .gen-pin-error-msg {
+    color: var(--danger);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    min-height: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .gen-pin-error-msg.visible { opacity: 1; }
+
+  .gen-pin-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .gen-pin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  }
+
+  .gen-pin-hint {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    margin-top: 20px;
+  }
+
+  .gen-container {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    margin: 0 auto;
+  }
+
+  .gen-app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .gen-title {
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .gen-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+
+  .gen-btn-logout {
+    background: var(--danger-soft);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: var(--danger);
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .gen-btn-logout:hover {
+    background: rgba(239, 68, 68, 0.25);
+  }
+
+  .gen-input-group { margin-bottom: 20px; }
+
+  .gen-input-group label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .gen-input-group input, .gen-input-group select {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  .gen-input-group input:focus, .gen-input-group select:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  .gen-input-group input::placeholder { color: var(--text-dim); }
+
+  .gen-btn-generate {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .gen-btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  }
+
+  .gen-result-section { margin-top: 30px; display: none; }
+  .gen-result-section.visible { display: block; animation: fadeIn 0.4s ease; }
+
+  .gen-code-display {
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .gen-code-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    color: var(--accent-secondary);
+    font-weight: 700;
+    letter-spacing: 2px;
+    word-break: break-all;
+  }
+
+  .gen-code-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-elevated);
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  .gen-code-info-label { color: var(--text-muted); font-size: 0.8rem; }
+  .gen-code-info-value { color: var(--text-primary); font-size: 0.9rem; font-weight: 500; }
+
+  .gen-btn-copy {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .gen-btn-copy:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-primary);
+  }
+
+  .gen-btn-copy.copied {
+    background: var(--success-soft);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .gen-history-section {
+    margin-top: 24px;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 20px;
+  }
+
+  .gen-history-title {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .gen-history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .gen-history-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-default);
+  }
+
+  .gen-history-code {
+    font-family: 'Courier New', monospace;
+    color: var(--accent-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .gen-history-date { color: var(--text-dim); font-size: 0.75rem; }
+
+  .gen-quantity-row { display: flex; gap: 12px; }
+  .gen-quantity-row .gen-input-group { flex: 1; }
+
+  .gen-batch-results { max-height: 300px; overflow-y: auto; }
+  .gen-batch-results::-webkit-scrollbar { width: 6px; }
+  .gen-batch-results::-webkit-scrollbar-track { background: var(--bg-elevated); border-radius: 3px; }
+  .gen-batch-results::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 3px; }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>Calculadora de Cotejos</h1>
-    <p>Para no regarla al calcular cotejos</p>
+    <div class="header-content">
+      <h1>Calculadora de Cotejos</h1>
+      <p>Para no regarla al calcular cotejos</p>
+    </div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
+      <svg class="icon-moon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <div class="theme-toggle-slider">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </div>
+      <svg class="icon-sun" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </div>
   </header>
 
-  <div class="grid">
-    <!-- COLUMNA IZQUIERDA -->
-    <div>
-      <div class="card" style="margin-bottom:20px;">
-        <h2>Información del Cliente</h2>
-        <div class="field">
-          <label>Nombre del Cliente</label>
-          <input type="text" id="clientName" placeholder="Ej. Juan Pérez">
-        </div>
-        <div class="field">
-          <label>Fecha de entrega de actas</label>
-          <input type="date" id="deliveryDate">
-        </div>
-      </div>
+  <!-- MAIN TABS -->
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="switchMainTab('cotejos', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/></svg>
+      Calculadora de Cotejos
+    </button>
+    <button class="main-tab" onclick="switchMainTab('herramientas', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Herramientas Correduría
+    </button>
+  </div>
 
-      <div class="card" style="margin-bottom:20px;">
-        <h2>Configuración de Precios</h2>
-        <details open>
-          <summary>▼ Precios base</summary>
-          <div class="row-3">
-            <div class="field">
-              <label>Base (2 hojas)</label>
-              <div class="number-input-wrapper">
-                <button class="spin-btn" onclick="spinValue('priceBase', -1)">−</button>
-                <input type="number" id="priceBase" value="600" min="0" step="1">
-                <button class="spin-btn" onclick="spinValue('priceBase', 1)">+</button>
-              </div>
-            </div>
-            <div class="field">
-              <label>Adicional (3-99)</label>
-              <div class="number-input-wrapper">
-                <button class="spin-btn" onclick="spinValue('priceAdd', -1)">−</button>
-                <input type="number" id="priceAdd" value="50" min="0" step="1">
-                <button class="spin-btn" onclick="spinValue('priceAdd', 1)">+</button>
-              </div>
-            </div>
-            <div class="field">
-              <label>Excedente (100+)</label>
-              <div class="number-input-wrapper">
-                <button class="spin-btn" onclick="spinValue('priceEx', -1)">−</button>
-                <input type="number" id="priceEx" value="30" min="0" step="1">
-                <button class="spin-btn" onclick="spinValue('priceEx', 1)">+</button>
-              </div>
-            </div>
+  <!-- ========== MAIN TAB 1: COTEJOS ========== -->
+  <div class="main-content active" id="main-cotejos">
+    <div class="grid">
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <h2>Información del Cliente</h2>
+          <div class="field">
+            <label>Nombre del Cliente</label>
+            <input type="text" id="clientName" placeholder="Ej. Juan Pérez">
           </div>
           <div class="field">
-            <label>Tasa IVA (%)</label>
-            <div class="number-input-wrapper">
-              <button class="spin-btn" onclick="spinValue('ivaRate', -1)">−</button>
-              <input type="number" id="ivaRate" value="16" min="0" step="1">
-              <button class="spin-btn" onclick="spinValue('ivaRate', 1)">+</button>
-            </div>
+            <label>Fecha de entrega de actas</label>
+            <input type="date" id="deliveryDate">
           </div>
-          <button class="btn btn-secondary" onclick="restoreDefaults()">Restaurar valores</button>
-        </details>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <h2>Configuración de Precios</h2>
+          <details open>
+            <summary>Precios base</summary>
+            <div class="row-3">
+              <div class="field">
+                <label>Base (2 hojas)</label>
+                <div class="number-input-wrapper">
+                  <button class="spin-btn" onclick="spinValue('priceBase', -1)">−</button>
+                  <input type="number" id="priceBase" value="600" min="0" step="1">
+                  <button class="spin-btn" onclick="spinValue('priceBase', 1)">+</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Adicional (3-99)</label>
+                <div class="number-input-wrapper">
+                  <button class="spin-btn" onclick="spinValue('priceAdd', -1)">−</button>
+                  <input type="number" id="priceAdd" value="50" min="0" step="1">
+                  <button class="spin-btn" onclick="spinValue('priceAdd', 1)">+</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Excedente (100+)</label>
+                <div class="number-input-wrapper">
+                  <button class="spin-btn" onclick="spinValue('priceEx', -1)">−</button>
+                  <input type="number" id="priceEx" value="30" min="0" step="1">
+                  <button class="spin-btn" onclick="spinValue('priceEx', 1)">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Tasa IVA (%)</label>
+              <div class="number-input-wrapper">
+                <button class="spin-btn" onclick="spinValue('ivaRate', -1)">−</button>
+                <input type="number" id="ivaRate" value="16" min="0" step="1">
+                <button class="spin-btn" onclick="spinValue('ivaRate', 1)">+</button>
+              </div>
+            </div>
+            <button class="btn btn-secondary" onclick="restoreDefaults()">Restaurar valores</button>
+          </details>
+        </div>
+
+        <div class="card">
+          <h2>Actas a Cotejar</h2>
+          <div id="actasList"></div>
+          <button class="btn btn-add" onclick="addActa()">+ Agregar Acta</button>
+        </div>
       </div>
 
-      <div class="card">
-        <h2>Actas a Cotejar</h2>
-        <div id="actasList"></div>
-        <button class="btn btn-add" onclick="addActa()">+ Agregar Acta</button>
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <h2>Opciones</h2>
+          <div class="checkbox-field">
+            <input type="checkbox" id="includeIva" checked>
+            <label for="includeIva">Facturar</label>
+          </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="includeIvaTotal" checked>
+            <label for="includeIvaTotal">Incluir IVA en total</label>
+          </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="gerryTax">
+            <label for="gerryTax">Impuesto Gerry (Recargo por rapidez)</label>
+          </div>
+          <div class="field" id="gerryField" style="display:none; margin-top:8px;">
+            <label>Porcentaje sobre Honorarios (%)</label>
+            <div class="number-input-wrapper">
+              <button class="spin-btn" onclick="spinValue('gerryPercent', -1)">−</button>
+              <input type="number" id="gerryPercent" value="25" min="0" step="1">
+              <button class="spin-btn" onclick="spinValue('gerryPercent', 1)">+</button>
+            </div>
+            <p class="percent-hint">Se aplica como % sobre el total de honorarios</p>
+          </div>
+          <button class="btn btn-primary" onclick="calculate()" style="margin-top:14px;">Calcular Total</button>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <h2>Desglose</h2>
+          <p class="editable-hint">✏️ Puedes editar cualquier valor del desglose</p>
+          <div class="desglose-row">
+            <label>Honorarios</label>
+            <input type="number" id="dHonorarios" value="0.00" step="0.01">
+          </div>
+          <div class="desglose-row" id="dGerryRow" style="display:none;">
+            <label>Impuesto Gerry (<span id="gerryPercentLabel">25</span>%)</label>
+            <input type="number" id="dGerry" value="0.00" step="0.01">
+          </div>
+          <div class="desglose-row">
+            <label>Subtotal (base IVA)</label>
+            <input type="number" id="dSubtotal" value="0.00" step="0.01" readonly style="opacity:0.7;">
+          </div>
+          <div class="desglose-row">
+            <label>IVA (<span id="ivaLabel">16</span>%)</label>
+            <input type="number" id="dIva" value="0.00" step="0.01">
+          </div>
+          <div class="total-row">
+            <span>Total</span>
+            <span id="dTotal">$0.00</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <button class="btn btn-primary" onclick="generatePDF()">🖨️ Generar Ticket PDF</button>
+          <button class="btn btn-secondary" onclick="resetAll()" style="margin-top:10px;">Limpiar Todo</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- COLUMNA DERECHA -->
-    <div>
-      <div class="card" style="margin-bottom:20px;">
-        <h2>Opciones</h2>
-        <div class="checkbox-field">
-          <input type="checkbox" id="includeIva" checked>
-          <label for="includeIva">Facturar</label>
+  <!-- ========== MAIN TAB 2: HERRAMIENTAS CORREDURÍA ========== -->
+  <div class="main-content" id="main-herramientas">
+    <div class="herram-shell">
+      <div class="herram-header">
+        <div class="herram-title">
+          <h2>Correduría Pública — CDMX</h2>
+          <p>Herramientas de utilidad para el ejercicio notarial</p>
         </div>
-        <div class="checkbox-field">
-          <input type="checkbox" id="includeIvaTotal" checked>
-          <label for="includeIvaTotal">Incluir IVA en total</label>
+
+        <div class="herram-tabs">
+          <button class="herram-tab active" data-htab="extensor" onclick="switchHerramTab('extensor')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Extensor
+          </button>
+          <button class="herram-tab" data-htab="sello" onclick="switchHerramTab('sello')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            Sello
+          </button>
+          <button class="herram-tab" data-htab="generador" onclick="switchHerramTab('generador')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Generador
+          </button>
         </div>
-        <div class="checkbox-field">
-          <input type="checkbox" id="gerryTax">
-          <label for="gerryTax">Impuesto Gerry (Recargo por rapidez)</label>
-        </div>
-        <div class="field" id="gerryField" style="display:none; margin-top:8px;">
-          <label>Porcentaje sobre Honorarios (%)</label>
-          <div class="number-input-wrapper">
-            <button class="spin-btn" onclick="spinValue('gerryPercent', -1)">−</button>
-            <input type="number" id="gerryPercent" value="25" min="0" step="1">
-            <button class="spin-btn" onclick="spinValue('gerryPercent', 1)">+</button>
+      </div>
+
+      <!-- EXTENSOR -->
+      <div class="herram-content active" id="htab-extensor">
+        <div class="herram-card">
+          <div class="herram-card-header">
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24"><path d="M9.35 3.8L3.2 9.95a1 1 0 000 1.41l1.06 1.06a1 1 0 001.41 0L9.35 8.75V20a1 1 0 001 1h1.41a1 1 0 001-1V8.75l3.68 3.67a1 1 0 001.41 0l1.06-1.06a1 1 0 000-1.41L12.76 3.8a2 2 0 00-2.82 0L9.35 3.8z"/></svg>
+            </div>
+            <h3>Extensor de Códigos</h3>
+            <p>Letras en MAYÚSCULA, números y símbolos escritos con letra</p>
           </div>
-          <p class="percent-hint">Se aplica como % sobre el total de honorarios</p>
+
+          <div class="herram-legend">
+            <div class="herram-legend-item"><div class="herram-legend-dot letter"></div><span class="herram-legend-text">Letras</span></div>
+            <div class="herram-legend-item"><div class="herram-legend-dot number"></div><span class="herram-legend-text">Números</span></div>
+            <div class="herram-legend-item"><div class="herram-legend-dot symbol"></div><span class="herram-legend-text">Símbolos</span></div>
+          </div>
+
+          <div class="herram-input-group">
+            <label for="codeInput">Código a expandir (RFC, CURP, escritura, etc.)</label>
+            <input type="text" id="codeInput" class="herram-input" placeholder="Ej: ZAXJ980828MNEHXL08" autocomplete="off" spellcheck="false">
+          </div>
+
+          <div class="herram-btn-row">
+            <button class="herram-btn herram-btn-primary" onclick="convertCode()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Expandir
+            </button>
+            <button class="copy-btn" id="copyBtn" onclick="copyResult()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              COPIAR
+            </button>
+          </div>
+
+          <div class="herram-result-section" id="resultSection">
+            <div class="herram-result-label">
+              <span>Resultado</span>
+              <button class="herram-btn herram-btn-secondary" onclick="clearExtensor()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Limpiar
+              </button>
+            </div>
+            <div class="herram-result-box">
+              <div class="herram-result-text" id="resultText"></div>
+            </div>
+          </div>
+
+          <div class="herram-examples">
+            <div class="herram-examples-title">Ejemplos — click para probar</div>
+            <div class="herram-example-item" onclick="loadExample('ZAXJ980828MNEHXL08')"><div class="herram-example-code">ZAXJ980828MNEHXL08 (RFC)</div></div>
+            <div class="herram-example-item" onclick="loadExample('0000003046759')"><div class="herram-example-code">0000003046759 (NSS)</div></div>
+            <div class="herram-example-item" onclick="loadExample('ABC-123@DOM/COM')"><div class="herram-example-code">ABC-123@DOM/COM</div></div>
+            <div class="herram-example-item" onclick="loadExample('XY#45$78+90=EQ')"><div class="herram-example-code">XY#45$78+90=EQ</div></div>
+          </div>
         </div>
-        <button class="btn btn-primary" onclick="calculate()" style="margin-top:14px;">Calcular Total</button>
       </div>
 
-      <div class="card" style="margin-bottom:20px;">
-        <h2>Desglose</h2>
-        <p class="editable-hint">✏️ Puedes editar cualquier valor del desglose</p>
-        <div class="desglose-row">
-          <label>Honorarios</label>
-          <input type="number" id="dHonorarios" value="0.00" step="0.01">
-        </div>
-        <div class="desglose-row" id="dGerryRow" style="display:none;">
-          <label>Impuesto Gerry (<span id="gerryPercentLabel">25</span>%)</label>
-          <input type="number" id="dGerry" value="0.00" step="0.01">
-        </div>
-        <div class="desglose-row">
-          <label>Subtotal (base IVA)</label>
-          <input type="number" id="dSubtotal" value="0.00" step="0.01" readonly style="opacity:0.7;">
-        </div>
-        <div class="desglose-row">
-          <label>IVA (<span id="ivaLabel">16</span>%)</label>
-          <input type="number" id="dIva" value="0.00" step="0.01">
-        </div>
-        <div class="total-row">
-          <span>Total</span>
-          <span id="dTotal">$0.00</span>
+      <!-- SELLO -->
+      <div class="herram-content" id="htab-sello">
+        <div class="sello-container">
+          <div class="sello-header">
+            <h1>📌 ¿Dónde Coloco el Sello?</h1>
+            <p>Siempre del lado derecho de la hoja</p>
+          </div>
+          
+          <div class="sello-input-group">
+            <input type="number" id="yearInput" placeholder="Ej: 2026" min="1900" max="2100">
+            <button onclick="checkStamp()">Consultar</button>
+          </div>
+          
+          <div class="sello-result-area" id="resultArea">
+            <div class="sello-corner-indicator" id="arrowUp">↗️</div>
+            <div class="sello-corner-indicator" id="arrowDown">↘️</div>
+            
+            <div class="sello-document">
+              <div class="sello-doc-line"></div>
+              <div class="sello-doc-line medium"></div>
+              <div class="sello-doc-line"></div>
+              <div class="sello-doc-line short"></div>
+              <div class="sello-doc-line"></div>
+              <div class="sello-doc-line medium"></div>
+              <div class="sello-doc-line short"></div>
+              <div class="sello-doc-line"></div>
+            </div>
+            
+            <div class="sello-stamp" id="stamp">
+              <div class="sello-stamp-circle">SELLO<br>OFICIAL</div>
+            </div>
+          </div>
+          
+          <div id="selloResultText" class="sello-result-text"></div>
+          <div id="selloResultLabel" class="sello-result-label"></div>
+          
+          <div class="sello-this-year-box">
+            <div class="sello-this-year-content">
+              <div class="sello-mini-doc">
+                <div class="sello-mini-line"></div>
+                <div class="sello-mini-line"></div>
+                <div class="sello-mini-line"></div>
+                <div class="sello-mini-line"></div>
+                <div class="sello-mini-stamp" id="miniStamp"></div>
+              </div>
+              <div class="sello-this-year-info">
+                <div class="label">📅 Este Año</div>
+                <div class="year" id="currentYear">2026</div>
+                <div class="position" id="currentPosition"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="sello-info-box">
+            💡 <strong>Regla:</strong> Años <span class="highlight-up">PARES</span> → sello <span class="highlight-up">ARRIBA-DERECHA</span>. 
+            Años <span class="highlight-down">IMPARES</span> → sello <span class="highlight-down">ABAJO-DERECHA</span>.
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <button class="btn btn-primary" onclick="generatePDF()">🖨️ Generar Ticket PDF</button>
-        <button class="btn btn-secondary" onclick="resetAll()" style="margin-top:10px;">Limpiar Todo</button>
+      <!-- GENERADOR DE CÓDIGOS -->
+      <div class="herram-content" id="htab-generador">
+        <div class="gen-overlay" id="genPinOverlay">
+          <div class="gen-pin-card">
+            <div class="gen-pin-lock-icon">
+              <svg width="32" height="32" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0110 0v4"></path>
+              </svg>
+            </div>
+            <h2 class="gen-pin-title">Acceso Restringido</h2>
+            <p class="gen-pin-subtitle">Ingresa el PIN para continuar</p>
+            <input 
+              type="text" 
+              class="gen-pin-input" 
+              id="genPinInput" 
+              placeholder="• • • •" 
+              maxlength="10"
+              autocomplete="off"
+            />
+            <div class="gen-pin-error-msg" id="genPinError">PIN incorrecto. Intenta de nuevo.</div>
+            <button class="gen-pin-btn" onclick="validateGenPin()">🔓 Acceder</button>
+            <p class="gen-pin-hint">Formato del PIN: *963</p>
+          </div>
+        </div>
+
+        <div class="gen-container" id="genMainApp" style="display:none;">
+          <div class="gen-app-header">
+            <div style="flex:1;"></div>
+            <button class="gen-btn-logout" onclick="genLogout()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Salir
+            </button>
+          </div>
+          <h1 class="gen-title">Generador de Códigos</h1>
+          <p class="gen-subtitle">Genera códigos únicos con formato personalizado</p>
+
+          <div class="gen-input-group">
+            <label>Fecha de Vigencia</label>
+            <input type="date" id="genVigenciaDate" />
+          </div>
+
+          <div class="gen-input-group">
+            <label>Prefijo (7 dígitos)</label>
+            <input type="text" id="genPrefixInput" value="9331100" maxlength="7" placeholder="Ej: 9331100" />
+          </div>
+
+          <div class="gen-quantity-row">
+            <div class="gen-input-group">
+              <label>Cantidad a generar</label>
+              <input type="number" id="genQuantityInput" value="1" min="1" max="50" />
+            </div>
+          </div>
+
+          <button class="gen-btn-generate" onclick="generateGenCodes()">⚡ Generar Código</button>
+
+          <div class="gen-result-section" id="genResultSection">
+            <div class="gen-code-display">
+              <div class="gen-code-text" id="genCodeText"></div>
+            </div>
+            <div class="gen-code-info">
+              <span class="gen-code-info-label">Fecha de Vigencia</span>
+              <span class="gen-code-info-value" id="genDateText"></span>
+            </div>
+            <button class="gen-btn-copy" id="genBtnCopy" onclick="copyGenCode()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+              </svg>
+              <span id="genCopyText">Copiar código</span>
+            </button>
+
+            <div id="genBatchResults" class="gen-batch-results" style="display:none; margin-top:16px;"></div>
+          </div>
+
+          <div class="gen-history-section" id="genHistorySection" style="display:none;">
+            <div class="gen-history-title">Historial reciente</div>
+            <div id="genHistoryList"></div>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 
   <footer>Alexis Pimentel ©</footer>
 </div>
 
+<div class="herram-toast" id="herramToast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="herramToastMsg">¡Copiado al portapapeles!</span>
+</div>
+
 <script>
+  // ===== THEME TOGGLE =====
+  function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+  }
+
+  function updateThemeIcon(theme) {
+    const icon = document.getElementById('themeIcon');
+    if (theme === 'light') {
+      icon.innerHTML = `
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      `;
+    } else {
+      icon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+    }
+  }
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+
+  // ===== MAIN TABS =====
+  function switchMainTab(tabId, btn) {
+    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.main-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('main-' + tabId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== COTEJOS =====
   const defaults = { base: 600, add: 50, ex: 30, iva: 16, gerry: 25 };
   let actas = [];
 
@@ -407,7 +2029,7 @@
   function renderActas() {
     const list = document.getElementById('actasList');
     if (actas.length === 0) {
-      list.innerHTML = '<p style="color:#64748b; text-align:center; padding:20px; font-size:0.9rem;">No hay actas agregadas</p>';
+      list.innerHTML = '<p style="color:var(--text-dim); text-align:center; padding:20px; font-size:0.9rem;">No hay actas agregadas</p>';
       return;
     }
     list.innerHTML = actas.map(a => `
@@ -461,7 +2083,6 @@
     const pBase = parseFloat(document.getElementById('priceBase').value) || 0;
     const pAdd = parseFloat(document.getElementById('priceAdd').value) || 0;
     const pEx = parseFloat(document.getElementById('priceEx').value) || 0;
-    
     if (hojas <= 2) return pBase;
     else if (hojas < 100) return pBase + (hojas - 2) * pAdd;
     else return pBase + (97 * pAdd) + (hojas - 99) * pEx;
@@ -473,20 +2094,14 @@
       const costoPorActa = calculateActaCost(a.hojas);
       honorarios += costoPorActa * a.copias;
     });
-
     const gerryOn = document.getElementById('gerryTax').checked;
     const gerryPercent = parseInt(document.getElementById('gerryPercent').value) || 0;
     const ivaRate = parseFloat(document.getElementById('ivaRate').value) || 0;
-
-    // Impuesto Gerry = porcentaje sobre honorarios
     const gerryAmt = gerryOn ? honorarios * (gerryPercent / 100) : 0;
-
-    // IVA se calcula sobre (Honorarios + Impuesto Gerry)
     const baseIva = honorarios + gerryAmt;
     const iva = baseIva * (ivaRate / 100);
     const subtotal = honorarios + gerryAmt;
     const total = document.getElementById('includeIvaTotal').checked ? subtotal + iva : subtotal;
-
     document.getElementById('dHonorarios').value = honorarios.toFixed(2);
     document.getElementById('dGerry').value = gerryAmt.toFixed(2);
     document.getElementById('dSubtotal').value = subtotal.toFixed(2);
@@ -496,13 +2111,11 @@
     document.getElementById('gerryPercentLabel').textContent = gerryPercent;
   }
 
-  // Mostrar/ocultar campos condicionales
   document.getElementById('gerryTax').addEventListener('change', e => {
     document.getElementById('gerryField').style.display = e.target.checked ? 'block' : 'none';
     document.getElementById('dGerryRow').style.display = e.target.checked ? 'grid' : 'none';
   });
 
-  // Recalcular total cuando se edita el desglose manualmente
   ['dHonorarios','dGerry','dIva'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
       const h = parseFloat(document.getElementById('dHonorarios').value) || 0;
@@ -538,7 +2151,6 @@
   function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-
     const clientName = document.getElementById('clientName').value || 'Sin nombre';
     const deliveryDate = document.getElementById('deliveryDate').value || '---';
     const honorarios = parseFloat(document.getElementById('dHonorarios').value) || 0;
@@ -549,7 +2161,6 @@
     const totalText = document.getElementById('dTotal').textContent;
     const ivaRate = document.getElementById('ivaRate').value;
 
-    // Encabezado
     doc.setFillColor(30, 30, 60);
     doc.rect(0, 0, 210, 35, 'F');
     doc.setTextColor(255, 255, 255);
@@ -562,8 +2173,6 @@
 
     doc.setTextColor(40, 40, 40);
     let y = 50;
-
-    // Info cliente
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.text('Información del Cliente', 14, y);
@@ -573,7 +2182,6 @@
     doc.text(`Cliente: ${clientName}`, 14, y); y += 6;
     doc.text(`Fecha de entrega: ${deliveryDate}`, 14, y); y += 12;
 
-    // Detalle de actas
     if (actas.length > 0) {
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
@@ -581,7 +2189,6 @@
       y += 8;
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
-      
       actas.forEach(a => {
         doc.text(`• ${a.nombre || 'Sin nombre'} - ${a.hojas} hojas x ${a.copias} copias`, 14, y);
         y += 5;
@@ -589,14 +2196,12 @@
       y += 7;
     }
 
-    // Desglose
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.text('Desglose', 14, y);
     y += 8;
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-
     const fmt = v => '$' + v.toFixed(2);
     doc.text('Honorarios', 14, y); doc.text(fmt(honorarios), 196, y, { align: 'right' }); y += 6;
     if (gerry > 0) {
@@ -607,7 +2212,6 @@
     doc.text(`Subtotal`, 14, y); doc.text(fmt(subtotal), 196, y, { align: 'right' }); y += 6;
     doc.text(`IVA (${ivaRate}%)`, 14, y); doc.text(fmt(iva), 196, y, { align: 'right' }); y += 10;
 
-    // Total
     doc.setDrawColor(99, 102, 241);
     doc.setLineWidth(0.5);
     doc.line(14, y - 3, 196, y - 3);
@@ -616,7 +2220,6 @@
     doc.text('TOTAL', 14, y + 3);
     doc.text(totalText, 196, y + 3, { align: 'right' });
 
-    // Footer
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(120, 120, 120);
@@ -625,7 +2228,364 @@
     doc.save(`Ticket_${clientName.replace(/\s+/g,'_') || 'cliente'}.pdf`);
   }
 
-  // Inicializar
+  // ===== HERRAMIENTAS TABS =====
+  function switchHerramTab(tabId) {
+    document.querySelectorAll('.herram-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.herram-content').forEach(c => c.classList.remove('active'));
+    document.querySelector(`.herram-tab[data-htab="${tabId}"]`).classList.add('active');
+    document.getElementById('htab-' + tabId).classList.add('active');
+  }
+
+  function showHerramToast(msg) {
+    const toast = document.getElementById('herramToast');
+    document.getElementById('herramToastMsg').textContent = msg || '¡Copiado al portapapeles!';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ===== EXTENSOR =====
+  const numberWords = { '0':'cero','1':'uno','2':'dos','3':'tres','4':'cuatro','5':'cinco','6':'seis','7':'siete','8':'ocho','9':'nueve' };
+  const symbolWords = { '-':'guion','_':'guion bajo','@':'arroba','/':'diagonal','\\':'diagonal invertida','.':'punto',',':'coma',':':'dos puntos',';':'punto y coma','+':'mas','=':'igual','#':'numeral','$':'pesos','%':'porcentaje','&':'ampersand','*':'asterisco','(':'paréntesis abre',')':'paréntesis cierra','[':'corchete abre',']':'corchete cierra','{':'llave abre','}':'llave cierra','!':'exclamación','?':'interrogación','"':'comillas dobles',"'":'comilla simple','`':'acento grave','~':'tilde','^':'acento circunflejo','|':'barra vertical','<':'menor que','>':'mayor que',' ':'espacio' };
+
+  function getCharType(c) { if(/[A-Z]/.test(c)) return 'letter'; if(/[0-9]/.test(c)) return 'number'; if(symbolWords[c]!==undefined) return 'symbol'; return 'unknown'; }
+  function getCharWord(c) { const u=c.toUpperCase(); if(/[A-Z]/.test(u)) return u; if(/[0-9]/.test(c)) return numberWords[c]||c; if(symbolWords[c]!==undefined) return symbolWords[c]; return c; }
+
+  const codeInput = document.getElementById('codeInput');
+  codeInput.addEventListener('keydown', e => { if(e.key==='Enter') convertCode(); });
+
+  function convertCode() {
+    const code = codeInput.value.trim();
+    if (!code) { codeInput.focus(); codeInput.style.borderColor='rgba(239,68,68,0.5)'; setTimeout(()=>codeInput.style.borderColor='',1500); return; }
+    const parts = [];
+    for (let i=0; i<code.length; i++) { const c=code[i]; parts.push({type:getCharType(c),value:getCharWord(c)}); }
+    let html = '<span class="char-paren">(</span>';
+    parts.forEach((p,i) => {
+      if(i>0) html += '<span class="char-separator">, </span>';
+      if(p.type==='letter') html += `<span class="char-letter">${p.value}</span>`;
+      else if(p.type==='number') html += `<span class="char-number">${p.value}</span>`;
+      else if(p.type==='symbol') html += `<span class="char-symbol">${p.value}</span>`;
+      else html += `<span>${p.value}</span>`;
+    });
+    html += '<span class="char-paren">)</span>';
+    document.getElementById('resultText').innerHTML = html;
+    const rs = document.getElementById('resultSection');
+    rs.classList.remove('visible'); void rs.offsetWidth; rs.classList.add('visible');
+    resetCopyBtn();
+  }
+
+  function getPlainText() {
+    const code = codeInput.value.trim(); if(!code) return '';
+    const parts = []; for(let i=0;i<code.length;i++) parts.push(getCharWord(code[i]));
+    return '('+parts.join(', ')+')';
+  }
+
+  function copyResult() {
+    const text = getPlainText(); if(!text) return;
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(()=>showCopySuccess()).catch(()=>fallbackCopy(text));
+    } else { fallbackCopy(text); }
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); showCopySuccess(); } catch(e) { alert('No se pudo copiar: '+text); }
+    document.body.removeChild(ta);
+  }
+
+  function showCopySuccess() {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ¡COPIADO!`;
+    showHerramToast();
+    setTimeout(()=>resetCopyBtn(), 3000);
+  }
+
+  function resetCopyBtn() {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.remove('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> COPIAR`;
+  }
+
+  function clearExtensor() { codeInput.value=''; document.getElementById('resultSection').classList.remove('visible'); codeInput.focus(); }
+  function loadExample(code) { codeInput.value=code; convertCode(); }
+
+  // ===== SELLO =====
+  const yearInput = document.getElementById('yearInput');
+  const stamp = document.getElementById('stamp');
+  const selloResultText = document.getElementById('selloResultText');
+  const selloResultLabel = document.getElementById('selloResultLabel');
+  const arrowUp = document.getElementById('arrowUp');
+  const arrowDown = document.getElementById('arrowDown');
+  const currentYearEl = document.getElementById('currentYear');
+  const currentPositionEl = document.getElementById('currentPosition');
+  const miniStamp = document.getElementById('miniStamp');
+  
+  yearInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') checkStamp();
+  });
+  
+  function checkStamp() {
+    const year = parseInt(yearInput.value);
+    
+    if (!year || year < 1900 || year > 2100) {
+      selloResultText.textContent = '⚠️ Ingresa un año válido';
+      selloResultText.className = 'sello-result-text';
+      selloResultLabel.textContent = '';
+      stamp.classList.remove('show', 'animate', 'top', 'bottom');
+      arrowUp.classList.remove('show', 'top-right');
+      arrowDown.classList.remove('show', 'bottom-right');
+      return;
+    }
+    
+    const isEven = year % 2 === 0;
+    
+    stamp.classList.remove('top', 'bottom', 'animate');
+    arrowUp.classList.remove('show', 'top-right');
+    arrowDown.classList.remove('show', 'bottom-right');
+    
+    setTimeout(() => {
+      if (isEven) {
+        stamp.classList.add('show', 'top', 'animate');
+        arrowUp.classList.add('show', 'top-right');
+        selloResultText.textContent = '↗️ ARRIBA-DERECHA';
+        selloResultText.className = 'sello-result-text up';
+      } else {
+        stamp.classList.add('show', 'bottom', 'animate');
+        arrowDown.classList.add('show', 'bottom-right');
+        selloResultText.textContent = '↘️ ABAJO-DERECHA';
+        selloResultText.className = 'sello-result-text down';
+      }
+      selloResultLabel.textContent = `Año ${year} (${isEven ? 'PAR' : 'IMPAR'})`;
+    }, 50);
+  }
+  
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  currentYearEl.textContent = currentYear;
+  
+  const isCurrentEven = currentYear % 2 === 0;
+  if (isCurrentEven) {
+    currentPositionEl.textContent = '↗️ ARRIBA-DERECHA';
+    currentPositionEl.className = 'position up';
+    miniStamp.classList.add('top');
+    miniStamp.classList.remove('bottom');
+  } else {
+    currentPositionEl.textContent = '↘️ ABAJO-DERECHA';
+    currentPositionEl.className = 'position down';
+    miniStamp.classList.add('bottom');
+    miniStamp.classList.remove('top');
+  }
+  
+  yearInput.value = currentYear;
+  checkStamp();
+
+  // ===== GENERADOR DE CÓDIGOS =====
+  const GEN_CORRECT_PIN = '*963';
+  let genHistory = [];
+  let genCurrentCode = '';
+  let genPinAttempts = 0;
+
+  function validateGenPin() {
+    const pinInput = document.getElementById('genPinInput');
+    const pinError = document.getElementById('genPinError');
+    const enteredPin = pinInput.value.trim();
+
+    if (enteredPin === GEN_CORRECT_PIN) {
+      document.getElementById('genPinOverlay').classList.add('hidden');
+      document.getElementById('genMainApp').style.display = 'block';
+      pinInput.value = '';
+      pinInput.classList.remove('error');
+      pinError.classList.remove('visible');
+      genPinAttempts = 0;
+    } else {
+      genPinAttempts++;
+      pinInput.classList.add('error');
+      pinError.classList.add('visible');
+      pinInput.value = '';
+      
+      setTimeout(() => {
+        pinInput.classList.remove('error');
+      }, 500);
+
+      if (genPinAttempts >= 3) {
+        pinError.textContent = 'Demasiados intentos. Espera un momento.';
+        pinInput.disabled = true;
+        document.querySelector('.gen-pin-btn').disabled = true;
+        document.querySelector('.gen-pin-btn').style.opacity = '0.5';
+        document.querySelector('.gen-pin-btn').style.cursor = 'not-allowed';
+        
+        setTimeout(() => {
+          pinInput.disabled = false;
+          document.querySelector('.gen-pin-btn').disabled = false;
+          document.querySelector('.gen-pin-btn').style.opacity = '1';
+          document.querySelector('.gen-pin-btn').style.cursor = 'pointer';
+          pinError.textContent = 'PIN incorrecto. Intenta de nuevo.';
+          genPinAttempts = 0;
+        }, 5000);
+      }
+    }
+  }
+
+  function genLogout() {
+    document.getElementById('genMainApp').style.display = 'none';
+    document.getElementById('genPinOverlay').classList.remove('hidden');
+    document.getElementById('genPinInput').value = '';
+    document.getElementById('genPinInput').focus();
+    document.getElementById('genPinError').classList.remove('visible');
+  }
+
+  document.getElementById('genPinInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      validateGenPin();
+    }
+  });
+
+  function generateRandomDigits(count) {
+    let result = '';
+    for (let i = 0; i < count; i++) {
+      result += Math.floor(Math.random() * 10);
+    }
+    return result;
+  }
+
+  function generateRandomAlphanumeric(count) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < count; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
+  function generateGenCode(prefix) {
+    const digits = generateRandomDigits(6);
+    const alphanumeric = generateRandomAlphanumeric(7);
+    return (prefix + digits + alphanumeric).toUpperCase();
+  }
+
+  function formatGenDate(dateStr) {
+    if (!dateStr) return 'Sin fecha';
+    return dateStr;
+  }
+
+  function generateGenCodes() {
+    const prefix = document.getElementById('genPrefixInput').value || '9331100';
+    const date = document.getElementById('genVigenciaDate').value;
+    const quantity = parseInt(document.getElementById('genQuantityInput').value) || 1;
+
+    const codes = [];
+    for (let i = 0; i < quantity; i++) {
+      codes.push(generateGenCode(prefix));
+    }
+
+    genCurrentCode = codes[0];
+
+    const resultSection = document.getElementById('genResultSection');
+    resultSection.classList.add('visible');
+
+    if (quantity === 1) {
+      document.getElementById('genCodeText').textContent = genCurrentCode;
+      document.getElementById('genDateText').textContent = formatGenDate(date);
+      document.getElementById('genBatchResults').style.display = 'none';
+    } else {
+      document.getElementById('genCodeText').textContent = genCurrentCode + ' (y ' + (quantity - 1) + ' más)';
+      document.getElementById('genDateText').textContent = formatGenDate(date);
+
+      const batchDiv = document.getElementById('genBatchResults');
+      batchDiv.style.display = 'block';
+      batchDiv.innerHTML = '';
+      codes.forEach((code, idx) => {
+        const item = document.createElement('div');
+        item.className = 'gen-history-item';
+        item.onclick = () => copyGenToClipboard(code);
+        item.innerHTML = `
+          <span class="gen-history-code">${idx + 1}. ${code}</span>
+          <span class="gen-history-date">Copiar</span>
+        `;
+        batchDiv.appendChild(item);
+      });
+    }
+
+    document.getElementById('genBtnCopy').classList.remove('copied');
+    document.getElementById('genCopyText').textContent = 'Copiar código';
+
+    addGenToHistory(genCurrentCode, date);
+  }
+
+  function copyGenCode() {
+    copyGenToClipboard(genCurrentCode);
+  }
+
+  function copyGenToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('genBtnCopy');
+      const copyText = document.getElementById('genCopyText');
+      btn.classList.add('copied');
+      copyText.textContent = '¡Copiado!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        copyText.textContent = 'Copiar código';
+      }, 2000);
+    }).catch(() => {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      const btn = document.getElementById('genBtnCopy');
+      const copyText = document.getElementById('genCopyText');
+      btn.classList.add('copied');
+      copyText.textContent = '¡Copiado!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        copyText.textContent = 'Copiar código';
+      }, 2000);
+    });
+  }
+
+  function addGenToHistory(code, date) {
+    genHistory.unshift({ code, date });
+    if (genHistory.length > 10) genHistory.pop();
+    renderGenHistory();
+  }
+
+  function renderGenHistory() {
+    const section = document.getElementById('genHistorySection');
+    const list = document.getElementById('genHistoryList');
+
+    if (genHistory.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+    list.innerHTML = '';
+
+    genHistory.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'gen-history-item';
+      div.onclick = () => copyGenToClipboard(item.code);
+      div.innerHTML = `
+        <span class="gen-history-code">${item.code}</span>
+        <span class="gen-history-date">${formatGenDate(item.date)}</span>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  const genToday = new Date();
+  const genDefaultDate = new Date(genToday);
+  genDefaultDate.setMonth(genDefaultDate.getMonth() + 6);
+  document.getElementById('genVigenciaDate').value = genDefaultDate.toISOString().split('T')[0];
+
+  window.addEventListener('load', () => {
+    document.getElementById('genPinInput').focus();
+  });
+
+  // ===== INIT =====
   renderActas();
   addActa();
 </script>
