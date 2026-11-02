@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control de Avalúos | CP22</title>
+<title>Control de Avalúos | CP22 Correduría Pública</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
@@ -21,7 +21,7 @@
   
   .caratula-page { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: #fff; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin: 0 auto; }
   .caratula-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(100%) contrast(1.1); opacity: 0.85; }
-  .hexagon-overlay { position: absolute; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); transition: all 0.3s ease; }
+  .hexagon-overlay { position: absolute; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
   .hex-large { width: 480px; height: 550px; top: 20px; right: -40px; }
   .hex-small { width: 180px; height: 210px; bottom: 100px; left: 30px; }
   .hex-tiny { width: 100px; height: 115px; top: 150px; left: 80px; }
@@ -56,6 +56,9 @@
 
   .filter-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
   .filter-panel.open { max-height: 600px; }
+  
+  .view { display: none; }
+  .view.active { display: block; }
 </style>
 </head>
 <body class="bg-slate-100 text-slate-800">
@@ -139,7 +142,8 @@
     </header>
 
     <div class="p-8">
-      <div id="view-dashboard" class="view fade-in">
+      <!-- DASHBOARD -->
+      <div id="view-dashboard" class="view active fade-in">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
             <div class="flex items-center justify-between mb-4">
@@ -195,7 +199,8 @@
         </div>
       </div>
 
-      <div id="view-avaluos" class="view hidden fade-in">
+      <!-- AVALUOS LIST -->
+      <div id="view-avaluos" class="view fade-in">
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
           <div class="p-6 border-b border-slate-200">
             <div class="flex flex-col gap-4">
@@ -299,7 +304,8 @@
         </div>
       </div>
 
-      <div id="view-nuevo" class="view hidden fade-in">
+      <!-- FORMULARIO -->
+      <div id="view-nuevo" class="view fade-in">
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8 max-w-4xl">
           <form id="avaluoForm" class="space-y-6">
             <input type="hidden" id="formId">
@@ -369,16 +375,17 @@
         </div>
       </div>
 
-      <div id="view-caratula" class="view hidden fade-in">
-        <div class="mb-6 flex items-center justify-between">
+      <!-- CARÁTULA -->
+      <div id="view-caratula" class="view fade-in">
+        <div class="mb-6 flex items-center justify-between flex-wrap gap-3">
           <div><p class="text-sm text-slate-600">Selecciona un avalúo para generar su carátula</p></div>
-          <div class="flex gap-3">
+          <div class="flex gap-3 flex-wrap">
             <select id="caratulaSelect" class="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 min-w-[300px]"><option value="">-- Seleccionar avalúo --</option></select>
             <button id="btnGenerarCaratula" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               Generar
             </button>
-            <button id="btnImprimirCaratula" class="px-4 py-2 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 flex items-center gap-2 hidden">
+            <button id="btnImprimirCaratula" class="hidden px-4 py-2 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
               Imprimir / PDF
             </button>
@@ -392,7 +399,8 @@
         </div>
       </div>
 
-      <div id="view-clasificacion" class="view hidden fade-in">
+      <!-- CLASIFICACION -->
+      <div id="view-clasificacion" class="view fade-in">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Por Tipo de Avalúo</h3><div id="classTipo" class="space-y-3"></div></div>
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Por Estado</h3><div id="classEstado" class="space-y-3"></div></div>
@@ -401,7 +409,8 @@
         </div>
       </div>
 
-      <div id="view-reportes" class="view hidden fade-in">
+      <!-- REPORTES -->
+      <div id="view-reportes" class="view fade-in">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Valor Total por Año</h3><div id="reportAnio" class="space-y-3"></div></div>
           <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Distribución de Tipos</h3><div id="reportTipos" class="space-y-3"></div></div>
@@ -428,7 +437,6 @@
           <input type="file" id="importFile" accept=".json" class="hidden">
         </div>
 
-        <!-- Sección de gestión de base de datos -->
         <div class="mt-6 bg-white rounded-xl border-2 border-red-200 shadow-sm p-6">
           <div class="flex items-start gap-4">
             <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -506,28 +514,54 @@
 (function() {
   'use strict';
 
+  const DB_KEY = 'avaluoos_cp22_db';
   let avaluoos = [];
   let currentView = 'dashboard';
   let selectedCaratulaId = null;
   let currentFiles = [];
 
+  // ============ BASE DE DATOS ============
   function loadData() {
     try {
-      const raw = localStorage.getItem('avaluoos_v3');
-      if (raw) { avaluoos = JSON.parse(raw); if (!Array.isArray(avaluoos)) avaluoos = []; }
-      else { avaluoos = []; }
-    } catch (e) { avaluoos = []; }
+      const raw = localStorage.getItem(DB_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        avaluoos = Array.isArray(parsed) ? parsed : [];
+      } else {
+        avaluoos = [];
+      }
+    } catch (e) {
+      console.error('Error al cargar la base de datos:', e);
+      avaluoos = [];
+    }
   }
 
   function saveData() {
-    try { localStorage.setItem('avaluoos_v3', JSON.stringify(avaluoos)); }
-    catch (e) { showToast('Error al guardar'); }
+    try {
+      localStorage.setItem(DB_KEY, JSON.stringify(avaluoos));
+      return true;
+    } catch (e) {
+      console.error('Error al guardar:', e);
+      showToast('Error al guardar: ' + e.message);
+      return false;
+    }
+  }
+
+  function clearDatabase() {
+    try {
+      avaluoos = [];
+      localStorage.removeItem(DB_KEY);
+      return true;
+    } catch (e) {
+      console.error('Error al borrar:', e);
+      return false;
+    }
   }
 
   function seedData() {
     if (avaluoos.length > 0) return;
     avaluoos = [
-      { id: 1, numeroAvaluo: '14', tipoAvaluo: 'Estimación de Valor', fecha: '2025-09-02', anioRegistro: 2025, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'INMOBILIARIA INE, S.A. DE C.V.', bienObjeto: 'Desarrollo Habitacional Vertical "Periférico 216"', direccion: 'Boulevard Adolfo López Mateos 216, Col. San Pedro de los Pinos, Alcaldía Álvaro Obregón, CDMX, CP 01180', superficie: 1508.43, superficieConstruccion: 4324.26, descripcion: 'Desarrollo de vivienda vertical de 15 niveles, 200 unidades.', valorEstimado: 348800000, vigenciaDias: 180, numeroSerie: 'CP22-2025', estado: 'vigente', fechaAviso: '2025-09-02', numeroAviso: '14/2025', notas: '', anexos: '', enfoque: 'Comparativo de Mercado', paginas: 7, archivos: [] },
+      { id: 1, numeroAvaluo: '14', tipoAvaluo: 'Estimación de Valor', fecha: '2025-09-02', anioRegistro: 2025, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'INMOBILIARIA INE, S.A. DE C.V.', bienObjeto: 'Desarrollo Habitacional Vertical "Periférico 216"', direccion: 'Boulevard Adolfo López Mateos 216, Col. San Pedro de los Pinos, Alcaldía Álvaro Obregón, CDMX, CP 01180', superficie: 1508.43, superficieConstruccion: 4324.26, descripcion: 'Desarrollo de vivienda vertical de 15 niveles, 200 unidades, amenidades premium.', valorEstimado: 348800000, vigenciaDias: 180, numeroSerie: 'CP22-2025', estado: 'vigente', fechaAviso: '2025-09-02', numeroAviso: '14/2025', notas: 'Primera estimación de valor.', anexos: 'Boleta predial, Escritura Pública 17,443, Cédula profesional, Proyecto Periférico 216', enfoque: 'Comparativo de Mercado', paginas: 7, archivos: [] },
       { id: 2, numeroAvaluo: '13', tipoAvaluo: 'Valor Comercial', fecha: '2025-06-15', anioRegistro: 2025, solicitante: 'BANCO NACIONAL DE MÉXICO', propietario: 'Juan Pérez García', bienObjeto: 'Casa habitación unifamiliar', direccion: 'Calle Reforma 123, Col. Centro, CDMX', superficie: 240, superficieConstruccion: 180, descripcion: 'Casa habitación de 2 niveles.', valorEstimado: 4500000, vigenciaDias: 180, numeroSerie: 'CP22-2025', estado: 'vencido', fechaAviso: '2025-06-15', numeroAviso: '13/2025', notas: '', anexos: '', enfoque: 'Comparativo de Mercado', paginas: 5, archivos: [] },
       { id: 3, numeroAvaluo: '15', tipoAvaluo: 'Avalúo Bancario', fecha: '2026-10-10', anioRegistro: 2026, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'Desarrollos CAABSA', bienObjeto: 'Terreno industrial', direccion: 'Carretera México-Toluca Km 15, Estado de México', superficie: 5000, superficieConstruccion: 0, descripcion: 'Terreno industrial con acceso a carretera.', valorEstimado: 25000000, vigenciaDias: 180, numeroSerie: 'CP22-2026', estado: 'vigente', fechaAviso: '2026-10-10', numeroAviso: '15/2026', notas: '', anexos: '', enfoque: 'Costos', paginas: 6, archivos: [] },
       { id: 4, numeroAvaluo: '16', tipoAvaluo: 'Valor de Mercado', fecha: '2024-11-20', anioRegistro: 2024, solicitante: 'HSBC MÉXICO S.A.', propietario: 'María López Torres', bienObjeto: 'Oficina corporativa', direccion: 'Paseo de la Reforma 500, CDMX', superficie: 800, superficieConstruccion: 600, descripcion: 'Oficina en torre corporativa.', valorEstimado: 18000000, vigenciaDias: 180, numeroSerie: 'CP22-2024', estado: 'vencido', fechaAviso: '2024-11-20', numeroAviso: '16/2024', notas: '', anexos: '', enfoque: 'Ingresos', paginas: 8, archivos: [] },
@@ -537,6 +571,7 @@
     saveData();
   }
 
+  // ============ UTILIDADES ============
   function formatCurrency(n) { const num = Number(n || 0); return '$' + num.toLocaleString('es-MX', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
   function formatDate(d) { if (!d) return '-'; try { return new Date(d + 'T00:00:00').toLocaleDateString('es-MX', {day: '2-digit', month: 'long', year: 'numeric'}); } catch (e) { return d; } }
   function formatDateShort(d) { if (!d) return '-'; try { return new Date(d + 'T00:00:00').toLocaleDateString('es-MX', {day: '2-digit', month: 'short', year: 'numeric'}); } catch (e) { return d; } }
@@ -588,7 +623,7 @@
     return gradients[anio] || 'linear-gradient(135deg, #334155 0%, #64748b 100%)';
   }
   function getLogoSVG(size) {
-    return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="none" stroke="#1e3a8a" stroke-width="4"/><circle cx="50" cy="50" r="45" fill="none" stroke="#6b7280" stroke-width="4" stroke-dasharray="141.4 141.4" stroke-dashoffset="70.7" transform="rotate(180 50 50)"/><circle cx="50" cy="50" r="38" fill="white"/><text x="38" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="24" fill="#1e3a8a">CP</text><text x="65" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="22" fill="#6b7280">22</text><text x="50" y="78" text-anchor="middle" font-family="Arial" font-size="7" fill="#6b7280" letter-spacing="0.5">Correduría Pública</text></svg>`;
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="none" stroke="#1e3a8a" stroke-width="4"/><circle cx="50" cy="50" r="45" fill="none" stroke="#6b7280" stroke-width="4" stroke-dasharray="141.4 141.4" stroke-dashoffset="70.7" transform="rotate(180 50 50)"/><circle cx="50" cy="50" r="38" fill="white"/><text x="38" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="24" fill="#1e3a8a">CP</text><text x="65" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="22" fill="#6b7280">22</text><text x="50" y="78" text-anchor="middle" font-family="Arial" font-size="7" fill="#6b7280" letter-spacing="0.5">Correduría Pública</text></svg>';
   }
 
   // ============ FILTROS ============
@@ -641,8 +676,11 @@
   function filterAndSortAvaluoos() {
     const filters = getFilters();
     const sortBy = document.getElementById('sortBy').value;
-    let filtered = avaluoos.filter(a => {
-      if (filters.search) { const searchFields = [a.solicitante, a.propietario, a.bienObjeto, a.direccion, a.numeroAvaluo, a.numeroSerie, a.numeroAviso, a.tipoAvaluo, a.descripcion, a.notas, a.enfoque].map(f => (f || '').toLowerCase()); if (!searchFields.some(f => f.includes(filters.search))) return false; }
+    let filtered = avaluoos.filter(function(a) {
+      if (filters.search) {
+        const searchFields = [a.solicitante, a.propietario, a.bienObjeto, a.direccion, a.numeroAvaluo, a.numeroSerie, a.numeroAviso, a.tipoAvaluo, a.descripcion, a.notas, a.enfoque].map(function(f) { return (f || '').toLowerCase(); });
+        if (!searchFields.some(function(f) { return f.includes(filters.search); })) return false;
+      }
       if (filters.anio && String(a.anioRegistro) !== filters.anio) return false;
       if (filters.tipo && a.tipoAvaluo !== filters.tipo) return false;
       if (filters.estado && getEstado(a) !== filters.estado) return false;
@@ -658,7 +696,7 @@
       if (filters.supConstMin !== null && (a.superficieConstruccion || 0) < filters.supConstMin) return false;
       return true;
     });
-    filtered.sort((a, b) => {
+    filtered.sort(function(a, b) {
       switch (sortBy) {
         case 'fecha_desc': return (b.fecha || '').localeCompare(a.fecha || '');
         case 'fecha_asc': return (a.fecha || '').localeCompare(b.fecha || '');
@@ -674,20 +712,20 @@
   }
 
   function populateFilterDropdowns() {
-    const anios = [...new Set(avaluoos.map(a => a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : null)).filter(Boolean))].sort((a, b) => b - a);
+    const anios = [...new Set(avaluoos.map(function(a) { return a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : null); }).filter(Boolean))].sort(function(a, b) { return b - a; });
     const anioSelect = document.getElementById('filterAnio');
     const anioActual = anioSelect.value;
-    anioSelect.innerHTML = '<option value="">Todos los años</option>' + anios.map(y => `<option value="${y}">${y}</option>`).join('');
+    anioSelect.innerHTML = '<option value="">Todos los años</option>' + anios.map(function(y) { return '<option value="' + y + '">' + y + '</option>'; }).join('');
     anioSelect.value = anioActual;
-    const solicitantes = [...new Set(avaluoos.map(a => a.solicitante).filter(Boolean))].sort();
+    const solicitantes = [...new Set(avaluoos.map(function(a) { return a.solicitante; }).filter(Boolean))].sort();
     const solSelect = document.getElementById('filterSolicitante');
     const solActual = solSelect.value;
-    solSelect.innerHTML = '<option value="">Todas las empresas</option>' + solicitantes.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+    solSelect.innerHTML = '<option value="">Todas las empresas</option>' + solicitantes.map(function(s) { return '<option value="' + escapeHtml(s) + '">' + escapeHtml(s) + '</option>'; }).join('');
     solSelect.value = solActual;
-    const series = [...new Set(avaluoos.map(a => a.numeroSerie).filter(Boolean))].sort();
+    const series = [...new Set(avaluoos.map(function(a) { return a.numeroSerie; }).filter(Boolean))].sort();
     const serieSelect = document.getElementById('filterSerie');
     const serieActual = serieSelect.value;
-    serieSelect.innerHTML = '<option value="">Todas las series</option>' + series.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+    serieSelect.innerHTML = '<option value="">Todas las series</option>' + series.map(function(s) { return '<option value="' + escapeHtml(s) + '">' + escapeHtml(s) + '</option>'; }).join('');
     serieSelect.value = serieActual;
   }
 
@@ -700,7 +738,7 @@
     const btnClear = document.getElementById('btnClearFilters');
     if (count > 0) btnClear.classList.remove('hidden'); else btnClear.classList.add('hidden');
     const tagsContainer = document.getElementById('activeFilters');
-    if (tags.length > 0) { tagsContainer.classList.remove('hidden'); tagsContainer.innerHTML = tags.map(t => `<span class="filter-tag">${escapeHtml(t.label)}<button data-clear-filter="${t.key}">×</button></span>`).join(''); } else { tagsContainer.classList.add('hidden'); tagsContainer.innerHTML = ''; }
+    if (tags.length > 0) { tagsContainer.classList.remove('hidden'); tagsContainer.innerHTML = tags.map(function(t) { return '<span class="filter-tag">' + escapeHtml(t.label) + '<button data-clear-filter="' + t.key + '">×</button></span>'; }).join(''); } else { tagsContainer.classList.add('hidden'); tagsContainer.innerHTML = ''; }
   }
 
   function clearFilter(key) {
@@ -739,10 +777,10 @@
   // ============ VISTAS ============
   function showView(view) {
     currentView = view;
-    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
     const target = document.getElementById('view-' + view);
-    if (target) target.classList.remove('hidden');
-    document.querySelectorAll('.nav-btn').forEach(b => { if (b.dataset.view === view) b.classList.add('active'); else b.classList.remove('active'); });
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b) { if (b.dataset.view === view) b.classList.add('active'); else b.classList.remove('active'); });
     const titles = { dashboard: ['Dashboard', 'Resumen general de tus avalúos'], avaluos: ['Avalúos', 'Gestiona y consulta todos los registros'], nuevo: ['Nuevo Avalúo', 'Registrar un nuevo avalúo en el sistema'], caratula: ['Generar Carátula', 'Crea la portada oficial del avalúo'], clasificacion: ['Clasificación', 'Organización por categorías'], reportes: ['Reportes', 'Análisis y exportación de datos'] };
     const t = titles[view] || ['', ''];
     document.getElementById('viewTitle').textContent = t[0];
@@ -757,27 +795,27 @@
       if (currentView === 'caratula') renderCaratulaSelector();
       if (currentView === 'clasificacion') renderClasificacion();
       if (currentView === 'reportes') renderReportes();
-    } catch (e) { console.error('Error en render', e); }
+    } catch (e) { console.error('Error en render:', e); }
   }
 
   function renderDashboard() {
     const total = avaluoos.length;
-    const vigentes = avaluoos.filter(a => getEstado(a) === 'vigente').length;
-    const vencidos = avaluoos.filter(a => getEstado(a) === 'vencido').length;
-    const valorTotal = avaluoos.reduce((s, a) => s + Number(a.valorEstimado || 0), 0);
+    const vigentes = avaluoos.filter(function(a) { return getEstado(a) === 'vigente'; }).length;
+    const vencidos = avaluoos.filter(function(a) { return getEstado(a) === 'vencido'; }).length;
+    const valorTotal = avaluoos.reduce(function(s, a) { return s + Number(a.valorEstimado || 0); }, 0);
     document.getElementById('stat-total').textContent = total;
     document.getElementById('stat-vigentes').textContent = vigentes;
     document.getElementById('stat-vencidos').textContent = vencidos;
     document.getElementById('stat-valor').textContent = formatCurrency(valorTotal);
-    const recent = [...avaluoos].sort((a, b) => { const da = a.fecha ? new Date(a.fecha) : new Date(0); const db = b.fecha ? new Date(b.fecha) : new Date(0); return db - da; }).slice(0, 5);
+    const recent = [...avaluoos].sort(function(a, b) { const da = a.fecha ? new Date(a.fecha) : new Date(0); const db = b.fecha ? new Date(b.fecha) : new Date(0); return db - da; }).slice(0, 5);
     const recentEl = document.getElementById('recentList');
-    if (recent.length === 0) { recentEl.innerHTML = '<p class="text-sm text-slate-500 text-center py-8">Sin registros</p>'; }
-    else { recentEl.innerHTML = recent.map(a => `<div data-action="view" data-id="${a.id}" class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg cursor-pointer border border-slate-100"><div class="flex-1 min-w-0"><p class="font-medium text-sm truncate">${escapeHtml(a.bienObjeto)}</p><p class="text-xs text-slate-500 truncate">${escapeHtml(a.solicitante)} • ${formatDateShort(a.fecha)}</p></div><div class="text-right ml-4"><p class="font-semibold text-sm">${formatCurrency(a.valorEstimado)}</p>${estadoBadge(getEstado(a))}</div></div>`).join(''); }
+    if (recent.length === 0) { recentEl.innerHTML = '<p class="text-sm text-slate-500 text-center py-8">Sin registros. Crea tu primer avalúo.</p>'; }
+    else { recentEl.innerHTML = recent.map(function(a) { return '<div data-action="view" data-id="' + a.id + '" class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg cursor-pointer border border-slate-100"><div class="flex-1 min-w-0"><p class="font-medium text-sm truncate">' + escapeHtml(a.bienObjeto) + '</p><p class="text-xs text-slate-500 truncate">' + escapeHtml(a.solicitante) + ' • ' + formatDateShort(a.fecha) + '</p></div><div class="text-right ml-4"><p class="font-semibold text-sm">' + formatCurrency(a.valorEstimado) + '</p>' + estadoBadge(getEstado(a)) + '</div></div>'; }).join(''); }
     const tipos = {};
-    avaluoos.forEach(a => { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
+    avaluoos.forEach(function(a) { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
     const typeEl = document.getElementById('typeStats');
     if (Object.keys(tipos).length === 0) { typeEl.innerHTML = '<p class="text-sm text-slate-500 text-center py-8">Sin datos</p>'; }
-    else { typeEl.innerHTML = Object.entries(tipos).map(([t, c]) => `<div><div class="flex justify-between text-sm mb-1"><span class="text-slate-700">${escapeHtml(t)}</span><span class="font-semibold">${c}</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-slate-700 to-slate-900" style="width: ${total > 0 ? (c/total*100) : 0}%"></div></div></div>`).join(''); }
+    else { typeEl.innerHTML = Object.entries(tipos).map(function(entry) { const t = entry[0]; const c = entry[1]; return '<div><div class="flex justify-between text-sm mb-1"><span class="text-slate-700">' + escapeHtml(t) + '</span><span class="font-semibold">' + c + '</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-slate-700 to-slate-900" style="width: ' + (total > 0 ? (c/total*100) : 0) + '%"></div></div></div>'; }).join(''); }
   }
 
   function renderAvaluoos() {
@@ -787,26 +825,26 @@
     const empty = document.getElementById('emptyState');
     const resultCount = document.getElementById('resultCount');
     const totalCount = avaluoos.length;
-    resultCount.innerHTML = `<span class="font-semibold text-slate-900">${filtered.length}</span> de <span class="text-slate-600">${totalCount}</span> avalúos encontrados`;
+    resultCount.innerHTML = '<span class="font-semibold text-slate-900">' + filtered.length + '</span> de <span class="text-slate-600">' + totalCount + '</span> avalúos encontrados';
     if (filtered.length === 0) { tbody.innerHTML = ''; empty.classList.remove('hidden'); }
     else {
       empty.classList.add('hidden');
-      tbody.innerHTML = filtered.map(a => {
+      tbody.innerHTML = filtered.map(function(a) {
         const fileCount = (a.archivos || []).length;
-        const fileIcon = fileCount > 0 ? `<span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>${fileCount}</span>` : '<span class="text-xs text-slate-400">—</span>';
-        return `<tr class="hover:bg-slate-50"><td class="px-6 py-4 text-sm font-medium text-slate-900">#${escapeHtml(a.numeroAvaluo)}</td><td class="px-6 py-4 text-sm text-slate-700 max-w-[200px] truncate" title="${escapeHtml(a.solicitante)}">${escapeHtml(a.solicitante)}</td><td class="px-6 py-4 text-sm text-slate-700">${escapeHtml(a.tipoAvaluo)}</td><td class="px-6 py-4 text-sm text-slate-700 max-w-[180px] truncate" title="${escapeHtml(a.bienObjeto)}">${escapeHtml(a.bienObjeto)}</td><td class="px-6 py-4 text-sm text-slate-700">${a.anioRegistro || '-'}</td><td class="px-6 py-4 text-sm text-slate-700">${formatDateShort(a.fecha)}</td><td class="px-6 py-4 text-sm font-semibold text-slate-900">${formatCurrency(a.valorEstimado)}</td><td class="px-6 py-4">${estadoBadge(getEstado(a))}</td><td class="px-6 py-4">${fileIcon}</td><td class="px-6 py-4"><div class="flex gap-1"><button data-action="view" data-id="${a.id}" class="p-1.5 hover:bg-slate-200 rounded" title="Ver"><svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button data-action="edit" data-id="${a.id}" class="p-1.5 hover:bg-blue-100 rounded" title="Editar"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button data-action="download-excel" data-id="${a.id}" class="p-1.5 hover:bg-green-100 rounded" title="Descargar Excel"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button><button data-action="caratula" data-id="${a.id}" class="p-1.5 hover:bg-purple-100 rounded" title="Carátula"><svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></button><button data-action="delete" data-id="${a.id}" class="p-1.5 hover:bg-red-100 rounded" title="Eliminar"><svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td></tr>`;
+        const fileIcon = fileCount > 0 ? '<span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' + fileCount + '</span>' : '<span class="text-xs text-slate-400">—</span>';
+        return '<tr class="hover:bg-slate-50"><td class="px-6 py-4 text-sm font-medium text-slate-900">#' + escapeHtml(a.numeroAvaluo) + '</td><td class="px-6 py-4 text-sm text-slate-700 max-w-[200px] truncate" title="' + escapeHtml(a.solicitante) + '">' + escapeHtml(a.solicitante) + '</td><td class="px-6 py-4 text-sm text-slate-700">' + escapeHtml(a.tipoAvaluo) + '</td><td class="px-6 py-4 text-sm text-slate-700 max-w-[180px] truncate" title="' + escapeHtml(a.bienObjeto) + '">' + escapeHtml(a.bienObjeto) + '</td><td class="px-6 py-4 text-sm text-slate-700">' + (a.anioRegistro || '-') + '</td><td class="px-6 py-4 text-sm text-slate-700">' + formatDateShort(a.fecha) + '</td><td class="px-6 py-4 text-sm font-semibold text-slate-900">' + formatCurrency(a.valorEstimado) + '</td><td class="px-6 py-4">' + estadoBadge(getEstado(a)) + '</td><td class="px-6 py-4">' + fileIcon + '</td><td class="px-6 py-4"><div class="flex gap-1"><button data-action="view" data-id="' + a.id + '" class="p-1.5 hover:bg-slate-200 rounded" title="Ver"><svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button><button data-action="edit" data-id="' + a.id + '" class="p-1.5 hover:bg-blue-100 rounded" title="Editar"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button><button data-action="download-excel" data-id="' + a.id + '" class="p-1.5 hover:bg-green-100 rounded" title="Descargar Excel"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button><button data-action="caratula" data-id="' + a.id + '" class="p-1.5 hover:bg-purple-100 rounded" title="Carátula"><svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></button><button data-action="delete" data-id="' + a.id + '" class="p-1.5 hover:bg-red-100 rounded" title="Eliminar"><svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div></td></tr>';
       }).join('');
     }
   }
 
   function renderCaratulaSelector() {
     const select = document.getElementById('caratulaSelect');
-    select.innerHTML = '<option value="">-- Seleccionar avalúo --</option>' + avaluoos.map(a => `<option value="${a.id}">#${escapeHtml(a.numeroAvaluo)} - ${escapeHtml(a.bienObjeto)} (${formatDateShort(a.fecha)})</option>`).join('');
+    select.innerHTML = '<option value="">-- Seleccionar avalúo --</option>' + avaluoos.map(function(a) { return '<option value="' + a.id + '">#' + escapeHtml(a.numeroAvaluo) + ' - ' + escapeHtml(a.bienObjeto) + ' (' + formatDateShort(a.fecha) + ')</option>'; }).join('');
     if (selectedCaratulaId) { select.value = selectedCaratulaId; renderCaratulaPreview(selectedCaratulaId); }
   }
 
   function renderCaratulaPreview(id) {
-    const a = avaluoos.find(x => x.id === id);
+    const a = avaluoos.find(function(x) { return x.id === id; });
     if (!a) return;
     selectedCaratulaId = id;
     const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : new Date().getFullYear());
@@ -818,40 +856,40 @@
     const themeClass = getThemeClass(anio);
     const accentColor = getYearAccentColor(anio);
     const gradient = getYearGradient(anio);
-    document.getElementById('caratulaContainer').innerHTML = `<div id="caratulaPrintArea" class="${themeClass}"><div class="caratula-page"><svg class="caratula-bg" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient></defs><rect fill="url(#skyGrad)" width="800" height="1200"/><g fill="#475569" opacity="0.9"><polygon points="0,400 120,300 120,1200 0,1200"/><polygon points="120,300 200,250 200,1200 120,1200"/><polygon points="200,250 320,200 320,1200 200,1200"/><polygon points="500,350 620,300 620,1200 500,1200"/><polygon points="620,300 720,280 720,1200 620,1200"/><polygon points="720,280 800,260 800,1200 720,1200"/></g></svg><div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 100%);"></div><div class="hexagon-overlay hex-large"></div><div class="hexagon-overlay hex-small"></div><div class="hexagon-overlay hex-tiny"></div><div class="relative z-10 h-full flex flex-col" style="height: 297mm; padding: 20mm 18mm;"><div class="mb-6">${getLogoSVG(80)}</div><div class="flex-1"></div><div class="mb-10"><div class="flex items-baseline gap-6"><h1 style="font-family: 'Arial Black', Arial, sans-serif; font-size: 80px; font-weight: 900; color: ${accentColor}; line-height: 1; letter-spacing: -3px;">AVALÚO</h1><span style="font-family: 'Arial Black', Arial, sans-serif; font-size: 80px; font-weight: 900; background: ${gradient}; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;">${anio}</span></div><div style="width: 120px; height: 4px; background: ${accentColor}; margin-top: 8px;"></div></div><div style="background: rgba(255,255,255,0.98); border-left: 8px solid ${accentColor}; padding: 28px 36px; margin-bottom: 50px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 4px;"><div class="space-y-4"><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Número de Avalúo:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">${escapeHtml(a.numeroAvaluo)}</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Tipo de Avalúo:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">${escapeHtml(a.tipoAvaluo)}</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Solicitante:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">${escapeHtml(a.solicitante)}</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Fecha:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">${diaNum} de ${mesNombre} de ${anioFecha}</span></div></div></div><div class="flex-1"></div><div class="text-right"><p style="font-family: 'Georgia', serif; font-size: 20px; color: ${accentColor}; font-weight: 700; font-style: italic; text-transform: lowercase; letter-spacing: 1px; margin-bottom: 8px;">lic. josé francisco alejandro ruiz robles</p><p style="font-family: 'Arial', sans-serif; font-size: 14px; color: #374151; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">CORREDOR PÚBLICO NÚMERO 22 DE LA PLAZA DE LA CIUDAD DE MÉXICO</p><div style="width: 80px; height: 3px; background: ${accentColor}; margin: 12px auto 0;"></div></div></div></div></div>`;
+    document.getElementById('caratulaContainer').innerHTML = '<div id="caratulaPrintArea" class="' + themeClass + '"><div class="caratula-page"><svg class="caratula-bg" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient></defs><rect fill="url(#skyGrad)" width="800" height="1200"/><g fill="#475569" opacity="0.9"><polygon points="0,400 120,300 120,1200 0,1200"/><polygon points="120,300 200,250 200,1200 120,1200"/><polygon points="200,250 320,200 320,1200 200,1200"/><polygon points="500,350 620,300 620,1200 500,1200"/><polygon points="620,300 720,280 720,1200 620,1200"/><polygon points="720,280 800,260 800,1200 720,1200"/></g></svg><div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 100%);"></div><div class="hexagon-overlay hex-large"></div><div class="hexagon-overlay hex-small"></div><div class="hexagon-overlay hex-tiny"></div><div class="relative z-10 h-full flex flex-col" style="height: 297mm; padding: 20mm 18mm;"><div class="mb-6">' + getLogoSVG(80) + '</div><div class="flex-1"></div><div class="mb-10"><div class="flex items-baseline gap-6"><h1 style="font-family: \'Arial Black\', Arial, sans-serif; font-size: 80px; font-weight: 900; color: ' + accentColor + '; line-height: 1; letter-spacing: -3px;">AVALÚO</h1><span style="font-family: \'Arial Black\', Arial, sans-serif; font-size: 80px; font-weight: 900; background: ' + gradient + '; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;">' + anio + '</span></div><div style="width: 120px; height: 4px; background: ' + accentColor + '; margin-top: 8px;"></div></div><div style="background: rgba(255,255,255,0.98); border-left: 8px solid ' + accentColor + '; padding: 28px 36px; margin-bottom: 50px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 4px;"><div class="space-y-4"><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Número de Avalúo:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + escapeHtml(a.numeroAvaluo) + '</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Tipo de Avalúo:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + escapeHtml(a.tipoAvaluo) + '</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Solicitante:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + escapeHtml(a.solicitante) + '</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Fecha:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + diaNum + ' de ' + mesNombre + ' de ' + anioFecha + '</span></div></div></div><div class="flex-1"></div><div class="text-right"><p style="font-family: \'Georgia\', serif; font-size: 20px; color: ' + accentColor + '; font-weight: 700; font-style: italic; text-transform: lowercase; letter-spacing: 1px; margin-bottom: 8px;">lic. josé francisco alejandro ruiz robles</p><p style="font-family: \'Arial\', sans-serif; font-size: 14px; color: #374151; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">CORREDOR PÚBLICO NÚMERO 22 DE LA PLAZA DE LA CIUDAD DE MÉXICO</p><div style="width: 80px; height: 3px; background: ' + accentColor + '; margin: 12px auto 0;"></div></div></div></div></div>';
     document.getElementById('btnImprimirCaratula').classList.remove('hidden');
   }
 
   function renderClasificacion() {
     const tipos = {};
-    avaluoos.forEach(a => { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
-    document.getElementById('classTipo').innerHTML = Object.keys(tipos).length ? Object.entries(tipos).map(([t, c]) => `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">${escapeHtml(t)}</span><span class="text-sm font-bold text-slate-900">${c}</span></div>`).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
+    avaluoos.forEach(function(a) { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
+    document.getElementById('classTipo').innerHTML = Object.keys(tipos).length ? Object.entries(tipos).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">' + escapeHtml(entry[0]) + '</span><span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
     const estados = { vigente: 0, por_vencer: 0, vencido: 0, concluido: 0 };
-    avaluoos.forEach(a => { const e = getEstado(a); if (estados.hasOwnProperty(e)) estados[e]++; });
-    document.getElementById('classEstado').innerHTML = Object.entries(estados).map(([e, c]) => `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">${estadoBadge(e)}<span class="text-sm font-bold text-slate-900">${c}</span></div>`).join('');
+    avaluoos.forEach(function(a) { const e = getEstado(a); if (estados.hasOwnProperty(e)) estados[e]++; });
+    document.getElementById('classEstado').innerHTML = Object.entries(estados).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">' + estadoBadge(entry[0]) + '<span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('');
     const anios = {};
-    avaluoos.forEach(a => { const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : 'N/A'); anios[anio] = (anios[anio] || 0) + 1; });
-    document.getElementById('classAnio').innerHTML = Object.keys(anios).length ? Object.entries(anios).sort((a,b) => String(b[0]).localeCompare(String(a[0]))).map(([y, c]) => `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">${escapeHtml(y)}</span><span class="text-sm font-bold text-slate-900">${c}</span></div>`).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
+    avaluoos.forEach(function(a) { const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : 'N/A'); anios[anio] = (anios[anio] || 0) + 1; });
+    document.getElementById('classAnio').innerHTML = Object.keys(anios).length ? Object.entries(anios).sort(function(a,b) { return String(b[0]).localeCompare(String(a[0])); }).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">' + escapeHtml(entry[0]) + '</span><span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
     const sols = {};
-    avaluoos.forEach(a => { sols[a.solicitante] = (sols[a.solicitante] || 0) + 1; });
-    document.getElementById('classSolicitantes').innerHTML = Object.keys(sols).length ? Object.entries(sols).sort((a,b) => b[1]-a[1]).slice(0, 5).map(([s, c]) => `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium truncate">${escapeHtml(s)}</span><span class="text-sm font-bold text-slate-900">${c}</span></div>`).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
+    avaluoos.forEach(function(a) { sols[a.solicitante] = (sols[a.solicitante] || 0) + 1; });
+    document.getElementById('classSolicitantes').innerHTML = Object.keys(sols).length ? Object.entries(sols).sort(function(a,b) { return b[1]-a[1]; }).slice(0, 5).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium truncate">' + escapeHtml(entry[0]) + '</span><span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
   }
 
   function renderReportes() {
     const anios = {};
-    avaluoos.forEach(a => { const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : 'N/A'); anios[anio] = (anios[anio] || 0) + Number(a.valorEstimado || 0); });
+    avaluoos.forEach(function(a) { const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : 'N/A'); anios[anio] = (anios[anio] || 0) + Number(a.valorEstimado || 0); });
     const valores = Object.values(anios);
-    const maxVal = valores.length ? Math.max(...valores, 1) : 1;
-    document.getElementById('reportAnio').innerHTML = Object.keys(anios).length ? Object.entries(anios).sort((a,b) => String(b[0]).localeCompare(String(a[0]))).map(([y, v]) => `<div><div class="flex justify-between text-sm mb-1"><span class="font-medium">${escapeHtml(y)}</span><span class="font-semibold">${formatCurrency(v)}</span></div><div class="h-3 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-blue-700" style="width: ${(v/maxVal*100)}%"></div></div></div>`).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
+    const maxVal = valores.length ? Math.max.apply(null, valores.concat([1])) : 1;
+    document.getElementById('reportAnio').innerHTML = Object.keys(anios).length ? Object.entries(anios).sort(function(a,b) { return String(b[0]).localeCompare(String(a[0])); }).map(function(entry) { return '<div><div class="flex justify-between text-sm mb-1"><span class="font-medium">' + escapeHtml(entry[0]) + '</span><span class="font-semibold">' + formatCurrency(entry[1]) + '</span></div><div class="h-3 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-blue-700" style="width: ' + (entry[1]/maxVal*100) + '%"></div></div></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
     const tipos = {};
-    avaluoos.forEach(a => { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
+    avaluoos.forEach(function(a) { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
     const total = avaluoos.length || 1;
-    document.getElementById('reportTipos').innerHTML = Object.keys(tipos).length ? Object.entries(tipos).map(([t, c]) => { const pct = (c/total*100).toFixed(1); return `<div class="flex items-center gap-3"><div class="flex-1"><div class="flex justify-between text-sm mb-1"><span>${escapeHtml(t)}</span><span class="font-semibold">${pct}%</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-amber-600" style="width: ${pct}%"></div></div></div><span class="text-sm font-bold w-8 text-right">${c}</span></div>`; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
+    document.getElementById('reportTipos').innerHTML = Object.keys(tipos).length ? Object.entries(tipos).map(function(entry) { const pct = (entry[1]/total*100).toFixed(1); return '<div class="flex items-center gap-3"><div class="flex-1"><div class="flex justify-between text-sm mb-1"><span>' + escapeHtml(entry[0]) + '</span><span class="font-semibold">' + pct + '%</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-amber-600" style="width: ' + pct + '%"></div></div></div><span class="text-sm font-bold w-8 text-right">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
   }
 
   // ============ ARCHIVOS ============
   function handleFileSelect(files) {
-    Array.from(files).forEach(file => {
+    Array.from(files).forEach(function(file) {
       if (file.size > 5 * 1024 * 1024) { showToast('Archivo demasiado grande: ' + file.name); return; }
       const reader = new FileReader();
       reader.onload = function(e) { currentFiles.push({ name: file.name, size: file.size, type: file.type, data: e.target.result, date: new Date().toISOString() }); renderFileList(); };
@@ -861,7 +899,7 @@
   function renderFileList() {
     const fileList = document.getElementById('fileList');
     if (currentFiles.length === 0) { fileList.innerHTML = ''; return; }
-    fileList.innerHTML = currentFiles.map((file, index) => { const sizeMB = (file.size / (1024 * 1024)).toFixed(2); const icon = file.type.includes('pdf') ? '📄' : file.type.includes('image') ? '🖼️' : '📎'; return `<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"><div class="flex items-center gap-3 flex-1 min-w-0"><span class="text-2xl">${icon}</span><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-900 truncate">${escapeHtml(file.name)}</p><p class="text-xs text-slate-500">${sizeMB} MB</p></div></div><button type="button" onclick="removeFile(${index})" class="p-1.5 hover:bg-red-100 rounded text-red-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>`; }).join('');
+    fileList.innerHTML = currentFiles.map(function(file, index) { const sizeMB = (file.size / (1024 * 1024)).toFixed(2); const icon = file.type.includes('pdf') ? '📄' : file.type.includes('image') ? '🖼️' : '📎'; return '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"><div class="flex items-center gap-3 flex-1 min-w-0"><span class="text-2xl">' + icon + '</span><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-900 truncate">' + escapeHtml(file.name) + '</p><p class="text-xs text-slate-500">' + sizeMB + ' MB</p></div></div><button type="button" onclick="removeFile(' + index + ')" class="p-1.5 hover:bg-red-100 rounded text-red-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>'; }).join('');
   }
   window.removeFile = function(index) { currentFiles.splice(index, 1); renderFileList(); };
 
@@ -871,37 +909,36 @@
     catch (e) { console.error(e); showToast('Error al exportar Excel'); }
   }
   function exportAllToExcel() {
-    const data = avaluoos.map(a => ({ 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion, 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso, 'Número de Aviso': a.numeroAviso, 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': a.anexos, 'Notas': a.notas, 'Archivos': (a.archivos || []).length }));
+    if (avaluoos.length === 0) { showToast('No hay avalúos para exportar'); return; }
+    const data = avaluoos.map(function(a) { return { 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion, 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso, 'Número de Aviso': a.numeroAviso, 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': a.anexos, 'Notas': a.notas, 'Archivos': (a.archivos || []).length }; });
     exportToExcel(data, 'avaluoos_' + new Date().toISOString().split('T')[0] + '.xlsx');
   }
   function exportSingleToExcel(id) {
-    const a = avaluoos.find(x => x.id === id); if (!a) return;
+    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
     const data = [{ 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion, 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso, 'Número de Aviso': a.numeroAviso, 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': a.anexos, 'Notas': a.notas, 'Archivos': (a.archivos || []).length }];
-    const filename = `avaluo_${a.numeroAvaluo}_${a.solicitante.replace(/[^a-zA-Z0-9]/g, '_')}.xlsx`;
+    const filename = 'avaluo_' + a.numeroAvaluo + '_' + a.solicitante.replace(/[^a-zA-Z0-9]/g, '_') + '.xlsx';
     exportToExcel(data, filename);
   }
 
   // ============ BORRAR BASE DE DATOS ============
   function openDeleteModal() {
     if (avaluoos.length === 0) { showToast('La base de datos ya está vacía'); return; }
-    const totalFiles = avaluoos.reduce((sum, a) => sum + (a.archivos || []).length, 0);
+    const totalFiles = avaluoos.reduce(function(sum, a) { return sum + (a.archivos || []).length; }, 0);
     document.getElementById('deleteCount').textContent = avaluoos.length + ' avalúo' + (avaluoos.length !== 1 ? 's' : '');
     document.getElementById('deleteFiles').textContent = totalFiles + ' archivo' + (totalFiles !== 1 ? 's adjuntos' : ' adjunto');
     document.getElementById('confirmDeleteInput').value = '';
     document.getElementById('btnConfirmDelete').disabled = true;
     document.getElementById('confirmDeleteModal').classList.remove('hidden');
   }
-
-  function closeDeleteModal() {
-    document.getElementById('confirmDeleteModal').classList.add('hidden');
-  }
-
+  function closeDeleteModal() { document.getElementById('confirmDeleteModal').classList.add('hidden'); }
   function executeDeleteBD() {
-    avaluoos = [];
-    localStorage.removeItem('avaluoos_v3');
-    closeDeleteModal();
-    render();
-    showToast('Base de datos borrada completamente');
+    if (clearDatabase()) {
+      closeDeleteModal();
+      render();
+      showToast('Base de datos borrada completamente');
+    } else {
+      showToast('Error al borrar la base de datos');
+    }
   }
 
   // ============ FORMULARIO ============
@@ -937,33 +974,34 @@
     currentFiles = a.archivos || []; renderFileList();
   }
   function editAvaluo(id) {
-    const a = avaluoos.find(x => x.id === id); if (!a) return;
+    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
     resetForm(); fillForm(a);
     document.getElementById('viewTitle').textContent = 'Editar Avalúo';
     document.getElementById('viewSubtitle').textContent = 'Modificando avalúo #' + a.numeroAvaluo;
     currentView = 'nuevo';
-    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-    document.getElementById('view-nuevo').classList.remove('hidden');
-    document.querySelectorAll('.nav-btn').forEach(b => { if (b.dataset.view === 'nuevo') b.classList.add('active'); else b.classList.remove('active'); });
+    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+    document.getElementById('view-nuevo').classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b) { if (b.dataset.view === 'nuevo') b.classList.add('active'); else b.classList.remove('active'); });
     window.scrollTo(0, 0);
   }
   function deleteAvaluo(id) {
-    const a = avaluoos.find(x => x.id === id); if (!a) return;
+    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
     if (!confirm('¿Estás seguro de eliminar el avalúo #' + a.numeroAvaluo + '?')) return;
-    avaluoos = avaluoos.filter(x => x.id !== id); saveData(); render();
-    showToast('Avalúo eliminado');
+    avaluoos = avaluoos.filter(function(x) { return x.id !== id; });
+    if (saveData()) { render(); showToast('Avalúo eliminado'); }
+    else { showToast('Error al eliminar'); }
   }
 
   // ============ MODAL DETALLE ============
   function viewDetail(id) {
-    const a = avaluoos.find(x => x.id === id); if (!a) return;
+    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
     const estado = getEstado(a);
     const archivos = a.archivos || [];
-    const archivosHTML = archivos.length > 0 ? archivos.map((file) => { const sizeMB = (file.size / (1024 * 1024)).toFixed(2); const icon = file.type.includes('pdf') ? '📄' : file.type.includes('image') ? '🖼️' : '📎'; return `<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"><div class="flex items-center gap-3 flex-1 min-w-0"><span class="text-2xl">${icon}</span><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-900 truncate">${escapeHtml(file.name)}</p><p class="text-xs text-slate-500">${sizeMB} MB</p></div></div><div class="flex gap-2"><a href="${file.data}" download="${escapeHtml(file.name)}" class="px-3 py-1.5 bg-blue-600 text-white rounded text-xs font-medium hover:bg-blue-700">Descargar</a>${file.type.includes('image') ? `<button onclick="viewImage('${file.data}')" class="px-3 py-1.5 bg-slate-600 text-white rounded text-xs font-medium hover:bg-slate-700">Ver</button>` : ''}</div></div>`; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin archivos adjuntos</p>';
-    document.getElementById('modalContent').innerHTML = `<div class="space-y-4"><div class="flex justify-between items-start"><div class="flex-1 min-w-0"><p class="text-xs text-slate-500">Avalúo #${escapeHtml(a.numeroAvaluo)} ${a.numeroSerie ? '• Serie: ' + escapeHtml(a.numeroSerie) : ''}</p><h4 class="text-xl font-bold mt-1">${escapeHtml(a.bienObjeto)}</h4><p class="text-sm text-slate-600 mt-1">${escapeHtml(a.direccion)}</p></div>${estadoBadge(estado)}</div><div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200"><div><p class="text-xs text-slate-500">Tipo</p><p class="font-medium">${escapeHtml(a.tipoAvaluo)}</p></div><div><p class="text-xs text-slate-500">Fecha</p><p class="font-medium">${formatDateShort(a.fecha)}</p></div><div><p class="text-xs text-slate-500">Solicitante</p><p class="font-medium">${escapeHtml(a.solicitante)}</p></div><div><p class="text-xs text-slate-500">Propietario</p><p class="font-medium">${escapeHtml(a.propietario || '-')}</p></div><div><p class="text-xs text-slate-500">Superficie Terreno</p><p class="font-medium">${a.superficie || '-'} m²</p></div><div><p class="text-xs text-slate-500">Superficie Construcción</p><p class="font-medium">${a.superficieConstruccion || '-'} m²</p></div><div><p class="text-xs text-slate-500">Enfoque</p><p class="font-medium">${escapeHtml(a.enfoque || '-')}</p></div><div><p class="text-xs text-slate-500">Páginas</p><p class="font-medium">${a.paginas || '-'}</p></div><div class="col-span-2 bg-slate-50 p-4 rounded-lg"><p class="text-xs text-slate-500">Valor Estimado</p><p class="text-2xl font-bold text-slate-900">${formatCurrency(a.valorEstimado)}</p><p class="text-xs text-slate-500 mt-1">Vigencia: ${a.vigenciaDias || 180} días</p></div><div><p class="text-xs text-slate-500">Fecha Aviso</p><p class="font-medium">${formatDateShort(a.fechaAviso)}</p></div><div><p class="text-xs text-slate-500">No. Aviso</p><p class="font-medium">${escapeHtml(a.numeroAviso || '-')}</p></div>${a.descripcion ? `<div class="col-span-2"><p class="text-xs text-slate-500">Descripción</p><p class="text-sm">${escapeHtml(a.descripcion)}</p></div>` : ''}${a.anexos ? `<div class="col-span-2"><p class="text-xs text-slate-500">Anexos</p><p class="text-sm">${escapeHtml(a.anexos)}</p></div>` : ''}${a.notas ? `<div class="col-span-2"><p class="text-xs text-slate-500">Notas</p><p class="text-sm">${escapeHtml(a.notas)}</p></div>` : ''}</div><div class="pt-4 border-t border-slate-200"><h5 class="font-bold mb-3 flex items-center gap-2"><svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Archivos Adjuntos (${archivos.length})</h5><div class="space-y-2">${archivosHTML}</div></div><div class="flex gap-2 pt-4 border-t border-slate-200 flex-wrap"><button data-action="edit" data-id="${a.id}" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Editar</button><button data-action="download-single" data-id="${a.id}" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Descargar Excel</button><button data-action="go-caratula" data-id="${a.id}" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700">Generar Carátula</button><button data-action="close-modal" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">Cerrar</button></div></div>`;
+    const archivosHTML = archivos.length > 0 ? archivos.map(function(file) { const sizeMB = (file.size / (1024 * 1024)).toFixed(2); const icon = file.type.includes('pdf') ? '📄' : file.type.includes('image') ? '🖼️' : '📎'; return '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"><div class="flex items-center gap-3 flex-1 min-w-0"><span class="text-2xl">' + icon + '</span><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-900 truncate">' + escapeHtml(file.name) + '</p><p class="text-xs text-slate-500">' + sizeMB + ' MB</p></div></div><div class="flex gap-2"><a href="' + file.data + '" download="' + escapeHtml(file.name) + '" class="px-3 py-1.5 bg-blue-600 text-white rounded text-xs font-medium hover:bg-blue-700">Descargar</a>' + (file.type.includes('image') ? '<button onclick="viewImage(\'' + file.data + '\')" class="px-3 py-1.5 bg-slate-600 text-white rounded text-xs font-medium hover:bg-slate-700">Ver</button>' : '') + '</div></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin archivos adjuntos</p>';
+    document.getElementById('modalContent').innerHTML = '<div class="space-y-4"><div class="flex justify-between items-start"><div class="flex-1 min-w-0"><p class="text-xs text-slate-500">Avalúo #' + escapeHtml(a.numeroAvaluo) + (a.numeroSerie ? ' • Serie: ' + escapeHtml(a.numeroSerie) : '') + '</p><h4 class="text-xl font-bold mt-1">' + escapeHtml(a.bienObjeto) + '</h4><p class="text-sm text-slate-600 mt-1">' + escapeHtml(a.direccion) + '</p></div>' + estadoBadge(estado) + '</div><div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200"><div><p class="text-xs text-slate-500">Tipo</p><p class="font-medium">' + escapeHtml(a.tipoAvaluo) + '</p></div><div><p class="text-xs text-slate-500">Fecha</p><p class="font-medium">' + formatDateShort(a.fecha) + '</p></div><div><p class="text-xs text-slate-500">Solicitante</p><p class="font-medium">' + escapeHtml(a.solicitante) + '</p></div><div><p class="text-xs text-slate-500">Propietario</p><p class="font-medium">' + escapeHtml(a.propietario || '-') + '</p></div><div><p class="text-xs text-slate-500">Superficie Terreno</p><p class="font-medium">' + (a.superficie || '-') + ' m²</p></div><div><p class="text-xs text-slate-500">Superficie Construcción</p><p class="font-medium">' + (a.superficieConstruccion || '-') + ' m²</p></div><div><p class="text-xs text-slate-500">Enfoque</p><p class="font-medium">' + escapeHtml(a.enfoque || '-') + '</p></div><div><p class="text-xs text-slate-500">Páginas</p><p class="font-medium">' + (a.paginas || '-') + '</p></div><div class="col-span-2 bg-slate-50 p-4 rounded-lg"><p class="text-xs text-slate-500">Valor Estimado</p><p class="text-2xl font-bold text-slate-900">' + formatCurrency(a.valorEstimado) + '</p><p class="text-xs text-slate-500 mt-1">Vigencia: ' + (a.vigenciaDias || 180) + ' días</p></div><div><p class="text-xs text-slate-500">Fecha Aviso</p><p class="font-medium">' + formatDateShort(a.fechaAviso) + '</p></div><div><p class="text-xs text-slate-500">No. Aviso</p><p class="font-medium">' + escapeHtml(a.numeroAviso || '-') + '</p></div>' + (a.descripcion ? '<div class="col-span-2"><p class="text-xs text-slate-500">Descripción</p><p class="text-sm">' + escapeHtml(a.descripcion) + '</p></div>' : '') + (a.anexos ? '<div class="col-span-2"><p class="text-xs text-slate-500">Anexos</p><p class="text-sm">' + escapeHtml(a.anexos) + '</p></div>' : '') + (a.notas ? '<div class="col-span-2"><p class="text-xs text-slate-500">Notas</p><p class="text-sm">' + escapeHtml(a.notas) + '</p></div>' : '') + '</div><div class="pt-4 border-t border-slate-200"><h5 class="font-bold mb-3 flex items-center gap-2"><svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Archivos Adjuntos (' + archivos.length + ')</h5><div class="space-y-2">' + archivosHTML + '</div></div><div class="flex gap-2 pt-4 border-t border-slate-200 flex-wrap"><button data-action="edit" data-id="' + a.id + '" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Editar</button><button data-action="download-single" data-id="' + a.id + '" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Descargar Excel</button><button data-action="go-caratula" data-id="' + a.id + '" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700">Generar Carátula</button><button data-action="close-modal" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">Cerrar</button></div></div>';
     document.getElementById('detailModal').classList.remove('hidden');
   }
-  window.viewImage = function(dataUrl) { const w = window.open('', '_blank'); w.document.write(`<html><body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000"><img src="${dataUrl}" style="max-width:100%;max-height:100vh"></body></html>`); };
+  window.viewImage = function(dataUrl) { const w = window.open('', '_blank'); if (w) w.document.write('<html><body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000"><img src="' + dataUrl + '" style="max-width:100%;max-height:100vh"></body></html>'); };
   function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
 
   function importData() { document.getElementById('importFile').click(); }
@@ -971,24 +1009,23 @@
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = function(ev) {
-      try { const data = JSON.parse(ev.target.result); if (Array.isArray(data)) { if (confirm('¿Reemplazar todos los datos actuales con los del archivo?')) { avaluoos = data; saveData(); render(); showToast('Datos importados: ' + data.length + ' registros'); } } else { showToast('Formato inválido'); } }
+      try { const data = JSON.parse(ev.target.result); if (Array.isArray(data)) { if (confirm('¿Reemplazar todos los datos actuales con los del archivo? (' + data.length + ' registros)')) { avaluoos = data; if (saveData()) { render(); showToast('Datos importados: ' + data.length + ' registros'); } } } else { showToast('Formato inválido'); } }
       catch (err) { showToast('Error al importar archivo'); }
     };
     reader.readAsText(file); e.target.value = '';
   }
   function printReport() {
-    try { const w = window.open('', '_blank'); if (!w) { showToast('Permite las ventanas emergentes'); return; } const rows = avaluoos.map(a => `<tr><td>${escapeHtml(a.numeroAvaluo)}</td><td>${escapeHtml(a.solicitante)}</td><td>${escapeHtml(a.tipoAvaluo)}</td><td>${escapeHtml(a.bienObjeto)}</td><td>${formatDateShort(a.fecha)}</td><td style="text-align:right">${formatCurrency(a.valorEstimado)}</td><td>${getEstado(a)}</td></tr>`).join(''); w.document.write(`<html><head><title>Reporte de Avalúos</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1e293b}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;font-size:12px}th{background:#f1f5f9;font-weight:bold}h1{color:#0f172a;margin-bottom:4px}.meta{color:#64748b;font-size:12px;margin-bottom:20px}</style></head><body><h1>Reporte de Avalúos</h1><p class="meta">Generado: ${new Date().toLocaleDateString('es-MX')} | Total: ${avaluoos.length} avalúos</p><table><thead><tr><th>No.</th><th>Solicitante</th><th>Tipo</th><th>Bien</th><th>Fecha</th><th>Valor</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table></body></html>`); w.document.close(); setTimeout(() => { w.print(); }, 300); }
+    try { const w = window.open('', '_blank'); if (!w) { showToast('Permite las ventanas emergentes'); return; } const rows = avaluoos.map(function(a) { return '<tr><td>' + escapeHtml(a.numeroAvaluo) + '</td><td>' + escapeHtml(a.solicitante) + '</td><td>' + escapeHtml(a.tipoAvaluo) + '</td><td>' + escapeHtml(a.bienObjeto) + '</td><td>' + formatDateShort(a.fecha) + '</td><td style="text-align:right">' + formatCurrency(a.valorEstimado) + '</td><td>' + getEstado(a) + '</td></tr>'; }).join(''); w.document.write('<html><head><title>Reporte de Avalúos</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1e293b}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;font-size:12px}th{background:#f1f5f9;font-weight:bold}h1{color:#0f172a;margin-bottom:4px}.meta{color:#64748b;font-size:12px;margin-bottom:20px}</style></head><body><h1>Reporte de Avalúos</h1><p class="meta">Generado: ' + new Date().toLocaleDateString('es-MX') + ' | Total: ' + avaluoos.length + ' avalúos</p><table><thead><tr><th>No.</th><th>Solicitante</th><th>Tipo</th><th>Bien</th><th>Fecha</th><th>Valor</th><th>Estado</th></tr></thead><tbody>' + rows + '</tbody></table></body></html>'); w.document.close(); setTimeout(function() { w.print(); }, 300); }
     catch (e) { showToast('Error al imprimir'); }
   }
   function printCaratula() { window.print(); }
 
   // ============ EVENTOS ============
   function setupEvents() {
-    document.querySelectorAll('.nav-btn').forEach(btn => { btn.addEventListener('click', function() { const view = this.dataset.view; if (view === 'nuevo') resetForm(); showView(view); }); });
+    document.querySelectorAll('.nav-btn').forEach(function(btn) { btn.addEventListener('click', function() { const view = this.dataset.view; if (view === 'nuevo') resetForm(); showView(view); }); });
     document.getElementById('btnExport').addEventListener('click', exportAllToExcel);
     document.getElementById('btnExportExcel').addEventListener('click', exportAllToExcel);
     document.getElementById('btnNuevo').addEventListener('click', function() { resetForm(); showView('nuevo'); });
-    document.getElementById('btnEmptyNuevo').addEventListener('click', function() { resetForm(); showView('nuevo'); });
 
     document.getElementById('searchInput').addEventListener('input', renderAvaluoos);
     document.getElementById('filterAnio').addEventListener('change', renderAvaluoos);
@@ -1009,28 +1046,28 @@
     document.getElementById('btnClearFilters').addEventListener('click', clearAllFilters);
     document.getElementById('btnClearFromEmpty').addEventListener('click', clearAllFilters);
 
-    document.querySelectorAll('[data-rango]').forEach(btn => { btn.addEventListener('click', function() { const rango = Number(this.dataset.rango); if (rango === 1000000) { document.getElementById('filterMontoMin').value = ''; document.getElementById('filterMontoMax').value = 1000000; } else if (rango === 10000000) { document.getElementById('filterMontoMin').value = 1000000; document.getElementById('filterMontoMax').value = 10000000; } else if (rango === 100000000) { document.getElementById('filterMontoMin').value = 10000000; document.getElementById('filterMontoMax').value = 100000000; } else if (rango === 1000000000) { document.getElementById('filterMontoMin').value = 100000000; document.getElementById('filterMontoMax').value = 1000000000; } else if (rango === 99999999999) { document.getElementById('filterMontoMin').value = 1000000000; document.getElementById('filterMontoMax').value = ''; } renderAvaluoos(); }); });
+    document.querySelectorAll('[data-rango]').forEach(function(btn) { btn.addEventListener('click', function() { const rango = Number(this.dataset.rango); if (rango === 1000000) { document.getElementById('filterMontoMin').value = ''; document.getElementById('filterMontoMax').value = 1000000; } else if (rango === 10000000) { document.getElementById('filterMontoMin').value = 1000000; document.getElementById('filterMontoMax').value = 10000000; } else if (rango === 100000000) { document.getElementById('filterMontoMin').value = 10000000; document.getElementById('filterMontoMax').value = 100000000; } else if (rango === 1000000000) { document.getElementById('filterMontoMin').value = 100000000; document.getElementById('filterMontoMax').value = 1000000000; } else if (rango === 99999999999) { document.getElementById('filterMontoMin').value = 1000000000; document.getElementById('filterMontoMax').value = ''; } renderAvaluoos(); }); });
 
     document.addEventListener('click', function(e) { const clearBtn = e.target.closest('[data-clear-filter]'); if (clearBtn) { clearFilter(clearBtn.dataset.clearFilter); return; } });
 
     const fileUploadZone = document.getElementById('fileUploadZone');
     const fileInput = document.getElementById('fileInput');
-    fileUploadZone.addEventListener('click', () => fileInput.click());
-    fileUploadZone.addEventListener('dragover', (e) => { e.preventDefault(); fileUploadZone.classList.add('dragover'); });
-    fileUploadZone.addEventListener('dragleave', () => { fileUploadZone.classList.remove('dragover'); });
-    fileUploadZone.addEventListener('drop', (e) => { e.preventDefault(); fileUploadZone.classList.remove('dragover'); handleFileSelect(e.dataTransfer.files); });
-    fileInput.addEventListener('change', (e) => { handleFileSelect(e.target.files); e.target.value = ''; });
+    fileUploadZone.addEventListener('click', function() { fileInput.click(); });
+    fileUploadZone.addEventListener('dragover', function(e) { e.preventDefault(); fileUploadZone.classList.add('dragover'); });
+    fileUploadZone.addEventListener('dragleave', function() { fileUploadZone.classList.remove('dragover'); });
+    fileUploadZone.addEventListener('drop', function(e) { e.preventDefault(); fileUploadZone.classList.remove('dragover'); handleFileSelect(e.dataTransfer.files); });
+    fileInput.addEventListener('change', function(e) { handleFileSelect(e.target.files); e.target.value = ''; });
 
     document.getElementById('avaluoForm').addEventListener('submit', function(e) {
       e.preventDefault();
       try {
         const idVal = document.getElementById('formId').value;
         const fechaVal = document.getElementById('fecha').value;
-        const data = { id: idVal ? Number(idVal) : Date.now(), numeroAvaluo: document.getElementById('numeroAvaluo').value.trim(), tipoAvaluo: document.getElementById('tipoAvaluo').value, fecha: fechaVal, anioRegistro: Number(document.getElementById('anioRegistro').value) || (fechaVal ? new Date(fechaVal).getFullYear() : new Date().getFullYear()), solicitante: document.getElementById('solicitante').value.trim(), propietario: document.getElementById('propietario').value.trim(), bienObjeto: document.getElementById('bienObjeto').value.trim(), direccion: document.getElementById('direccion').value.trim(), superficie: Number(document.getElementById('superficie').value) || null, superficieConstruccion: Number(document.getElementById('superficieConstruccion').value) || null, descripcion: document.getElementById('descripcion').value.trim(), valorEstimado: Number(document.getElementById('valorEstimado').value) || 0, vigenciaDias: Number(document.getElementById('vigenciaDias').value) || 180, numeroSerie: document.getElementById('numeroSerie').value.trim(), estado: document.getElementById('estado').value, fechaAviso: document.getElementById('fechaAviso').value, numeroAviso: document.getElementById('numeroAviso').value.trim(), notas: document.getElementById('notas').value.trim(), anexos: document.getElementById('anexos').value.trim(), enfoque: document.getElementById('enfoque').value, paginas: Number(document.getElementById('paginas').value) || null, archivos: [...currentFiles] };
-        if (idVal) { avaluoos = avaluoos.map(a => a.id === Number(idVal) ? data : a); showToast('Avalúo actualizado'); }
-        else { avaluoos.push(data); showToast('Avalúo creado'); }
-        saveData(); resetForm(); showView('avaluos');
-      } catch (err) { console.error(err); showToast('Error al guardar'); }
+        const data = { id: idVal ? Number(idVal) : Date.now(), numeroAvaluo: document.getElementById('numeroAvaluo').value.trim(), tipoAvaluo: document.getElementById('tipoAvaluo').value, fecha: fechaVal, anioRegistro: Number(document.getElementById('anioRegistro').value) || (fechaVal ? new Date(fechaVal).getFullYear() : new Date().getFullYear()), solicitante: document.getElementById('solicitante').value.trim(), propietario: document.getElementById('propietario').value.trim(), bienObjeto: document.getElementById('bienObjeto').value.trim(), direccion: document.getElementById('direccion').value.trim(), superficie: Number(document.getElementById('superficie').value) || null, superficieConstruccion: Number(document.getElementById('superficieConstruccion').value) || null, descripcion: document.getElementById('descripcion').value.trim(), valorEstimado: Number(document.getElementById('valorEstimado').value) || 0, vigenciaDias: Number(document.getElementById('vigenciaDias').value) || 180, numeroSerie: document.getElementById('numeroSerie').value.trim(), estado: document.getElementById('estado').value, fechaAviso: document.getElementById('fechaAviso').value, numeroAviso: document.getElementById('numeroAviso').value.trim(), notas: document.getElementById('notas').value.trim(), anexos: document.getElementById('anexos').value.trim(), enfoque: document.getElementById('enfoque').value, paginas: Number(document.getElementById('paginas').value) || null, archivos: currentFiles.slice() };
+        if (idVal) { avaluoos = avaluoos.map(function(a) { return a.id === Number(idVal) ? data : a; }); if (saveData()) { showToast('Avalúo actualizado correctamente'); } }
+        else { avaluoos.push(data); if (saveData()) { showToast('Avalúo creado correctamente'); } }
+        resetForm(); showView('avaluos');
+      } catch (err) { console.error(err); showToast('Error al guardar: ' + err.message); }
     });
 
     document.getElementById('btnCancelar').addEventListener('click', function() { resetForm(); showView('avaluos'); });
@@ -1040,18 +1077,11 @@
     document.getElementById('btnPrint').addEventListener('click', printReport);
     document.getElementById('importFile').addEventListener('change', handleImport);
 
-    // ====== BORRAR BASE DE DATOS ======
     document.getElementById('btnBorrarBD').addEventListener('click', openDeleteModal);
     document.getElementById('btnExportarAntes').addEventListener('click', function() { exportAllToExcel(); });
     document.getElementById('btnCancelDelete').addEventListener('click', closeDeleteModal);
-    document.getElementById('confirmDeleteInput').addEventListener('input', function() {
-      document.getElementById('btnConfirmDelete').disabled = this.value.trim() !== 'BORRAR';
-    });
-    document.getElementById('btnConfirmDelete').addEventListener('click', function() {
-      if (this.disabled) return;
-      if (document.getElementById('confirmDeleteInput').value.trim() !== 'BORRAR') return;
-      executeDeleteBD();
-    });
+    document.getElementById('confirmDeleteInput').addEventListener('input', function() { document.getElementById('btnConfirmDelete').disabled = this.value.trim() !== 'BORRAR'; });
+    document.getElementById('btnConfirmDelete').addEventListener('click', function() { if (!this.disabled && document.getElementById('confirmDeleteInput').value.trim() === 'BORRAR') { executeDeleteBD(); } });
 
     document.getElementById('btnCloseModal').addEventListener('click', closeModal);
     document.getElementById('detailModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
@@ -1075,7 +1105,14 @@
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeModal(); closeDeleteModal(); } });
   }
 
-  function init() { loadData(); seedData(); setupEvents(); showView('dashboard'); }
+  function init() {
+    loadData();
+    seedData();
+    setupEvents();
+    showView('dashboard');
+    console.log('Base de datos cargada: ' + avaluoos.length + ' registros');
+  }
+
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
   else { init(); }
 })();
