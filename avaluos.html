@@ -6,6 +6,8 @@
 <title>Control de Avalúos | CP22 Correduría Pública</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
 <style>
   body { font-family: 'Inter', sans-serif; }
@@ -59,6 +61,14 @@
   
   .view { display: none; }
   .view.active { display: block; }
+  
+  .tag-item { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #dbeafe; color: #1e40af; border-radius: 9999px; font-size: 13px; font-weight: 500; margin: 3px; }
+  .tag-item button { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(30, 64, 175, 0.2); color: #1e40af; font-size: 11px; transition: all 0.15s; }
+  .tag-item button:hover { background: #1e40af; color: white; }
+  
+  .checkbox-list label { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+  .checkbox-list label:hover { background: #f1f5f9; }
+  .checkbox-list input[type="checkbox"] { width: 16px; height: 16px; accent-color: #1e293b; }
 </style>
 </head>
 <body class="bg-slate-100 text-slate-800">
@@ -224,7 +234,7 @@
                 <div class="pt-4 mt-4 border-t border-slate-200">
                   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Año</label><select id="filterAnio" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 text-sm"><option value="">Todos los años</option></select></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tipo de Avalúo</label><select id="filterTipo" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 text-sm"><option value="">Todos los tipos</option><option>Estimación de Valor</option><option>Valor Comercial</option><option>Valor Catastral</option><option>Valor de Mercado</option><option>Avalúo Bancario</option><option>Avalúo Judicial</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tipo de Avalúo</label><select id="filterTipo" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 text-sm"><option value="">Todos los tipos</option><option>Estimación de Valor</option><option>Valor Comercial</option><option>Valor Catastral</option><option>Valor de Mercado</option><option>Avalúo Bancario</option><option>Avalúo Judicial</option><option>Valor de Marca</option></select></div>
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Estado</label><select id="filterEstado" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 text-sm"><option value="">Todos los estados</option><option value="vigente">Vigente</option><option value="por_vencer">Por vencer</option><option value="vencido">Vencido</option><option value="concluido">Concluido</option></select></div>
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Empresa / Solicitante</label><select id="filterSolicitante" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 text-sm"><option value="">Todas las empresas</option></select></div>
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Enfoque de Valuación</label><select id="filterEnfoque" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 text-sm"><option value="">Todos los enfoques</option><option>Comparativo de Mercado</option><option>Costos</option><option>Ingresos</option><option>Mixto</option></select></div>
@@ -313,10 +323,10 @@
               <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">1</span>Información General</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label class="block text-sm font-medium text-slate-700 mb-1">Número de Avalúo *</label><input type="text" id="numeroAvaluo" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Tipo de Avalúo *</label><select id="tipoAvaluo" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"><option value="">Seleccionar...</option><option>Estimación de Valor</option><option>Valor Comercial</option><option>Valor Catastral</option><option>Valor de Mercado</option><option>Avalúo Bancario</option><option>Avalúo Judicial</option></select></div>
+                <div><label class="block text-sm font-medium text-slate-700 mb-1">Tipo de Avalúo *</label><select id="tipoAvaluo" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"><option value="Estimación de Valor">Estimación de Valor</option><option>Valor Comercial</option><option>Valor Catastral</option><option>Valor de Mercado</option><option>Avalúo Bancario</option><option>Avalúo Judicial</option><option>Valor de Marca</option></select></div>
                 <div><label class="block text-sm font-medium text-slate-700 mb-1">Fecha *</label><input type="date" id="fecha" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Año de Registro</label><input type="number" id="anioRegistro" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Número de Serie</label><input type="text" id="numeroSerie" placeholder="Ej: CP22-2025" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                <div><label class="block text-sm font-medium text-slate-700 mb-1">Año de Registro *</label><select id="anioRegistro" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></select></div>
+                <div><label class="block text-sm font-medium text-slate-700 mb-1">Número de Serie (autogenerado)</label><input type="text" id="numeroSerie" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:ring-2 focus:ring-slate-900 focus:border-transparent" readonly></div>
                 <div><label class="block text-sm font-medium text-slate-700 mb-1">Páginas del Dictamen</label><input type="number" id="paginas" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
               </div>
             </div>
@@ -329,11 +339,47 @@
             </div>
             <div>
               <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">3</span>Bien Objeto del Avalúo</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Bien Objeto del Avalúo *</label><input type="text" id="bienObjeto" required placeholder="Ej: Inmueble, Terreno, Desarrollo Inmobiliario..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Dirección *</label><input type="text" id="direccion" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Superficie Terreno (m²)</label><input type="number" step="0.01" id="superficie" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Superficie Construcción (m²)</label><input type="number" step="0.01" id="superficieConstruccion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1">Tipo de Bien *</label>
+                  <select id="tipoBien" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent">
+                    <option value="Inmueble">Inmueble</option>
+                    <option value="Terreno">Terreno</option>
+                    <option value="Marca">Marca / Valor de Marca</option>
+                    <option value="Maquinaria">Maquinaria y Equipo</option>
+                    <option value="Vehículo">Vehículo</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1">Bien Objeto del Avalúo *</label>
+                  <input type="text" id="bienObjeto" required placeholder="Selecciona o escribe el bien..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent">
+                  <div id="bienSugerencias" class="mt-2 flex flex-wrap gap-2"></div>
+                </div>
+                
+                <!-- Submenu Inmueble -->
+                <div id="submenuInmueble" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                  <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Dirección *</label><input type="text" id="direccion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Superficie Terreno (m²)</label><input type="number" step="0.01" id="superficie" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Superficie Construcción (m²)</label><input type="number" step="0.01" id="superficieConstruccion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                </div>
+                
+                <!-- Submenu Marca -->
+                <div id="submenuMarca" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-purple-50 rounded-lg border border-purple-100">
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Nombre Comercial</label><input type="text" id="marcaNombre" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Registro de Marca (IMPI)</label><input type="text" id="marcaRegistro" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Giro / Sector</label><input type="text" id="marcaGiro" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Año de Fundación</label><input type="number" id="marcaAnio" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Titular de la Marca</label><input type="text" id="marcaTitular" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                </div>
+                
+                <!-- Submenu Genérico -->
+                <div id="submenuGenerico" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Identificador / Serie</label><input type="text" id="genericoId" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Ubicación</label><input type="text" id="genericoUbicacion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Características</label><textarea id="genericoCaract" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea></div>
+                </div>
+                
                 <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Descripción Breve</label><textarea id="descripcion" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea></div>
               </div>
             </div>
@@ -348,15 +394,45 @@
             </div>
             <div>
               <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">5</span>Aviso y Documentación</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Fecha de Aviso</label><input type="date" id="fechaAviso" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div><label class="block text-sm font-medium text-slate-700 mb-1">Número de Aviso</label><input type="text" id="numeroAviso" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
-                <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Anexos / Documentos</label><textarea id="anexos" rows="2" placeholder="Ej: Boleta predial, Escritura, Cédula profesional..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea></div>
-                <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Notas / Observaciones</label><textarea id="notas" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea></div>
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                  <input type="checkbox" id="sinAvisos" class="w-4 h-4 accent-slate-900">
+                  <label for="sinAvisos" class="text-sm font-medium text-slate-700 cursor-pointer">No se dieron avisos</label>
+                </div>
+                <div id="avisosFields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Fecha de Aviso</label><input type="date" id="fechaAviso" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                  <div><label class="block text-sm font-medium text-slate-700 mb-1">Número de Aviso</label><input type="text" id="numeroAviso" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
+                </div>
               </div>
             </div>
             <div>
-              <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">6</span>Archivos del Avalúo</h3>
+              <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">6</span>Anexos</h3>
+              <div class="space-y-3">
+                <div class="checkbox-list grid grid-cols-1 md:grid-cols-2 gap-1">
+                  <label><input type="checkbox" class="anexo-check" value="Lista de Corredores Públicos (DOF 09/10/2018)"> Lista de Corredores Públicos (DOF 09/10/2018)</label>
+                  <label><input type="checkbox" class="anexo-check" value="ACUERDO Comisión de Carrera Judicial 2025"> ACUERDO Comisión de Carrera Judicial 2025</label>
+                  <label><input type="checkbox" class="anexo-check" value="Cédula Profesional y Habilitación SE"> Cédula Profesional y Habilitación SE</label>
+                  <label><input type="checkbox" class="anexo-check" value="Acta Constitutiva del Solicitante"> Acta Constitutiva del Solicitante</label>
+                  <label><input type="checkbox" class="anexo-check" value="Identificación del Representante Legal"> Identificación del Representante Legal</label>
+                  <label><input type="checkbox" class="anexo-check" value="Escritura Pública de Compraventa"> Escritura Pública de Compraventa</label>
+                  <label><input type="checkbox" class="anexo-check" value="Boleta Predial"> Boleta Predial</label>
+                  <label><input type="checkbox" class="anexo-check" value="Certificado de Libertad de Gravamen"> Certificado de Libertad de Gravamen</label>
+                  <label><input type="checkbox" class="anexo-check" value="Alineamiento y Número Oficial"> Alineamiento y Número Oficial</label>
+                  <label><input type="checkbox" class="anexo-check" value="Uso de Suelo / Zonificación"> Uso de Suelo / Zonificación</label>
+                  <label><input type="checkbox" class="anexo-check" value="Proyecto Arquitectónico"> Proyecto Arquitectónico</label>
+                  <label><input type="checkbox" class="anexo-check" value="Hojas de Trabajo"> Hojas de Trabajo</label>
+                  <label><input type="checkbox" class="anexo-check" value="Reporte Fotográfico"> Reporte Fotográfico</label>
+                  <label><input type="checkbox" class="anexo-check" value="Registro de Marca (IMPI)"> Registro de Marca (IMPI)</label>
+                </div>
+                <div class="flex gap-2">
+                  <input type="text" id="anexoManual" placeholder="Agregar anexo manualmente..." class="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent">
+                  <button type="button" id="btnAgregarAnexo" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Agregar</button>
+                </div>
+                <div id="anexosList" class="flex flex-wrap gap-2"></div>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">7</span>Archivos del Avalúo</h3>
               <div class="space-y-4">
                 <div id="fileUploadZone" class="file-upload-zone">
                   <svg class="w-12 h-12 mx-auto mb-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
@@ -366,6 +442,10 @@
                 </div>
                 <div id="fileList" class="space-y-2"></div>
               </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">8</span>Notas / Observaciones</h3>
+              <textarea id="notas" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea>
             </div>
             <div class="flex gap-3 pt-4 border-t border-slate-200">
               <button type="submit" class="px-6 py-2.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800">Guardar Avalúo</button>
@@ -378,16 +458,16 @@
       <!-- CARÁTULA -->
       <div id="view-caratula" class="view fade-in">
         <div class="mb-6 flex items-center justify-between flex-wrap gap-3">
-          <div><p class="text-sm text-slate-600">Selecciona un avalúo para generar su carátula</p></div>
+          <div><p class="text-sm text-slate-600">Selecciona un avalúo para generar y descargar su carátula en PDF</p></div>
           <div class="flex gap-3 flex-wrap">
             <select id="caratulaSelect" class="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 min-w-[300px]"><option value="">-- Seleccionar avalúo --</option></select>
             <button id="btnGenerarCaratula" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              Generar
+              Previsualizar
             </button>
-            <button id="btnImprimirCaratula" class="hidden px-4 py-2 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-              Imprimir / PDF
+            <button id="btnDescargarPDF" class="hidden px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Descargar PDF
             </button>
           </div>
         </div>
@@ -519,6 +599,16 @@
   let currentView = 'dashboard';
   let selectedCaratulaId = null;
   let currentFiles = [];
+  let selectedAnexos = [];
+
+  const BIENES_SUGERIDOS = {
+    'Inmueble': ['Casa habitación', 'Departamento', 'Oficina corporativa', 'Local comercial', 'Bodega', 'Nave industrial', 'Terreno habitacional', 'Terreno comercial', 'Desarrollo habitacional', 'Centro comercial', 'Hotel', 'Edificio de oficinas'],
+    'Terreno': ['Terreno habitacional', 'Terreno comercial', 'Terreno industrial', 'Terreno agrícola', 'Terreno forestal'],
+    'Marca': ['Marca comercial', 'Marca de servicio', 'Nombre comercial', 'Logotipo', 'Imagen corporativa'],
+    'Maquinaria': ['Maquinaria industrial', 'Equipo de cómputo', 'Mobiliario de oficina', 'Equipo médico', 'Vehículos de carga'],
+    'Vehículo': ['Automóvil', 'Camioneta', 'Camión de carga', 'Motocicleta', 'Maquinaria pesada'],
+    'Otro': []
+  };
 
   // ============ BASE DE DATOS ============
   function loadData() {
@@ -527,46 +617,26 @@
       if (raw) {
         const parsed = JSON.parse(raw);
         avaluoos = Array.isArray(parsed) ? parsed : [];
-      } else {
-        avaluoos = [];
-      }
-    } catch (e) {
-      console.error('Error al cargar la base de datos:', e);
-      avaluoos = [];
-    }
+      } else { avaluoos = []; }
+    } catch (e) { console.error('Error al cargar:', e); avaluoos = []; }
   }
 
   function saveData() {
-    try {
-      localStorage.setItem(DB_KEY, JSON.stringify(avaluoos));
-      return true;
-    } catch (e) {
-      console.error('Error al guardar:', e);
-      showToast('Error al guardar: ' + e.message);
-      return false;
-    }
+    try { localStorage.setItem(DB_KEY, JSON.stringify(avaluoos)); return true; }
+    catch (e) { console.error('Error al guardar:', e); showToast('Error al guardar: ' + e.message); return false; }
   }
 
   function clearDatabase() {
-    try {
-      avaluoos = [];
-      localStorage.removeItem(DB_KEY);
-      return true;
-    } catch (e) {
-      console.error('Error al borrar:', e);
-      return false;
-    }
+    try { avaluoos = []; localStorage.removeItem(DB_KEY); return true; }
+    catch (e) { console.error('Error al borrar:', e); return false; }
   }
 
   function seedData() {
     if (avaluoos.length > 0) return;
     avaluoos = [
-      { id: 1, numeroAvaluo: '14', tipoAvaluo: 'Estimación de Valor', fecha: '2025-09-02', anioRegistro: 2025, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'INMOBILIARIA INE, S.A. DE C.V.', bienObjeto: 'Desarrollo Habitacional Vertical "Periférico 216"', direccion: 'Boulevard Adolfo López Mateos 216, Col. San Pedro de los Pinos, Alcaldía Álvaro Obregón, CDMX, CP 01180', superficie: 1508.43, superficieConstruccion: 4324.26, descripcion: 'Desarrollo de vivienda vertical de 15 niveles, 200 unidades, amenidades premium.', valorEstimado: 348800000, vigenciaDias: 180, numeroSerie: 'CP22-2025', estado: 'vigente', fechaAviso: '2025-09-02', numeroAviso: '14/2025', notas: 'Primera estimación de valor.', anexos: 'Boleta predial, Escritura Pública 17,443, Cédula profesional, Proyecto Periférico 216', enfoque: 'Comparativo de Mercado', paginas: 7, archivos: [] },
-      { id: 2, numeroAvaluo: '13', tipoAvaluo: 'Valor Comercial', fecha: '2025-06-15', anioRegistro: 2025, solicitante: 'BANCO NACIONAL DE MÉXICO', propietario: 'Juan Pérez García', bienObjeto: 'Casa habitación unifamiliar', direccion: 'Calle Reforma 123, Col. Centro, CDMX', superficie: 240, superficieConstruccion: 180, descripcion: 'Casa habitación de 2 niveles.', valorEstimado: 4500000, vigenciaDias: 180, numeroSerie: 'CP22-2025', estado: 'vencido', fechaAviso: '2025-06-15', numeroAviso: '13/2025', notas: '', anexos: '', enfoque: 'Comparativo de Mercado', paginas: 5, archivos: [] },
-      { id: 3, numeroAvaluo: '15', tipoAvaluo: 'Avalúo Bancario', fecha: '2026-10-10', anioRegistro: 2026, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'Desarrollos CAABSA', bienObjeto: 'Terreno industrial', direccion: 'Carretera México-Toluca Km 15, Estado de México', superficie: 5000, superficieConstruccion: 0, descripcion: 'Terreno industrial con acceso a carretera.', valorEstimado: 25000000, vigenciaDias: 180, numeroSerie: 'CP22-2026', estado: 'vigente', fechaAviso: '2026-10-10', numeroAviso: '15/2026', notas: '', anexos: '', enfoque: 'Costos', paginas: 6, archivos: [] },
-      { id: 4, numeroAvaluo: '16', tipoAvaluo: 'Valor de Mercado', fecha: '2024-11-20', anioRegistro: 2024, solicitante: 'HSBC MÉXICO S.A.', propietario: 'María López Torres', bienObjeto: 'Oficina corporativa', direccion: 'Paseo de la Reforma 500, CDMX', superficie: 800, superficieConstruccion: 600, descripcion: 'Oficina en torre corporativa.', valorEstimado: 18000000, vigenciaDias: 180, numeroSerie: 'CP22-2024', estado: 'vencido', fechaAviso: '2024-11-20', numeroAviso: '16/2024', notas: '', anexos: '', enfoque: 'Ingresos', paginas: 8, archivos: [] },
-      { id: 5, numeroAvaluo: '17', tipoAvaluo: 'Estimación de Valor', fecha: '2026-01-15', anioRegistro: 2026, solicitante: 'GRUPO FIBRA UNO', propietario: 'GRUPO FIBRA UNO', bienObjeto: 'Centro Comercial Plaza Norte', direccion: 'Av. Universidad 1500, CDMX', superficie: 12000, superficieConstruccion: 8500, descripcion: 'Centro comercial de 3 niveles.', valorEstimado: 450000000, vigenciaDias: 180, numeroSerie: 'CP22-2026', estado: 'vigente', fechaAviso: '2026-01-15', numeroAviso: '17/2026', notas: '', anexos: '', enfoque: 'Ingresos', paginas: 12, archivos: [] },
-      { id: 6, numeroAvaluo: '18', tipoAvaluo: 'Avalúo Judicial', fecha: '2025-03-10', anioRegistro: 2025, solicitante: 'JUZGADO 5° CIVIL', propietario: 'Roberto Sánchez', bienObjeto: 'Terreno habitacional', direccion: 'Calle Hidalgo 45, Tlalpan, CDMX', superficie: 350, superficieConstruccion: 0, descripcion: 'Terreno para vivienda.', valorEstimado: 3200000, vigenciaDias: 90, numeroSerie: 'CP22-2025', estado: 'concluido', fechaAviso: '2025-03-10', numeroAviso: '18/2025', notas: '', anexos: '', enfoque: 'Comparativo de Mercado', paginas: 4, archivos: [] }
+      { id: 1, numeroAvaluo: '14', tipoAvaluo: 'Estimación de Valor', fecha: '2025-09-02', anioRegistro: 2025, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'INMOBILIARIA INE, S.A. DE C.V.', bienObjeto: 'Desarrollo Habitacional Vertical "Periférico 216"', tipoBien: 'Inmueble', direccion: 'Boulevard Adolfo López Mateos 216, Col. San Pedro de los Pinos, Alcaldía Álvaro Obregón, CDMX, CP 01180', superficie: 1508.43, superficieConstruccion: 4324.26, descripcion: 'Desarrollo de vivienda vertical de 15 niveles, 200 unidades.', valorEstimado: 348800000, vigenciaDias: 180, numeroSerie: 'CP22-2025-14', estado: 'vigente', fechaAviso: '2025-09-02', numeroAviso: '14/2025', notas: '', anexos: ['Lista de Corredores Públicos (DOF 09/10/2018)', 'Cédula Profesional y Habilitación SE', 'Boleta Predial', 'Hojas de Trabajo'], enfoque: 'Comparativo de Mercado', paginas: 7, archivos: [] },
+      { id: 2, numeroAvaluo: '13', tipoAvaluo: 'Valor Comercial', fecha: '2025-06-15', anioRegistro: 2025, solicitante: 'BANCO NACIONAL DE MÉXICO', propietario: 'Juan Pérez García', bienObjeto: 'Casa habitación unifamiliar', tipoBien: 'Inmueble', direccion: 'Calle Reforma 123, Col. Centro, CDMX', superficie: 240, superficieConstruccion: 180, descripcion: 'Casa habitación de 2 niveles.', valorEstimado: 4500000, vigenciaDias: 180, numeroSerie: 'CP22-2025-13', estado: 'vencido', fechaAviso: '2025-06-15', numeroAviso: '13/2025', notas: '', anexos: ['Escritura Pública de Compraventa', 'Boleta Predial'], enfoque: 'Comparativo de Mercado', paginas: 5, archivos: [] },
+      { id: 3, numeroAvaluo: '15', tipoAvaluo: 'Avalúo Bancario', fecha: '2026-10-10', anioRegistro: 2026, solicitante: 'INMOBILIARIA INE, S.A. DE C.V.', propietario: 'Desarrollos CAABSA', bienObjeto: 'Terreno industrial', tipoBien: 'Terreno', direccion: 'Carretera México-Toluca Km 15, Estado de México', superficie: 5000, superficieConstruccion: 0, descripcion: 'Terreno industrial con acceso a carretera.', valorEstimado: 25000000, vigenciaDias: 180, numeroSerie: 'CP22-2026-15', estado: 'vigente', fechaAviso: '2026-10-10', numeroAviso: '15/2026', notas: '', anexos: ['Escritura Pública de Compraventa', 'Uso de Suelo / Zonificación'], enfoque: 'Costos', paginas: 6, archivos: [] }
     ];
     saveData();
   }
@@ -607,7 +677,7 @@
     if (!t) return;
     t.textContent = msg;
     t.classList.remove('hidden');
-    setTimeout(() => { t.classList.add('hidden'); }, 2500);
+    setTimeout(function() { t.classList.add('hidden'); }, 2500);
   }
 
   function getThemeClass(anio) {
@@ -624,6 +694,171 @@
   }
   function getLogoSVG(size) {
     return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="none" stroke="#1e3a8a" stroke-width="4"/><circle cx="50" cy="50" r="45" fill="none" stroke="#6b7280" stroke-width="4" stroke-dasharray="141.4 141.4" stroke-dashoffset="70.7" transform="rotate(180 50 50)"/><circle cx="50" cy="50" r="38" fill="white"/><text x="38" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="24" fill="#1e3a8a">CP</text><text x="65" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="22" fill="#6b7280">22</text><text x="50" y="78" text-anchor="middle" font-family="Arial" font-size="7" fill="#6b7280" letter-spacing="0.5">Correduría Pública</text></svg>';
+  }
+
+  // ============ FORMULARIO HELPERS ============
+  function setDefaultFecha() {
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    document.getElementById('fecha').value = yyyy + '-' + mm + '-' + dd;
+  }
+
+  function populateAnioSelect() {
+    const select = document.getElementById('anioRegistro');
+    const currentYear = new Date().getFullYear();
+    select.innerHTML = '';
+    for (let y = currentYear + 2; y >= currentYear - 10; y--) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      select.appendChild(opt);
+    }
+    select.value = currentYear;
+  }
+
+  function updateNumeroSerie() {
+    const anio = document.getElementById('anioRegistro').value;
+    const numAvaluo = document.getElementById('numeroAvaluo').value.trim();
+    if (anio && numAvaluo) {
+      document.getElementById('numeroSerie').value = 'CP22-' + anio + '-' + numAvaluo;
+    } else {
+      document.getElementById('numeroSerie').value = '';
+    }
+  }
+
+  function updateBienSugerencias() {
+    const tipoBien = document.getElementById('tipoBien').value;
+    const sugerencias = BIENES_SUGERIDOS[tipoBien] || [];
+    const container = document.getElementById('bienSugerencias');
+    if (sugerencias.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = '<p class="text-xs text-slate-500 w-full mb-1">Sugerencias:</p>' + sugerencias.map(function(s) {
+      return '<button type="button" data-bien="' + escapeHtml(s) + '" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-full text-xs font-medium text-slate-700">' + escapeHtml(s) + '</button>';
+    }).join('');
+  }
+
+  function updateSubmenu() {
+    const tipoBien = document.getElementById('tipoBien').value;
+    document.getElementById('submenuInmueble').classList.add('hidden');
+    document.getElementById('submenuMarca').classList.add('hidden');
+    document.getElementById('submenuGenerico').classList.add('hidden');
+    
+    if (tipoBien === 'Inmueble' || tipoBien === 'Terreno') {
+      document.getElementById('submenuInmueble').classList.remove('hidden');
+    } else if (tipoBien === 'Marca') {
+      document.getElementById('submenuMarca').classList.remove('hidden');
+    } else {
+      document.getElementById('submenuGenerico').classList.remove('hidden');
+    }
+  }
+
+  function updateAvisosFields() {
+    const sinAvisos = document.getElementById('sinAvisos').checked;
+    const fields = document.getElementById('avisosFields');
+    if (sinAvisos) {
+      fields.classList.add('hidden');
+      document.getElementById('fechaAviso').value = '';
+      document.getElementById('numeroAviso').value = '';
+    } else {
+      fields.classList.remove('hidden');
+    }
+  }
+
+  function renderAnexosList() {
+    const container = document.getElementById('anexosList');
+    if (selectedAnexos.length === 0) { container.innerHTML = '<p class="text-xs text-slate-500">Ningún anexo seleccionado</p>'; return; }
+    container.innerHTML = selectedAnexos.map(function(a, i) {
+      return '<span class="tag-item">' + escapeHtml(a) + '<button type="button" data-remove-anexo="' + i + '">×</button></span>';
+    }).join('');
+  }
+
+  function syncAnexosCheckboxes() {
+    document.querySelectorAll('.anexo-check').forEach(function(cb) {
+      cb.checked = selectedAnexos.indexOf(cb.value) !== -1;
+    });
+  }
+
+  function resetForm() {
+    const form = document.getElementById('avaluoForm'); if (form) form.reset();
+    const formId = document.getElementById('formId'); if (formId) formId.value = '';
+    const vigencia = document.getElementById('vigenciaDias'); if (vigencia) vigencia.value = 180;
+    currentFiles = []; renderFileList();
+    selectedAnexos = []; renderAnexosList(); syncAnexosCheckboxes();
+    setDefaultFecha();
+    populateAnioSelect();
+    document.getElementById('tipoBien').value = 'Inmueble';
+    updateSubmenu();
+    updateBienSugerencias();
+    updateAvisosFields();
+    updateNumeroSerie();
+  }
+
+  function fillForm(a) {
+    document.getElementById('formId').value = a.id || '';
+    document.getElementById('numeroAvaluo').value = a.numeroAvaluo || '';
+    document.getElementById('tipoAvaluo').value = a.tipoAvaluo || 'Estimación de Valor';
+    document.getElementById('fecha').value = a.fecha || '';
+    populateAnioSelect();
+    document.getElementById('anioRegistro').value = a.anioRegistro || new Date().getFullYear();
+    document.getElementById('solicitante').value = a.solicitante || '';
+    document.getElementById('propietario').value = a.propietario || '';
+    document.getElementById('tipoBien').value = a.tipoBien || 'Inmueble';
+    document.getElementById('bienObjeto').value = a.bienObjeto || '';
+    updateSubmenu();
+    updateBienSugerencias();
+    document.getElementById('direccion').value = a.direccion || '';
+    document.getElementById('superficie').value = a.superficie || '';
+    document.getElementById('superficieConstruccion').value = a.superficieConstruccion || '';
+    if (a.marcaNombre) document.getElementById('marcaNombre').value = a.marcaNombre;
+    if (a.marcaRegistro) document.getElementById('marcaRegistro').value = a.marcaRegistro;
+    if (a.marcaGiro) document.getElementById('marcaGiro').value = a.marcaGiro;
+    if (a.marcaAnio) document.getElementById('marcaAnio').value = a.marcaAnio;
+    if (a.marcaTitular) document.getElementById('marcaTitular').value = a.marcaTitular;
+    if (a.genericoId) document.getElementById('genericoId').value = a.genericoId;
+    if (a.genericoUbicacion) document.getElementById('genericoUbicacion').value = a.genericoUbicacion;
+    if (a.genericoCaract) document.getElementById('genericoCaract').value = a.genericoCaract;
+    document.getElementById('descripcion').value = a.descripcion || '';
+    document.getElementById('valorEstimado').value = a.valorEstimado || '';
+    document.getElementById('vigenciaDias').value = a.vigenciaDias || 180;
+    document.getElementById('numeroSerie').value = a.numeroSerie || '';
+    document.getElementById('estado').value = a.estado || 'vigente';
+    document.getElementById('fechaAviso').value = a.fechaAviso || '';
+    document.getElementById('numeroAviso').value = a.numeroAviso || '';
+    document.getElementById('notas').value = a.notas || '';
+    document.getElementById('enfoque').value = a.enfoque || '';
+    document.getElementById('paginas').value = a.paginas || '';
+    
+    const sinAvisos = !a.fechaAviso && !a.numeroAviso;
+    document.getElementById('sinAvisos').checked = sinAvisos;
+    updateAvisosFields();
+    
+    selectedAnexos = Array.isArray(a.anexos) ? a.anexos.slice() : [];
+    renderAnexosList();
+    syncAnexosCheckboxes();
+    
+    currentFiles = a.archivos || []; renderFileList();
+    updateNumeroSerie();
+  }
+
+  function editAvaluo(id) {
+    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
+    resetForm(); fillForm(a);
+    document.getElementById('viewTitle').textContent = 'Editar Avalúo';
+    document.getElementById('viewSubtitle').textContent = 'Modificando avalúo #' + a.numeroAvaluo;
+    currentView = 'nuevo';
+    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+    document.getElementById('view-nuevo').classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b) { if (b.dataset.view === 'nuevo') b.classList.add('active'); else b.classList.remove('active'); });
+    window.scrollTo(0, 0);
+  }
+
+  function deleteAvaluo(id) {
+    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
+    if (!confirm('¿Estás seguro de eliminar el avalúo #' + a.numeroAvaluo + '?')) return;
+    avaluoos = avaluoos.filter(function(x) { return x.id !== id; });
+    if (saveData()) { render(); showToast('Avalúo eliminado'); }
+    else { showToast('Error al eliminar'); }
   }
 
   // ============ FILTROS ============
@@ -678,7 +913,7 @@
     const sortBy = document.getElementById('sortBy').value;
     let filtered = avaluoos.filter(function(a) {
       if (filters.search) {
-        const searchFields = [a.solicitante, a.propietario, a.bienObjeto, a.direccion, a.numeroAvaluo, a.numeroSerie, a.numeroAviso, a.tipoAvaluo, a.descripcion, a.notas, a.enfoque].map(function(f) { return (f || '').toLowerCase(); });
+        const searchFields = [a.solicitante, a.propietario, a.bienObjeto, a.direccion, a.numeroAvaluo, a.numeroSerie, a.numeroAviso, a.tipoAvaluo, a.descripcion, a.notas, a.enfoque, a.tipoBien].map(function(f) { return (f || '').toLowerCase(); });
         if (!searchFields.some(function(f) { return f.includes(filters.search); })) return false;
       }
       if (filters.anio && String(a.anioRegistro) !== filters.anio) return false;
@@ -857,7 +1092,38 @@
     const accentColor = getYearAccentColor(anio);
     const gradient = getYearGradient(anio);
     document.getElementById('caratulaContainer').innerHTML = '<div id="caratulaPrintArea" class="' + themeClass + '"><div class="caratula-page"><svg class="caratula-bg" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient></defs><rect fill="url(#skyGrad)" width="800" height="1200"/><g fill="#475569" opacity="0.9"><polygon points="0,400 120,300 120,1200 0,1200"/><polygon points="120,300 200,250 200,1200 120,1200"/><polygon points="200,250 320,200 320,1200 200,1200"/><polygon points="500,350 620,300 620,1200 500,1200"/><polygon points="620,300 720,280 720,1200 620,1200"/><polygon points="720,280 800,260 800,1200 720,1200"/></g></svg><div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 100%);"></div><div class="hexagon-overlay hex-large"></div><div class="hexagon-overlay hex-small"></div><div class="hexagon-overlay hex-tiny"></div><div class="relative z-10 h-full flex flex-col" style="height: 297mm; padding: 20mm 18mm;"><div class="mb-6">' + getLogoSVG(80) + '</div><div class="flex-1"></div><div class="mb-10"><div class="flex items-baseline gap-6"><h1 style="font-family: \'Arial Black\', Arial, sans-serif; font-size: 80px; font-weight: 900; color: ' + accentColor + '; line-height: 1; letter-spacing: -3px;">AVALÚO</h1><span style="font-family: \'Arial Black\', Arial, sans-serif; font-size: 80px; font-weight: 900; background: ' + gradient + '; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;">' + anio + '</span></div><div style="width: 120px; height: 4px; background: ' + accentColor + '; margin-top: 8px;"></div></div><div style="background: rgba(255,255,255,0.98); border-left: 8px solid ' + accentColor + '; padding: 28px 36px; margin-bottom: 50px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-radius: 4px;"><div class="space-y-4"><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Número de Avalúo:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + escapeHtml(a.numeroAvaluo) + '</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Tipo de Avalúo:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + escapeHtml(a.tipoAvaluo) + '</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Solicitante:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + escapeHtml(a.solicitante) + '</span></div><div class="flex items-baseline gap-4"><span style="font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; min-width: 200px;">Fecha:</span><span style="font-size: 22px; color: #0f172a; font-weight: 800;">' + diaNum + ' de ' + mesNombre + ' de ' + anioFecha + '</span></div></div></div><div class="flex-1"></div><div class="text-right"><p style="font-family: \'Georgia\', serif; font-size: 20px; color: ' + accentColor + '; font-weight: 700; font-style: italic; text-transform: lowercase; letter-spacing: 1px; margin-bottom: 8px;">lic. josé francisco alejandro ruiz robles</p><p style="font-family: \'Arial\', sans-serif; font-size: 14px; color: #374151; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">CORREDOR PÚBLICO NÚMERO 22 DE LA PLAZA DE LA CIUDAD DE MÉXICO</p><div style="width: 80px; height: 3px; background: ' + accentColor + '; margin: 12px auto 0;"></div></div></div></div></div>';
-    document.getElementById('btnImprimirCaratula').classList.remove('hidden');
+    document.getElementById('btnDescargarPDF').classList.remove('hidden');
+  }
+
+  async function descargarCaratulaPDF() {
+    if (!selectedCaratulaId) { showToast('Selecciona un avalúo primero'); return; }
+    const a = avaluoos.find(function(x) { return x.id === selectedCaratulaId; });
+    if (!a) return;
+    
+    showToast('Generando PDF...');
+    const element = document.getElementById('caratulaPrintArea');
+    if (!element) { showToast('Error: carátula no generada'); return; }
+    
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      });
+      
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgData = canvas.toDataURL('image/png');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('caratula_avaluo_' + a.numeroAvaluo + '.pdf');
+      showToast('PDF descargado correctamente');
+    } catch (e) {
+      console.error('Error al generar PDF:', e);
+      showToast('Error al generar PDF: ' + e.message);
+    }
   }
 
   function renderClasificacion() {
@@ -910,12 +1176,12 @@
   }
   function exportAllToExcel() {
     if (avaluoos.length === 0) { showToast('No hay avalúos para exportar'); return; }
-    const data = avaluoos.map(function(a) { return { 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion, 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso, 'Número de Aviso': a.numeroAviso, 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': a.anexos, 'Notas': a.notas, 'Archivos': (a.archivos || []).length }; });
+    const data = avaluoos.map(function(a) { return { 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Tipo de Bien': a.tipoBien || 'Inmueble', 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion || '', 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso || '', 'Número de Aviso': a.numeroAviso || '', 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': Array.isArray(a.anexos) ? a.anexos.join('; ') : (a.anexos || ''), 'Notas': a.notas, 'Archivos': (a.archivos || []).length }; });
     exportToExcel(data, 'avaluoos_' + new Date().toISOString().split('T')[0] + '.xlsx');
   }
   function exportSingleToExcel(id) {
     const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
-    const data = [{ 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion, 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso, 'Número de Aviso': a.numeroAviso, 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': a.anexos, 'Notas': a.notas, 'Archivos': (a.archivos || []).length }];
+    const data = [{ 'Número de Avalúo': a.numeroAvaluo, 'Tipo de Avalúo': a.tipoAvaluo, 'Tipo de Bien': a.tipoBien || 'Inmueble', 'Fecha': a.fecha, 'Año de Registro': a.anioRegistro, 'Solicitante': a.solicitante, 'Propietario': a.propietario, 'Bien Objeto': a.bienObjeto, 'Dirección': a.direccion || '', 'Superficie Terreno (m²)': a.superficie, 'Superficie Construcción (m²)': a.superficieConstruccion, 'Descripción': a.descripcion, 'Valor Estimado (MXN)': a.valorEstimado, 'Vigencia (días)': a.vigenciaDias, 'Número de Serie': a.numeroSerie, 'Estado': getEstado(a), 'Fecha de Aviso': a.fechaAviso || '', 'Número de Aviso': a.numeroAviso || '', 'Enfoque': a.enfoque, 'Páginas': a.paginas, 'Anexos': Array.isArray(a.anexos) ? a.anexos.join('; ') : (a.anexos || ''), 'Notas': a.notas, 'Archivos': (a.archivos || []).length }];
     const filename = 'avaluo_' + a.numeroAvaluo + '_' + a.solicitante.replace(/[^a-zA-Z0-9]/g, '_') + '.xlsx';
     exportToExcel(data, filename);
   }
@@ -932,64 +1198,8 @@
   }
   function closeDeleteModal() { document.getElementById('confirmDeleteModal').classList.add('hidden'); }
   function executeDeleteBD() {
-    if (clearDatabase()) {
-      closeDeleteModal();
-      render();
-      showToast('Base de datos borrada completamente');
-    } else {
-      showToast('Error al borrar la base de datos');
-    }
-  }
-
-  // ============ FORMULARIO ============
-  function resetForm() {
-    const form = document.getElementById('avaluoForm'); if (form) form.reset();
-    const formId = document.getElementById('formId'); if (formId) formId.value = '';
-    const vigencia = document.getElementById('vigenciaDias'); if (vigencia) vigencia.value = 180;
-    currentFiles = []; renderFileList();
-  }
-  function fillForm(a) {
-    document.getElementById('formId').value = a.id || '';
-    document.getElementById('numeroAvaluo').value = a.numeroAvaluo || '';
-    document.getElementById('tipoAvaluo').value = a.tipoAvaluo || '';
-    document.getElementById('fecha').value = a.fecha || '';
-    document.getElementById('anioRegistro').value = a.anioRegistro || '';
-    document.getElementById('solicitante').value = a.solicitante || '';
-    document.getElementById('propietario').value = a.propietario || '';
-    document.getElementById('bienObjeto').value = a.bienObjeto || '';
-    document.getElementById('direccion').value = a.direccion || '';
-    document.getElementById('superficie').value = a.superficie || '';
-    document.getElementById('superficieConstruccion').value = a.superficieConstruccion || '';
-    document.getElementById('descripcion').value = a.descripcion || '';
-    document.getElementById('valorEstimado').value = a.valorEstimado || '';
-    document.getElementById('vigenciaDias').value = a.vigenciaDias || 180;
-    document.getElementById('numeroSerie').value = a.numeroSerie || '';
-    document.getElementById('estado').value = a.estado || 'vigente';
-    document.getElementById('fechaAviso').value = a.fechaAviso || '';
-    document.getElementById('numeroAviso').value = a.numeroAviso || '';
-    document.getElementById('notas').value = a.notas || '';
-    document.getElementById('anexos').value = a.anexos || '';
-    document.getElementById('enfoque').value = a.enfoque || '';
-    document.getElementById('paginas').value = a.paginas || '';
-    currentFiles = a.archivos || []; renderFileList();
-  }
-  function editAvaluo(id) {
-    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
-    resetForm(); fillForm(a);
-    document.getElementById('viewTitle').textContent = 'Editar Avalúo';
-    document.getElementById('viewSubtitle').textContent = 'Modificando avalúo #' + a.numeroAvaluo;
-    currentView = 'nuevo';
-    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
-    document.getElementById('view-nuevo').classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(function(b) { if (b.dataset.view === 'nuevo') b.classList.add('active'); else b.classList.remove('active'); });
-    window.scrollTo(0, 0);
-  }
-  function deleteAvaluo(id) {
-    const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
-    if (!confirm('¿Estás seguro de eliminar el avalúo #' + a.numeroAvaluo + '?')) return;
-    avaluoos = avaluoos.filter(function(x) { return x.id !== id; });
-    if (saveData()) { render(); showToast('Avalúo eliminado'); }
-    else { showToast('Error al eliminar'); }
+    if (clearDatabase()) { closeDeleteModal(); render(); showToast('Base de datos borrada completamente'); }
+    else { showToast('Error al borrar la base de datos'); }
   }
 
   // ============ MODAL DETALLE ============
@@ -997,8 +1207,18 @@
     const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
     const estado = getEstado(a);
     const archivos = a.archivos || [];
+    const anexos = Array.isArray(a.anexos) ? a.anexos : [];
+    const anexosHTML = anexos.length > 0 ? '<div class="flex flex-wrap gap-2 mt-2">' + anexos.map(function(x) { return '<span class="tag-item">' + escapeHtml(x) + '</span>'; }).join('') + '</div>' : '';
     const archivosHTML = archivos.length > 0 ? archivos.map(function(file) { const sizeMB = (file.size / (1024 * 1024)).toFixed(2); const icon = file.type.includes('pdf') ? '📄' : file.type.includes('image') ? '🖼️' : '📎'; return '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"><div class="flex items-center gap-3 flex-1 min-w-0"><span class="text-2xl">' + icon + '</span><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-900 truncate">' + escapeHtml(file.name) + '</p><p class="text-xs text-slate-500">' + sizeMB + ' MB</p></div></div><div class="flex gap-2"><a href="' + file.data + '" download="' + escapeHtml(file.name) + '" class="px-3 py-1.5 bg-blue-600 text-white rounded text-xs font-medium hover:bg-blue-700">Descargar</a>' + (file.type.includes('image') ? '<button onclick="viewImage(\'' + file.data + '\')" class="px-3 py-1.5 bg-slate-600 text-white rounded text-xs font-medium hover:bg-slate-700">Ver</button>' : '') + '</div></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin archivos adjuntos</p>';
-    document.getElementById('modalContent').innerHTML = '<div class="space-y-4"><div class="flex justify-between items-start"><div class="flex-1 min-w-0"><p class="text-xs text-slate-500">Avalúo #' + escapeHtml(a.numeroAvaluo) + (a.numeroSerie ? ' • Serie: ' + escapeHtml(a.numeroSerie) : '') + '</p><h4 class="text-xl font-bold mt-1">' + escapeHtml(a.bienObjeto) + '</h4><p class="text-sm text-slate-600 mt-1">' + escapeHtml(a.direccion) + '</p></div>' + estadoBadge(estado) + '</div><div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200"><div><p class="text-xs text-slate-500">Tipo</p><p class="font-medium">' + escapeHtml(a.tipoAvaluo) + '</p></div><div><p class="text-xs text-slate-500">Fecha</p><p class="font-medium">' + formatDateShort(a.fecha) + '</p></div><div><p class="text-xs text-slate-500">Solicitante</p><p class="font-medium">' + escapeHtml(a.solicitante) + '</p></div><div><p class="text-xs text-slate-500">Propietario</p><p class="font-medium">' + escapeHtml(a.propietario || '-') + '</p></div><div><p class="text-xs text-slate-500">Superficie Terreno</p><p class="font-medium">' + (a.superficie || '-') + ' m²</p></div><div><p class="text-xs text-slate-500">Superficie Construcción</p><p class="font-medium">' + (a.superficieConstruccion || '-') + ' m²</p></div><div><p class="text-xs text-slate-500">Enfoque</p><p class="font-medium">' + escapeHtml(a.enfoque || '-') + '</p></div><div><p class="text-xs text-slate-500">Páginas</p><p class="font-medium">' + (a.paginas || '-') + '</p></div><div class="col-span-2 bg-slate-50 p-4 rounded-lg"><p class="text-xs text-slate-500">Valor Estimado</p><p class="text-2xl font-bold text-slate-900">' + formatCurrency(a.valorEstimado) + '</p><p class="text-xs text-slate-500 mt-1">Vigencia: ' + (a.vigenciaDias || 180) + ' días</p></div><div><p class="text-xs text-slate-500">Fecha Aviso</p><p class="font-medium">' + formatDateShort(a.fechaAviso) + '</p></div><div><p class="text-xs text-slate-500">No. Aviso</p><p class="font-medium">' + escapeHtml(a.numeroAviso || '-') + '</p></div>' + (a.descripcion ? '<div class="col-span-2"><p class="text-xs text-slate-500">Descripción</p><p class="text-sm">' + escapeHtml(a.descripcion) + '</p></div>' : '') + (a.anexos ? '<div class="col-span-2"><p class="text-xs text-slate-500">Anexos</p><p class="text-sm">' + escapeHtml(a.anexos) + '</p></div>' : '') + (a.notas ? '<div class="col-span-2"><p class="text-xs text-slate-500">Notas</p><p class="text-sm">' + escapeHtml(a.notas) + '</p></div>' : '') + '</div><div class="pt-4 border-t border-slate-200"><h5 class="font-bold mb-3 flex items-center gap-2"><svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Archivos Adjuntos (' + archivos.length + ')</h5><div class="space-y-2">' + archivosHTML + '</div></div><div class="flex gap-2 pt-4 border-t border-slate-200 flex-wrap"><button data-action="edit" data-id="' + a.id + '" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Editar</button><button data-action="download-single" data-id="' + a.id + '" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Descargar Excel</button><button data-action="go-caratula" data-id="' + a.id + '" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700">Generar Carátula</button><button data-action="close-modal" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">Cerrar</button></div></div>';
+    
+    let bienDetalle = '';
+    if (a.tipoBien === 'Inmueble' || a.tipoBien === 'Terreno') {
+      bienDetalle = '<div><p class="text-xs text-slate-500">Dirección</p><p class="font-medium">' + escapeHtml(a.direccion || '-') + '</p></div><div><p class="text-xs text-slate-500">Superficie Terreno</p><p class="font-medium">' + (a.superficie || '-') + ' m²</p></div><div><p class="text-xs text-slate-500">Superficie Construcción</p><p class="font-medium">' + (a.superficieConstruccion || '-') + ' m²</p></div>';
+    } else if (a.tipoBien === 'Marca') {
+      bienDetalle = '<div><p class="text-xs text-slate-500">Nombre Comercial</p><p class="font-medium">' + escapeHtml(a.marcaNombre || '-') + '</p></div><div><p class="text-xs text-slate-500">Registro IMPI</p><p class="font-medium">' + escapeHtml(a.marcaRegistro || '-') + '</p></div><div><p class="text-xs text-slate-500">Giro</p><p class="font-medium">' + escapeHtml(a.marcaGiro || '-') + '</p></div>';
+    }
+    
+    document.getElementById('modalContent').innerHTML = '<div class="space-y-4"><div class="flex justify-between items-start"><div class="flex-1 min-w-0"><p class="text-xs text-slate-500">Avalúo #' + escapeHtml(a.numeroAvaluo) + (a.numeroSerie ? ' • Serie: ' + escapeHtml(a.numeroSerie) : '') + '</p><h4 class="text-xl font-bold mt-1">' + escapeHtml(a.bienObjeto) + '</h4><p class="text-xs text-slate-500 mt-1">Tipo de bien: ' + escapeHtml(a.tipoBien || 'Inmueble') + '</p></div>' + estadoBadge(estado) + '</div><div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200"><div><p class="text-xs text-slate-500">Tipo</p><p class="font-medium">' + escapeHtml(a.tipoAvaluo) + '</p></div><div><p class="text-xs text-slate-500">Fecha</p><p class="font-medium">' + formatDateShort(a.fecha) + '</p></div><div><p class="text-xs text-slate-500">Solicitante</p><p class="font-medium">' + escapeHtml(a.solicitante) + '</p></div><div><p class="text-xs text-slate-500">Propietario</p><p class="font-medium">' + escapeHtml(a.propietario || '-') + '</p></div>' + bienDetalle + '<div><p class="text-xs text-slate-500">Enfoque</p><p class="font-medium">' + escapeHtml(a.enfoque || '-') + '</p></div><div><p class="text-xs text-slate-500">Páginas</p><p class="font-medium">' + (a.paginas || '-') + '</p></div><div class="col-span-2 bg-slate-50 p-4 rounded-lg"><p class="text-xs text-slate-500">Valor Estimado</p><p class="text-2xl font-bold text-slate-900">' + formatCurrency(a.valorEstimado) + '</p><p class="text-xs text-slate-500 mt-1">Vigencia: ' + (a.vigenciaDias || 180) + ' días</p></div><div><p class="text-xs text-slate-500">Fecha Aviso</p><p class="font-medium">' + (a.fechaAviso ? formatDateShort(a.fechaAviso) : 'No se dieron avisos') + '</p></div><div><p class="text-xs text-slate-500">No. Aviso</p><p class="font-medium">' + escapeHtml(a.numeroAviso || '-') + '</p></div>' + (a.descripcion ? '<div class="col-span-2"><p class="text-xs text-slate-500">Descripción</p><p class="text-sm">' + escapeHtml(a.descripcion) + '</p></div>' : '') + (anexosHTML ? '<div class="col-span-2"><p class="text-xs text-slate-500 mb-2">Anexos</p>' + anexosHTML + '</div>' : '') + (a.notas ? '<div class="col-span-2"><p class="text-xs text-slate-500">Notas</p><p class="text-sm">' + escapeHtml(a.notas) + '</p></div>' : '') + '</div><div class="pt-4 border-t border-slate-200"><h5 class="font-bold mb-3 flex items-center gap-2"><svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Archivos Adjuntos (' + archivos.length + ')</h5><div class="space-y-2">' + archivosHTML + '</div></div><div class="flex gap-2 pt-4 border-t border-slate-200 flex-wrap"><button data-action="edit" data-id="' + a.id + '" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Editar</button><button data-action="download-single" data-id="' + a.id + '" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Descargar Excel</button><button data-action="go-caratula" data-id="' + a.id + '" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700">Generar Carátula</button><button data-action="close-modal" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">Cerrar</button></div></div>';
     document.getElementById('detailModal').classList.remove('hidden');
   }
   window.viewImage = function(dataUrl) { const w = window.open('', '_blank'); if (w) w.document.write('<html><body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000"><img src="' + dataUrl + '" style="max-width:100%;max-height:100vh"></body></html>'); };
@@ -1018,7 +1238,6 @@
     try { const w = window.open('', '_blank'); if (!w) { showToast('Permite las ventanas emergentes'); return; } const rows = avaluoos.map(function(a) { return '<tr><td>' + escapeHtml(a.numeroAvaluo) + '</td><td>' + escapeHtml(a.solicitante) + '</td><td>' + escapeHtml(a.tipoAvaluo) + '</td><td>' + escapeHtml(a.bienObjeto) + '</td><td>' + formatDateShort(a.fecha) + '</td><td style="text-align:right">' + formatCurrency(a.valorEstimado) + '</td><td>' + getEstado(a) + '</td></tr>'; }).join(''); w.document.write('<html><head><title>Reporte de Avalúos</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1e293b}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;font-size:12px}th{background:#f1f5f9;font-weight:bold}h1{color:#0f172a;margin-bottom:4px}.meta{color:#64748b;font-size:12px;margin-bottom:20px}</style></head><body><h1>Reporte de Avalúos</h1><p class="meta">Generado: ' + new Date().toLocaleDateString('es-MX') + ' | Total: ' + avaluoos.length + ' avalúos</p><table><thead><tr><th>No.</th><th>Solicitante</th><th>Tipo</th><th>Bien</th><th>Fecha</th><th>Valor</th><th>Estado</th></tr></thead><tbody>' + rows + '</tbody></table></body></html>'); w.document.close(); setTimeout(function() { w.print(); }, 300); }
     catch (e) { showToast('Error al imprimir'); }
   }
-  function printCaratula() { window.print(); }
 
   // ============ EVENTOS ============
   function setupEvents() {
@@ -1048,7 +1267,14 @@
 
     document.querySelectorAll('[data-rango]').forEach(function(btn) { btn.addEventListener('click', function() { const rango = Number(this.dataset.rango); if (rango === 1000000) { document.getElementById('filterMontoMin').value = ''; document.getElementById('filterMontoMax').value = 1000000; } else if (rango === 10000000) { document.getElementById('filterMontoMin').value = 1000000; document.getElementById('filterMontoMax').value = 10000000; } else if (rango === 100000000) { document.getElementById('filterMontoMin').value = 10000000; document.getElementById('filterMontoMax').value = 100000000; } else if (rango === 1000000000) { document.getElementById('filterMontoMin').value = 100000000; document.getElementById('filterMontoMax').value = 1000000000; } else if (rango === 99999999999) { document.getElementById('filterMontoMin').value = 1000000000; document.getElementById('filterMontoMax').value = ''; } renderAvaluoos(); }); });
 
-    document.addEventListener('click', function(e) { const clearBtn = e.target.closest('[data-clear-filter]'); if (clearBtn) { clearFilter(clearBtn.dataset.clearFilter); return; } });
+    document.addEventListener('click', function(e) {
+      const clearBtn = e.target.closest('[data-clear-filter]');
+      if (clearBtn) { clearFilter(clearBtn.dataset.clearFilter); return; }
+      const bienBtn = e.target.closest('[data-bien]');
+      if (bienBtn) { document.getElementById('bienObjeto').value = bienBtn.dataset.bien; return; }
+      const removeAnexoBtn = e.target.closest('[data-remove-anexo]');
+      if (removeAnexoBtn) { const idx = Number(removeAnexoBtn.dataset.removeAnexo); selectedAnexos.splice(idx, 1); renderAnexosList(); syncAnexosCheckboxes(); return; }
+    });
 
     const fileUploadZone = document.getElementById('fileUploadZone');
     const fileInput = document.getElementById('fileInput');
@@ -1058,12 +1284,77 @@
     fileUploadZone.addEventListener('drop', function(e) { e.preventDefault(); fileUploadZone.classList.remove('dragover'); handleFileSelect(e.dataTransfer.files); });
     fileInput.addEventListener('change', function(e) { handleFileSelect(e.target.files); e.target.value = ''; });
 
+    // Formulario - eventos dinámicos
+    document.getElementById('numeroAvaluo').addEventListener('input', updateNumeroSerie);
+    document.getElementById('anioRegistro').addEventListener('change', updateNumeroSerie);
+    document.getElementById('tipoBien').addEventListener('change', function() { updateSubmenu(); updateBienSugerencias(); });
+    document.getElementById('sinAvisos').addEventListener('change', updateAvisosFields);
+    document.querySelectorAll('.anexo-check').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        if (this.checked) {
+          if (selectedAnexos.indexOf(this.value) === -1) selectedAnexos.push(this.value);
+        } else {
+          const idx = selectedAnexos.indexOf(this.value);
+          if (idx !== -1) selectedAnexos.splice(idx, 1);
+        }
+        renderAnexosList();
+      });
+    });
+    document.getElementById('btnAgregarAnexo').addEventListener('click', function() {
+      const input = document.getElementById('anexoManual');
+      const val = input.value.trim();
+      if (val && selectedAnexos.indexOf(val) === -1) {
+        selectedAnexos.push(val);
+        renderAnexosList();
+        input.value = '';
+      } else if (selectedAnexos.indexOf(val) !== -1) {
+        showToast('Este anexo ya fue agregado');
+      }
+    });
+    document.getElementById('anexoManual').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btnAgregarAnexo').click(); }
+    });
+
     document.getElementById('avaluoForm').addEventListener('submit', function(e) {
       e.preventDefault();
       try {
         const idVal = document.getElementById('formId').value;
         const fechaVal = document.getElementById('fecha').value;
-        const data = { id: idVal ? Number(idVal) : Date.now(), numeroAvaluo: document.getElementById('numeroAvaluo').value.trim(), tipoAvaluo: document.getElementById('tipoAvaluo').value, fecha: fechaVal, anioRegistro: Number(document.getElementById('anioRegistro').value) || (fechaVal ? new Date(fechaVal).getFullYear() : new Date().getFullYear()), solicitante: document.getElementById('solicitante').value.trim(), propietario: document.getElementById('propietario').value.trim(), bienObjeto: document.getElementById('bienObjeto').value.trim(), direccion: document.getElementById('direccion').value.trim(), superficie: Number(document.getElementById('superficie').value) || null, superficieConstruccion: Number(document.getElementById('superficieConstruccion').value) || null, descripcion: document.getElementById('descripcion').value.trim(), valorEstimado: Number(document.getElementById('valorEstimado').value) || 0, vigenciaDias: Number(document.getElementById('vigenciaDias').value) || 180, numeroSerie: document.getElementById('numeroSerie').value.trim(), estado: document.getElementById('estado').value, fechaAviso: document.getElementById('fechaAviso').value, numeroAviso: document.getElementById('numeroAviso').value.trim(), notas: document.getElementById('notas').value.trim(), anexos: document.getElementById('anexos').value.trim(), enfoque: document.getElementById('enfoque').value, paginas: Number(document.getElementById('paginas').value) || null, archivos: currentFiles.slice() };
+        const sinAvisos = document.getElementById('sinAvisos').checked;
+        const data = {
+          id: idVal ? Number(idVal) : Date.now(),
+          numeroAvaluo: document.getElementById('numeroAvaluo').value.trim(),
+          tipoAvaluo: document.getElementById('tipoAvaluo').value,
+          fecha: fechaVal,
+          anioRegistro: Number(document.getElementById('anioRegistro').value) || (fechaVal ? new Date(fechaVal).getFullYear() : new Date().getFullYear()),
+          solicitante: document.getElementById('solicitante').value.trim(),
+          propietario: document.getElementById('propietario').value.trim(),
+          tipoBien: document.getElementById('tipoBien').value,
+          bienObjeto: document.getElementById('bienObjeto').value.trim(),
+          direccion: document.getElementById('direccion').value.trim(),
+          superficie: Number(document.getElementById('superficie').value) || null,
+          superficieConstruccion: Number(document.getElementById('superficieConstruccion').value) || null,
+          marcaNombre: document.getElementById('marcaNombre').value.trim(),
+          marcaRegistro: document.getElementById('marcaRegistro').value.trim(),
+          marcaGiro: document.getElementById('marcaGiro').value.trim(),
+          marcaAnio: document.getElementById('marcaAnio').value ? Number(document.getElementById('marcaAnio').value) : null,
+          marcaTitular: document.getElementById('marcaTitular').value.trim(),
+          genericoId: document.getElementById('genericoId').value.trim(),
+          genericoUbicacion: document.getElementById('genericoUbicacion').value.trim(),
+          genericoCaract: document.getElementById('genericoCaract').value.trim(),
+          descripcion: document.getElementById('descripcion').value.trim(),
+          valorEstimado: Number(document.getElementById('valorEstimado').value) || 0,
+          vigenciaDias: Number(document.getElementById('vigenciaDias').value) || 180,
+          numeroSerie: document.getElementById('numeroSerie').value.trim(),
+          estado: document.getElementById('estado').value,
+          fechaAviso: sinAvisos ? '' : document.getElementById('fechaAviso').value,
+          numeroAviso: sinAvisos ? '' : document.getElementById('numeroAviso').value,
+          notas: document.getElementById('notas').value.trim(),
+          enfoque: document.getElementById('enfoque').value,
+          paginas: Number(document.getElementById('paginas').value) || null,
+          anexos: selectedAnexos.slice(),
+          archivos: currentFiles.slice()
+        };
         if (idVal) { avaluoos = avaluoos.map(function(a) { return a.id === Number(idVal) ? data : a; }); if (saveData()) { showToast('Avalúo actualizado correctamente'); } }
         else { avaluoos.push(data); if (saveData()) { showToast('Avalúo creado correctamente'); } }
         resetForm(); showView('avaluos');
@@ -1072,7 +1363,7 @@
 
     document.getElementById('btnCancelar').addEventListener('click', function() { resetForm(); showView('avaluos'); });
     document.getElementById('btnGenerarCaratula').addEventListener('click', function() { const sel = document.getElementById('caratulaSelect'); const id = sel.value ? Number(sel.value) : null; if (!id) { showToast('Selecciona un avalúo'); return; } renderCaratulaPreview(id); });
-    document.getElementById('btnImprimirCaratula').addEventListener('click', printCaratula);
+    document.getElementById('btnDescargarPDF').addEventListener('click', descargarCaratulaPDF);
     document.getElementById('btnImport').addEventListener('click', importData);
     document.getElementById('btnPrint').addEventListener('click', printReport);
     document.getElementById('importFile').addEventListener('change', handleImport);
