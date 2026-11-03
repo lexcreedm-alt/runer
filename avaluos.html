@@ -106,10 +106,6 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         Generar Carátula
       </button>
-      <button data-view="clasificacion" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-slate-800 transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-        Clasificación
-      </button>
       <button data-view="reportes" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left hover:bg-slate-800 transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Reportes
@@ -356,15 +352,11 @@
                   <input type="text" id="bienObjeto" required placeholder="Selecciona o escribe el bien..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent">
                   <div id="bienSugerencias" class="mt-2 flex flex-wrap gap-2"></div>
                 </div>
-                
-                <!-- Submenu Inmueble -->
                 <div id="submenuInmueble" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
                   <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Dirección *</label><input type="text" id="direccion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Superficie Terreno (m²)</label><input type="number" step="0.01" id="superficie" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Superficie Construcción (m²)</label><input type="number" step="0.01" id="superficieConstruccion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                 </div>
-                
-                <!-- Submenu Marca -->
                 <div id="submenuMarca" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-purple-50 rounded-lg border border-purple-100">
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Nombre Comercial</label><input type="text" id="marcaNombre" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Registro de Marca (IMPI)</label><input type="text" id="marcaRegistro" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
@@ -372,14 +364,11 @@
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Año de Fundación</label><input type="number" id="marcaAnio" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                   <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Titular de la Marca</label><input type="text" id="marcaTitular" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                 </div>
-                
-                <!-- Submenu Genérico -->
                 <div id="submenuGenerico" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Identificador / Serie</label><input type="text" id="genericoId" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                   <div><label class="block text-sm font-medium text-slate-700 mb-1">Ubicación</label><input type="text" id="genericoUbicacion" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></div>
                   <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Características</label><textarea id="genericoCaract" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea></div>
                 </div>
-                
                 <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1">Descripción Breve</label><textarea id="descripcion" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent"></textarea></div>
               </div>
             </div>
@@ -461,10 +450,6 @@
           <div><p class="text-sm text-slate-600">Selecciona un avalúo para generar y descargar su carátula en PDF</p></div>
           <div class="flex gap-3 flex-wrap">
             <select id="caratulaSelect" class="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 min-w-[300px]"><option value="">-- Seleccionar avalúo --</option></select>
-            <button id="btnGenerarCaratula" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              Previsualizar
-            </button>
             <button id="btnDescargarPDF" class="hidden px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               Descargar PDF
@@ -479,23 +464,9 @@
         </div>
       </div>
 
-      <!-- CLASIFICACION -->
-      <div id="view-clasificacion" class="view fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Por Tipo de Avalúo</h3><div id="classTipo" class="space-y-3"></div></div>
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Por Estado</h3><div id="classEstado" class="space-y-3"></div></div>
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Por Año</h3><div id="classAnio" class="space-y-3"></div></div>
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Top Solicitantes</h3><div id="classSolicitantes" class="space-y-3"></div></div>
-        </div>
-      </div>
-
       <!-- REPORTES -->
       <div id="view-reportes" class="view fade-in">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Valor Total por Año</h3><div id="reportAnio" class="space-y-3"></div></div>
-          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6"><h3 class="text-lg font-bold mb-4">Distribución de Tipos</h3><div id="reportTipos" class="space-y-3"></div></div>
-        </div>
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-6">
           <h3 class="text-lg font-bold mb-4">Acciones</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <button id="btnExportExcel" class="p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-left">
@@ -517,7 +488,7 @@
           <input type="file" id="importFile" accept=".json" class="hidden">
         </div>
 
-        <div class="mt-6 bg-white rounded-xl border-2 border-red-200 shadow-sm p-6">
+        <div class="bg-white rounded-xl border-2 border-red-200 shadow-sm p-6">
           <div class="flex items-start gap-4">
             <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -610,25 +581,22 @@
     'Otro': []
   };
 
-  // ============ BASE DE DATOS ============
   function loadData() {
     try {
       const raw = localStorage.getItem(DB_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        avaluoos = Array.isArray(parsed) ? parsed : [];
-      } else { avaluoos = []; }
-    } catch (e) { console.error('Error al cargar:', e); avaluoos = []; }
+      if (raw) { const parsed = JSON.parse(raw); avaluoos = Array.isArray(parsed) ? parsed : []; }
+      else { avaluoos = []; }
+    } catch (e) { avaluoos = []; }
   }
 
   function saveData() {
     try { localStorage.setItem(DB_KEY, JSON.stringify(avaluoos)); return true; }
-    catch (e) { console.error('Error al guardar:', e); showToast('Error al guardar: ' + e.message); return false; }
+    catch (e) { showToast('Error al guardar: ' + e.message); return false; }
   }
 
   function clearDatabase() {
     try { avaluoos = []; localStorage.removeItem(DB_KEY); return true; }
-    catch (e) { console.error('Error al borrar:', e); return false; }
+    catch (e) { return false; }
   }
 
   function seedData() {
@@ -641,8 +609,7 @@
     saveData();
   }
 
-  // ============ UTILIDADES ============
-  function formatCurrency(n) { const num = Number(n || 0); return '$' + num.toLocaleString('es-MX', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
+  function formatCurrency(n) { return '$' + Number(n || 0).toLocaleString('es-MX', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
   function formatDate(d) { if (!d) return '-'; try { return new Date(d + 'T00:00:00').toLocaleDateString('es-MX', {day: '2-digit', month: 'long', year: 'numeric'}); } catch (e) { return d; } }
   function formatDateShort(d) { if (!d) return '-'; try { return new Date(d + 'T00:00:00').toLocaleDateString('es-MX', {day: '2-digit', month: 'short', year: 'numeric'}); } catch (e) { return d; } }
 
@@ -696,7 +663,6 @@
     return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="none" stroke="#1e3a8a" stroke-width="4"/><circle cx="50" cy="50" r="45" fill="none" stroke="#6b7280" stroke-width="4" stroke-dasharray="141.4 141.4" stroke-dashoffset="70.7" transform="rotate(180 50 50)"/><circle cx="50" cy="50" r="38" fill="white"/><text x="38" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="24" fill="#1e3a8a">CP</text><text x="65" y="58" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900" font-size="22" fill="#6b7280">22</text><text x="50" y="78" text-anchor="middle" font-family="Arial" font-size="7" fill="#6b7280" letter-spacing="0.5">Correduría Pública</text></svg>';
   }
 
-  // ============ FORMULARIO HELPERS ============
   function setDefaultFecha() {
     const hoy = new Date();
     const yyyy = hoy.getFullYear();
@@ -711,8 +677,7 @@
     select.innerHTML = '';
     for (let y = currentYear + 2; y >= currentYear - 10; y--) {
       const opt = document.createElement('option');
-      opt.value = y;
-      opt.textContent = y;
+      opt.value = y; opt.textContent = y;
       select.appendChild(opt);
     }
     select.value = currentYear;
@@ -721,11 +686,7 @@
   function updateNumeroSerie() {
     const anio = document.getElementById('anioRegistro').value;
     const numAvaluo = document.getElementById('numeroAvaluo').value.trim();
-    if (anio && numAvaluo) {
-      document.getElementById('numeroSerie').value = 'CP22-' + anio + '-' + numAvaluo;
-    } else {
-      document.getElementById('numeroSerie').value = '';
-    }
+    document.getElementById('numeroSerie').value = (anio && numAvaluo) ? 'CP22-' + anio + '-' + numAvaluo : '';
   }
 
   function updateBienSugerencias() {
@@ -743,7 +704,6 @@
     document.getElementById('submenuInmueble').classList.add('hidden');
     document.getElementById('submenuMarca').classList.add('hidden');
     document.getElementById('submenuGenerico').classList.add('hidden');
-    
     if (tipoBien === 'Inmueble' || tipoBien === 'Terreno') {
       document.getElementById('submenuInmueble').classList.remove('hidden');
     } else if (tipoBien === 'Marca') {
@@ -828,15 +788,12 @@
     document.getElementById('notas').value = a.notas || '';
     document.getElementById('enfoque').value = a.enfoque || '';
     document.getElementById('paginas').value = a.paginas || '';
-    
     const sinAvisos = !a.fechaAviso && !a.numeroAviso;
     document.getElementById('sinAvisos').checked = sinAvisos;
     updateAvisosFields();
-    
     selectedAnexos = Array.isArray(a.anexos) ? a.anexos.slice() : [];
     renderAnexosList();
     syncAnexosCheckboxes();
-    
     currentFiles = a.archivos || []; renderFileList();
     updateNumeroSerie();
   }
@@ -861,7 +818,6 @@
     else { showToast('Error al eliminar'); }
   }
 
-  // ============ FILTROS ============
   function getFilters() {
     return {
       search: (document.getElementById('searchInput').value || '').toLowerCase().trim(),
@@ -1009,14 +965,13 @@
     renderAvaluoos();
   }
 
-  // ============ VISTAS ============
   function showView(view) {
     currentView = view;
     document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
     const target = document.getElementById('view-' + view);
     if (target) target.classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(function(b) { if (b.dataset.view === view) b.classList.add('active'); else b.classList.remove('active'); });
-    const titles = { dashboard: ['Dashboard', 'Resumen general de tus avalúos'], avaluos: ['Avalúos', 'Gestiona y consulta todos los registros'], nuevo: ['Nuevo Avalúo', 'Registrar un nuevo avalúo en el sistema'], caratula: ['Generar Carátula', 'Crea la portada oficial del avalúo'], clasificacion: ['Clasificación', 'Organización por categorías'], reportes: ['Reportes', 'Análisis y exportación de datos'] };
+    const titles = { dashboard: ['Dashboard', 'Resumen general de tus avalúos'], avaluos: ['Avalúos', 'Gestiona y consulta todos los registros'], nuevo: ['Nuevo Avalúo', 'Registrar un nuevo avalúo en el sistema'], caratula: ['Generar Carátula', 'Crea la portada oficial del avalúo'], reportes: ['Reportes', 'Análisis y exportación de datos'] };
     const t = titles[view] || ['', ''];
     document.getElementById('viewTitle').textContent = t[0];
     document.getElementById('viewSubtitle').textContent = t[1];
@@ -1028,7 +983,6 @@
       if (currentView === 'dashboard') renderDashboard();
       if (currentView === 'avaluos') { populateFilterDropdowns(); renderAvaluoos(); }
       if (currentView === 'caratula') renderCaratulaSelector();
-      if (currentView === 'clasificacion') renderClasificacion();
       if (currentView === 'reportes') renderReportes();
     } catch (e) { console.error('Error en render:', e); }
   }
@@ -1075,7 +1029,14 @@
   function renderCaratulaSelector() {
     const select = document.getElementById('caratulaSelect');
     select.innerHTML = '<option value="">-- Seleccionar avalúo --</option>' + avaluoos.map(function(a) { return '<option value="' + a.id + '">#' + escapeHtml(a.numeroAvaluo) + ' - ' + escapeHtml(a.bienObjeto) + ' (' + formatDateShort(a.fecha) + ')</option>'; }).join('');
-    if (selectedCaratulaId) { select.value = selectedCaratulaId; renderCaratulaPreview(selectedCaratulaId); }
+    if (selectedCaratulaId) {
+      select.value = selectedCaratulaId;
+      renderCaratulaPreview(selectedCaratulaId);
+    } else if (avaluoos.length > 0) {
+      const firstId = avaluoos[0].id;
+      select.value = firstId;
+      renderCaratulaPreview(firstId);
+    }
   }
 
   function renderCaratulaPreview(id) {
@@ -1099,19 +1060,11 @@
     if (!selectedCaratulaId) { showToast('Selecciona un avalúo primero'); return; }
     const a = avaluoos.find(function(x) { return x.id === selectedCaratulaId; });
     if (!a) return;
-    
     showToast('Generando PDF...');
     const element = document.getElementById('caratulaPrintArea');
     if (!element) { showToast('Error: carátula no generada'); return; }
-    
     try {
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        logging: false
-      });
-      
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false });
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgData = canvas.toDataURL('image/png');
@@ -1126,34 +1079,10 @@
     }
   }
 
-  function renderClasificacion() {
-    const tipos = {};
-    avaluoos.forEach(function(a) { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
-    document.getElementById('classTipo').innerHTML = Object.keys(tipos).length ? Object.entries(tipos).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">' + escapeHtml(entry[0]) + '</span><span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
-    const estados = { vigente: 0, por_vencer: 0, vencido: 0, concluido: 0 };
-    avaluoos.forEach(function(a) { const e = getEstado(a); if (estados.hasOwnProperty(e)) estados[e]++; });
-    document.getElementById('classEstado').innerHTML = Object.entries(estados).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">' + estadoBadge(entry[0]) + '<span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('');
-    const anios = {};
-    avaluoos.forEach(function(a) { const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : 'N/A'); anios[anio] = (anios[anio] || 0) + 1; });
-    document.getElementById('classAnio').innerHTML = Object.keys(anios).length ? Object.entries(anios).sort(function(a,b) { return String(b[0]).localeCompare(String(a[0])); }).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">' + escapeHtml(entry[0]) + '</span><span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
-    const sols = {};
-    avaluoos.forEach(function(a) { sols[a.solicitante] = (sols[a.solicitante] || 0) + 1; });
-    document.getElementById('classSolicitantes').innerHTML = Object.keys(sols).length ? Object.entries(sols).sort(function(a,b) { return b[1]-a[1]; }).slice(0, 5).map(function(entry) { return '<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium truncate">' + escapeHtml(entry[0]) + '</span><span class="text-sm font-bold text-slate-900">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
-  }
-
   function renderReportes() {
-    const anios = {};
-    avaluoos.forEach(function(a) { const anio = a.anioRegistro || (a.fecha ? new Date(a.fecha).getFullYear() : 'N/A'); anios[anio] = (anios[anio] || 0) + Number(a.valorEstimado || 0); });
-    const valores = Object.values(anios);
-    const maxVal = valores.length ? Math.max.apply(null, valores.concat([1])) : 1;
-    document.getElementById('reportAnio').innerHTML = Object.keys(anios).length ? Object.entries(anios).sort(function(a,b) { return String(b[0]).localeCompare(String(a[0])); }).map(function(entry) { return '<div><div class="flex justify-between text-sm mb-1"><span class="font-medium">' + escapeHtml(entry[0]) + '</span><span class="font-semibold">' + formatCurrency(entry[1]) + '</span></div><div class="h-3 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-blue-700" style="width: ' + (entry[1]/maxVal*100) + '%"></div></div></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
-    const tipos = {};
-    avaluoos.forEach(function(a) { tipos[a.tipoAvaluo] = (tipos[a.tipoAvaluo] || 0) + 1; });
-    const total = avaluoos.length || 1;
-    document.getElementById('reportTipos').innerHTML = Object.keys(tipos).length ? Object.entries(tipos).map(function(entry) { const pct = (entry[1]/total*100).toFixed(1); return '<div class="flex items-center gap-3"><div class="flex-1"><div class="flex justify-between text-sm mb-1"><span>' + escapeHtml(entry[0]) + '</span><span class="font-semibold">' + pct + '%</span></div><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-amber-600" style="width: ' + pct + '%"></div></div></div><span class="text-sm font-bold w-8 text-right">' + entry[1] + '</span></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin datos</p>';
+    // Sección de reportes simplificada - solo acciones y zona de peligro
   }
 
-  // ============ ARCHIVOS ============
   function handleFileSelect(files) {
     Array.from(files).forEach(function(file) {
       if (file.size > 5 * 1024 * 1024) { showToast('Archivo demasiado grande: ' + file.name); return; }
@@ -1169,10 +1098,9 @@
   }
   window.removeFile = function(index) { currentFiles.splice(index, 1); renderFileList(); };
 
-  // ============ EXPORTAR EXCEL ============
   function exportToExcel(data, filename) {
     try { const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Avalúos"); XLSX.writeFile(wb, filename); showToast('Excel exportado: ' + filename); }
-    catch (e) { console.error(e); showToast('Error al exportar Excel'); }
+    catch (e) { showToast('Error al exportar Excel'); }
   }
   function exportAllToExcel() {
     if (avaluoos.length === 0) { showToast('No hay avalúos para exportar'); return; }
@@ -1186,7 +1114,6 @@
     exportToExcel(data, filename);
   }
 
-  // ============ BORRAR BASE DE DATOS ============
   function openDeleteModal() {
     if (avaluoos.length === 0) { showToast('La base de datos ya está vacía'); return; }
     const totalFiles = avaluoos.reduce(function(sum, a) { return sum + (a.archivos || []).length; }, 0);
@@ -1202,7 +1129,6 @@
     else { showToast('Error al borrar la base de datos'); }
   }
 
-  // ============ MODAL DETALLE ============
   function viewDetail(id) {
     const a = avaluoos.find(function(x) { return x.id === id; }); if (!a) return;
     const estado = getEstado(a);
@@ -1210,14 +1136,12 @@
     const anexos = Array.isArray(a.anexos) ? a.anexos : [];
     const anexosHTML = anexos.length > 0 ? '<div class="flex flex-wrap gap-2 mt-2">' + anexos.map(function(x) { return '<span class="tag-item">' + escapeHtml(x) + '</span>'; }).join('') + '</div>' : '';
     const archivosHTML = archivos.length > 0 ? archivos.map(function(file) { const sizeMB = (file.size / (1024 * 1024)).toFixed(2); const icon = file.type.includes('pdf') ? '📄' : file.type.includes('image') ? '🖼️' : '📎'; return '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"><div class="flex items-center gap-3 flex-1 min-w-0"><span class="text-2xl">' + icon + '</span><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-900 truncate">' + escapeHtml(file.name) + '</p><p class="text-xs text-slate-500">' + sizeMB + ' MB</p></div></div><div class="flex gap-2"><a href="' + file.data + '" download="' + escapeHtml(file.name) + '" class="px-3 py-1.5 bg-blue-600 text-white rounded text-xs font-medium hover:bg-blue-700">Descargar</a>' + (file.type.includes('image') ? '<button onclick="viewImage(\'' + file.data + '\')" class="px-3 py-1.5 bg-slate-600 text-white rounded text-xs font-medium hover:bg-slate-700">Ver</button>' : '') + '</div></div>'; }).join('') : '<p class="text-sm text-slate-500 text-center py-4">Sin archivos adjuntos</p>';
-    
     let bienDetalle = '';
     if (a.tipoBien === 'Inmueble' || a.tipoBien === 'Terreno') {
       bienDetalle = '<div><p class="text-xs text-slate-500">Dirección</p><p class="font-medium">' + escapeHtml(a.direccion || '-') + '</p></div><div><p class="text-xs text-slate-500">Superficie Terreno</p><p class="font-medium">' + (a.superficie || '-') + ' m²</p></div><div><p class="text-xs text-slate-500">Superficie Construcción</p><p class="font-medium">' + (a.superficieConstruccion || '-') + ' m²</p></div>';
     } else if (a.tipoBien === 'Marca') {
       bienDetalle = '<div><p class="text-xs text-slate-500">Nombre Comercial</p><p class="font-medium">' + escapeHtml(a.marcaNombre || '-') + '</p></div><div><p class="text-xs text-slate-500">Registro IMPI</p><p class="font-medium">' + escapeHtml(a.marcaRegistro || '-') + '</p></div><div><p class="text-xs text-slate-500">Giro</p><p class="font-medium">' + escapeHtml(a.marcaGiro || '-') + '</p></div>';
     }
-    
     document.getElementById('modalContent').innerHTML = '<div class="space-y-4"><div class="flex justify-between items-start"><div class="flex-1 min-w-0"><p class="text-xs text-slate-500">Avalúo #' + escapeHtml(a.numeroAvaluo) + (a.numeroSerie ? ' • Serie: ' + escapeHtml(a.numeroSerie) : '') + '</p><h4 class="text-xl font-bold mt-1">' + escapeHtml(a.bienObjeto) + '</h4><p class="text-xs text-slate-500 mt-1">Tipo de bien: ' + escapeHtml(a.tipoBien || 'Inmueble') + '</p></div>' + estadoBadge(estado) + '</div><div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200"><div><p class="text-xs text-slate-500">Tipo</p><p class="font-medium">' + escapeHtml(a.tipoAvaluo) + '</p></div><div><p class="text-xs text-slate-500">Fecha</p><p class="font-medium">' + formatDateShort(a.fecha) + '</p></div><div><p class="text-xs text-slate-500">Solicitante</p><p class="font-medium">' + escapeHtml(a.solicitante) + '</p></div><div><p class="text-xs text-slate-500">Propietario</p><p class="font-medium">' + escapeHtml(a.propietario || '-') + '</p></div>' + bienDetalle + '<div><p class="text-xs text-slate-500">Enfoque</p><p class="font-medium">' + escapeHtml(a.enfoque || '-') + '</p></div><div><p class="text-xs text-slate-500">Páginas</p><p class="font-medium">' + (a.paginas || '-') + '</p></div><div class="col-span-2 bg-slate-50 p-4 rounded-lg"><p class="text-xs text-slate-500">Valor Estimado</p><p class="text-2xl font-bold text-slate-900">' + formatCurrency(a.valorEstimado) + '</p><p class="text-xs text-slate-500 mt-1">Vigencia: ' + (a.vigenciaDias || 180) + ' días</p></div><div><p class="text-xs text-slate-500">Fecha Aviso</p><p class="font-medium">' + (a.fechaAviso ? formatDateShort(a.fechaAviso) : 'No se dieron avisos') + '</p></div><div><p class="text-xs text-slate-500">No. Aviso</p><p class="font-medium">' + escapeHtml(a.numeroAviso || '-') + '</p></div>' + (a.descripcion ? '<div class="col-span-2"><p class="text-xs text-slate-500">Descripción</p><p class="text-sm">' + escapeHtml(a.descripcion) + '</p></div>' : '') + (anexosHTML ? '<div class="col-span-2"><p class="text-xs text-slate-500 mb-2">Anexos</p>' + anexosHTML + '</div>' : '') + (a.notas ? '<div class="col-span-2"><p class="text-xs text-slate-500">Notas</p><p class="text-sm">' + escapeHtml(a.notas) + '</p></div>' : '') + '</div><div class="pt-4 border-t border-slate-200"><h5 class="font-bold mb-3 flex items-center gap-2"><svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Archivos Adjuntos (' + archivos.length + ')</h5><div class="space-y-2">' + archivosHTML + '</div></div><div class="flex gap-2 pt-4 border-t border-slate-200 flex-wrap"><button data-action="edit" data-id="' + a.id + '" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800">Editar</button><button data-action="download-single" data-id="' + a.id + '" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Descargar Excel</button><button data-action="go-caratula" data-id="' + a.id + '" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700">Generar Carátula</button><button data-action="close-modal" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">Cerrar</button></div></div>';
     document.getElementById('detailModal').classList.remove('hidden');
   }
@@ -1239,7 +1163,6 @@
     catch (e) { showToast('Error al imprimir'); }
   }
 
-  // ============ EVENTOS ============
   function setupEvents() {
     document.querySelectorAll('.nav-btn').forEach(function(btn) { btn.addEventListener('click', function() { const view = this.dataset.view; if (view === 'nuevo') resetForm(); showView(view); }); });
     document.getElementById('btnExport').addEventListener('click', exportAllToExcel);
@@ -1284,36 +1207,24 @@
     fileUploadZone.addEventListener('drop', function(e) { e.preventDefault(); fileUploadZone.classList.remove('dragover'); handleFileSelect(e.dataTransfer.files); });
     fileInput.addEventListener('change', function(e) { handleFileSelect(e.target.files); e.target.value = ''; });
 
-    // Formulario - eventos dinámicos
     document.getElementById('numeroAvaluo').addEventListener('input', updateNumeroSerie);
     document.getElementById('anioRegistro').addEventListener('change', updateNumeroSerie);
     document.getElementById('tipoBien').addEventListener('change', function() { updateSubmenu(); updateBienSugerencias(); });
     document.getElementById('sinAvisos').addEventListener('change', updateAvisosFields);
     document.querySelectorAll('.anexo-check').forEach(function(cb) {
       cb.addEventListener('change', function() {
-        if (this.checked) {
-          if (selectedAnexos.indexOf(this.value) === -1) selectedAnexos.push(this.value);
-        } else {
-          const idx = selectedAnexos.indexOf(this.value);
-          if (idx !== -1) selectedAnexos.splice(idx, 1);
-        }
+        if (this.checked) { if (selectedAnexos.indexOf(this.value) === -1) selectedAnexos.push(this.value); }
+        else { const idx = selectedAnexos.indexOf(this.value); if (idx !== -1) selectedAnexos.splice(idx, 1); }
         renderAnexosList();
       });
     });
     document.getElementById('btnAgregarAnexo').addEventListener('click', function() {
       const input = document.getElementById('anexoManual');
       const val = input.value.trim();
-      if (val && selectedAnexos.indexOf(val) === -1) {
-        selectedAnexos.push(val);
-        renderAnexosList();
-        input.value = '';
-      } else if (selectedAnexos.indexOf(val) !== -1) {
-        showToast('Este anexo ya fue agregado');
-      }
+      if (val && selectedAnexos.indexOf(val) === -1) { selectedAnexos.push(val); renderAnexosList(); input.value = ''; }
+      else if (selectedAnexos.indexOf(val) !== -1) { showToast('Este anexo ya fue agregado'); }
     });
-    document.getElementById('anexoManual').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btnAgregarAnexo').click(); }
-    });
+    document.getElementById('anexoManual').addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btnAgregarAnexo').click(); } });
 
     document.getElementById('avaluoForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -1362,7 +1273,20 @@
     });
 
     document.getElementById('btnCancelar').addEventListener('click', function() { resetForm(); showView('avaluos'); });
-    document.getElementById('btnGenerarCaratula').addEventListener('click', function() { const sel = document.getElementById('caratulaSelect'); const id = sel.value ? Number(sel.value) : null; if (!id) { showToast('Selecciona un avalúo'); return; } renderCaratulaPreview(id); });
+    
+    // Carátula - Auto preview al cambiar selección
+    document.getElementById('caratulaSelect').addEventListener('change', function() {
+      const id = this.value ? Number(this.value) : null;
+      if (id) {
+        selectedCaratulaId = id;
+        renderCaratulaPreview(id);
+      } else {
+        selectedCaratulaId = null;
+        document.getElementById('caratulaContainer').innerHTML = '<div class="text-center py-20 text-slate-400"><svg class="w-20 h-20 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><p class="text-lg">Selecciona un avalúo para previsualizar su carátula</p></div>';
+        document.getElementById('btnDescargarPDF').classList.add('hidden');
+      }
+    });
+    
     document.getElementById('btnDescargarPDF').addEventListener('click', descargarCaratulaPDF);
     document.getElementById('btnImport').addEventListener('click', importData);
     document.getElementById('btnPrint').addEventListener('click', printReport);
